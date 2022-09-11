@@ -30,7 +30,7 @@ public class CustomHasDishDAO extends AbstractDAOSimpleEntity<CustomHasDish> {
      * params = "?, ?, ?, ?"
      * */
     @Override
-    protected void setStatementParams(CustomHasDish obj, PreparedStatement statement) throws SQLException {
+    protected void setStatementParams(CustomHasDish obj, PreparedStatement statement, boolean update) throws SQLException {
         statement.setInt(1, obj.getCustomId());
         statement.setInt(2, obj.getDishId());
         statement.setInt(3, obj.getCount());

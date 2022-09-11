@@ -72,10 +72,10 @@ DROP TABLE IF EXISTS `restaurantDB`.`custom`;
 CREATE TABLE IF NOT EXISTS `restaurantDB`.`custom`
 (
     `id`          INT AUTO_INCREMENT,
-    `cost`        DECIMAL(5, 2) UNSIGNED DEFAULT 0,
+    `cost`        DECIMAL(15, 2) UNSIGNED DEFAULT 0,
     `create_time` TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
-    `user_id`     INT        NOT NULL,
-    `status_id`   INT UNIQUE NOT NULL,
+    `user_id`     INT NOT NULL,
+    `status_id`   INT NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_custom_user1_idx` (`user_id` ASC) VISIBLE,
     INDEX `fk_custom_status1_idx` (`status_id` ASC) VISIBLE,

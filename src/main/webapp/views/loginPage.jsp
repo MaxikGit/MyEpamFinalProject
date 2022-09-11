@@ -21,7 +21,7 @@
                 <h2>Авторізація</h2>
             </div>
             <%--        input form--%>
-            <form class="w3-container w3-margin" action="AuthorisationServlet" method="post">
+            <form class="w3-container w3-margin" action="${pageContext.request.contextPath}/AuthorisationServlet" method="post">
                 <label class="w3-left w3-margin-top">Введите Ваш имейл</label>
                 <input class="w3-input w3-border w3-hover-border-light-gray " type="email" name="email"
                        value="<c:out value="${sessionScope.email}" default="klimenko@gmail.com"/>" placeholder="Введите Ваш имейл" required>

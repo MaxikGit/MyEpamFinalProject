@@ -30,7 +30,7 @@ public class DishDAO extends AbstractDAOSimpleEntity<Dish> {
     }
 
     @Override
-    protected void setStatementParams(Dish obj, PreparedStatement statement) throws SQLException {
+    protected void setStatementParams(Dish obj, PreparedStatement statement, boolean update) throws SQLException {
         statement.setString(1, obj.getName());
         statement.setDouble(2, obj.getPrice());
         if (obj.getDetails() != null && !obj.getDetails().equals("none"))
@@ -39,5 +39,7 @@ public class DishDAO extends AbstractDAOSimpleEntity<Dish> {
             statement.setString(3, "none");
         statement.setInt(4, obj.getCategoryId());
         statement.setString(5, obj.getImagePath());
+        if (update)
+            statement.setInt(6, obj.getId());
     }
 }

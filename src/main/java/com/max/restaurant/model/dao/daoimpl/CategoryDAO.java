@@ -25,8 +25,9 @@ public class CategoryDAO extends AbstractDAOSimpleEntity<Category> {
     }
 
     @Override
-    protected void setStatementParams(Category obj, PreparedStatement statement) throws SQLException {
+    protected void setStatementParams(Category obj, PreparedStatement statement, boolean update) throws SQLException {
         statement.setString(1, obj.getName());
-//        statement.setInt(2, obj.getId());
+        if (update)
+            statement.setInt(2, obj.getId());
     }
 }

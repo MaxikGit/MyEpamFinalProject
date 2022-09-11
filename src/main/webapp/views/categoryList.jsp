@@ -23,6 +23,9 @@
         </c:forEach>
     </c:if>
     <c:if test="${loggedUser != null}">
+
+<%--        Managers only--%>
+
         <c:if test="${loggedUser.roleId == 1}">
             <hr>
             <a href="AuthorisationServlet?action=settingsCategory"

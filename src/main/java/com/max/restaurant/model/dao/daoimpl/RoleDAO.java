@@ -19,14 +19,15 @@ public class RoleDAO extends AbstractDAOSimpleEntity<Role> {
     @Override
     protected Role getEntityFromResult(ResultSet result) throws SQLException {
         Role obj = new Role();
-        obj.setId(result.getInt(ROLE_ID) );
-        obj.setName(result.getString(ROLE_NAME) );
+        obj.setId(result.getInt(ROLE_ID));
+        obj.setName(result.getString(ROLE_NAME));
         return obj;
     }
 
     @Override
-    protected void setStatementParams(Role role, PreparedStatement statement) throws SQLException {
+    protected void setStatementParams(Role role, PreparedStatement statement, boolean update) throws SQLException {
         statement.setString(1, role.getName());
-//        statement.setInt(2, role.getId());
+        if (update)
+            statement.setInt(2, role.getId());
     }
 }

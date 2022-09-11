@@ -22,7 +22,7 @@ public class UserService {
         if (!emailIsValid(email))
             throw new DAOServiceException(EMAIL_EXC);
         userDAO = new UserDAO();
-        List<User> users = userDAO.findObjByParam(USER_EMAIL, email);
+        List<User> users = userDAO.findObjByParam(USER_EMAIL, email, userDAO.getConnection());
         return users.size() > 0 ? users.get(0) : null;
     }
 

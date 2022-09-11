@@ -43,33 +43,24 @@
     </c:forEach>
 </c:if>
 
+<%--for the first enter, button with GREETINGS--%>
+
 <c:if test="${dishesNames == null}">
-<%--    <form action="AuthorisationServlet" method="get" name="action" title="category">--%>
+
     <a href="AuthorisationServlet?action=category" style="text-decoration:none">
     <div class="w3-padding w3-display-middle w3-light-blue w3-round-large w3-third  w3-card-4 w3-hover-amber">
-        <div class="w3-container  w3-padding-16 w3-margin w3-jumbo w3-center w3-animate-top w3-card-4">
-                <%--                <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>--%>
+        <div class="w3-container  w3-padding-16 w3-margin w3-jumbo w3-center w3-animate-top w3-card-4 w3-round-large w3-hover-light-blue">
 
-                <%--                    <div class="w3-clear"></div>--%>
             <hr class="w3-border w3-border-white w3-center" style="margin: auto; width: 80%">
-
-
                 <h1 class="w3-text-blue-gray">GREETINGS!</h1>
-
             <hr class="w3-border w3-border-white w3-center" style="margin: auto; width: 60%">
             <h3 class="w3-center w3-animate-top w3-text-blue-gray">& let`s go!</h3>
-                <%--                <h4>Messages</h4>--%>
         </div>
     </div>
     </a>
-<%--    </form>--%>
 </c:if>
-<%--<c:if test="${loggedUser != null}">--%>
-<%--    <c:if test="${loggedUser.roleId == 1}">--%>
-<%--        <hr>--%>
-<%--        <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-math fa-fw"></i>&nbsp; Settings</a>--%>
-<%--    </c:if>--%>
-<%--</c:if>--%>
+
+<%--for the first enter, button with GREETINGS--%>
 
 
 </body>

@@ -34,13 +34,15 @@
             <hr>
             <div class="w3-card-4 w3-margin w3-border-light-green">
                 <%--                <c:forEach var="stackStrings" items="${pageContext.errorData.throwable.stackTrace}">--%>
-                <c:forEach var="stackStrings" items="${pageContext.errorData.throwable.cause.stackTrace}">
-                    <p> Exception in : ${stackStrings}</p>
-                </c:forEach>
+<%--                <c:forEach var="stackStrings" items="${pageContext.errorData.throwable.cause.stackTrace}">--%>
+<%--                    <p> Exception in : ${stackStrings}</p>--%>
+<%--                </c:forEach>--%>
+                    <p>Throwable: ${pageContext.errorData.throwable}</p>
+                    <p>Localized Message: ${pageContext.errorData.throwable.cause.localizedMessage}</p>
             </div>
             <hr>
             <div class="w3-card-4 w3-margin w3-border-light-green">
-                Exception Message: ${pageContext.errorData.throwable.cause.stackTrace[0]}
+                Stack Trace [0]: ${pageContext.errorData.throwable.cause.stackTrace[0]}
             </div>
             <hr>
             <div class="w3-card-4 w3-margin w3-border-light-green">

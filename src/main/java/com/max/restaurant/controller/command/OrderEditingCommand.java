@@ -1,7 +1,6 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.dao.services.CustomHasDishService;
 import com.max.restaurant.model.dao.services.CustomService;
 import com.max.restaurant.model.dao.services.DishService;
 import com.max.restaurant.model.entity.Custom;
@@ -62,7 +61,7 @@ public class OrderEditingCommand implements Command {
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD, "executePost", "true");
-        String page;
+        String page = request.getContextPath() + HOME_PAGE;
         HttpSession session = request.getSession();
         //receiving custom with id
         User currentUser = (User) session.getAttribute(LOGGED_USER_ATTR);
@@ -78,9 +77,14 @@ public class OrderEditingCommand implements Command {
             customHasDish.setPrice(realPrice);
             hasDishesList.add(customHasDish);
         }
-
         CustomService customService = new CustomService();
-
+        Custom newCustom = customService.getNewCustomByUserId(currentUser.getId(), hasDishesList);
+        List<Custom> customList = (List<Custom>)session.getAttribute(CUSTOM_LIST_ATTR);
+        if (customList == null)
+            customList = new ArrayList<>();
+        session.setAttribute(CUSTOM_LIST_ATTR, customList);
+        removeAttributes(session);
+        response.sendRedirect(page);
     }
 
     private static void removeAttributes(HttpSession session) {

@@ -67,15 +67,16 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     //need to introduce params in util to insert
     @Override
-    public final List<T> findObjByParam(String paramName, String param) throws DAOException {
+    public final List<T> findObjByParam(String paramName, String param, Connection conn) throws DAOException {
         LOGGER.info(genericName + FIND_BY_PARAM, paramName, param);
-        Connection conn = null;
+//        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet result = null;
         List<T> entities = new ArrayList<>();
         try {
-            conn = getConnection();
+//            conn = getConnection();
             String sql = getSQLFindByParam(genericName, paramName);
+            LOGGER.info(genericName + FIND_BY_PARAM, paramName, param);
             statement = conn.prepareStatement(sql);
             statement.setString(1, param);
             result = statement.executeQuery();
@@ -95,7 +96,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     @Override
     public List<T> findAll() throws DAOException {
-        LOGGER.info(FIND_ALL + genericName);
+        LOGGER.info(FIND_ALL, genericName);
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet result = null;
@@ -110,7 +111,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
             }
             return entities;
         } catch (SQLException e) {
-            LOGGER.error(FAILED_FIND_ALL + genericName, e);
+            LOGGER.error(FAILED_FIND_ALL, genericName, e);
             throw new DAOException(e);
         } finally {
             closeAll(conn, statement, result);
@@ -149,10 +150,10 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 //            conn = getConnection();
             statement = conn.prepareStatement(getSqlInsertEntity(genericName));
             //implement this
-            setAbstractStatementParams(entity, statement);
+            setAbstractStatementParams(entity, statement, false);
             return 1 == statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(FAILED_INSERT + genericName, e);
+            LOGGER.error(FAILED_INSERT, genericName, e);
             throw new DAOException(e);
         } finally {
             closeAll(conn, statement);
@@ -167,10 +168,11 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
         try {
 //            conn = myDbConnection.getConnection();
             statement = conn.prepareStatement(getSQLUpdateEntityById(genericName));
-            setAbstractStatementParams(entity, statement);
+            setAbstractStatementParams(entity, statement, true);
+            LOGGER.debug(SQL_EXPR_MSG, "update", genericName, statement);
             return 1 == statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(FAILED_UPDATE + genericName, e);
+            LOGGER.error(FAILED_UPDATE, genericName, e);
             throw new DAOException(e);
         } finally {
             closeAll(conn, statement);
@@ -188,7 +190,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
             statement.setInt(1, entity.getId());
             return 1 == statement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(FAILED_DELETE + genericName, e);
+            LOGGER.error(FAILED_DELETE, genericName, e);
             throw new DAOException(e);
         } finally {
             closeAll(conn, statement);
@@ -197,7 +199,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     protected abstract T getEntityFromResult(ResultSet result) throws SQLException;
 
-    protected abstract void setStatementParams(T entity, PreparedStatement statement) throws SQLException;
+    protected abstract void setStatementParams(T entity, PreparedStatement statement, boolean update) throws SQLException;
 
     private T getAbstractObjFromResult(ResultSet result) throws SQLException {
         LOGGER.info(genericName + GET_FROM_RS);
@@ -206,11 +208,11 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
         return entity;
     }
 
-    private void setAbstractStatementParams(T entity, PreparedStatement statement) throws SQLException {
+    private void setAbstractStatementParams(T entity, PreparedStatement statement, boolean update) throws SQLException {
         LOGGER.info(SET_STATEMENT, genericName);
         //implement this
-        setStatementParams(entity, statement);
-        LOGGER.trace(entity.toString());
+        setStatementParams(entity, statement, update);
+        LOGGER.debug(entity.toString());
     }
 
     private void closeAll(Connection conn, Statement statement) throws DAOException {
@@ -218,7 +220,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
             LOGGER.info(CLOSE_CONN_ST, genericName, conn != null, statement != null);
             if (statement != null)
                 statement.close();
-            if (conn != null) {
+            if (conn != null && conn.getAutoCommit()) {
                 conn.close();
             }
         } catch (SQLException e) {
@@ -234,7 +236,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
                 rs.close();
             closeAll(conn, statement);
         } catch (SQLException e) {
-            LOGGER.error(genericName + FAILED_CLOSE_ST_CONN_RS, e);
+            LOGGER.error(FAILED_CLOSE_ST_CONN_RS, genericName, e);
             throw new DAOException(e);
         }
     }

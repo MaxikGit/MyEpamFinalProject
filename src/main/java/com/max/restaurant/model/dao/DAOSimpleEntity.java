@@ -13,7 +13,7 @@ public interface DAOSimpleEntity<T extends SimpleEntity> {
 //    T findObjByParam(String param) throws DAOException;
 
     //need to introduce params in util to insert
-    List<T> findObjByParam(String paramName, String param) throws DAOException;
+    List<T> findObjByParam(String paramName, String param, Connection conn) throws DAOException;
 
     List<T> findAll() throws DAOException;
 

@@ -14,7 +14,7 @@
 </div>
 <div class="w3-container w3-center w3-margin-bottom">
     <c:if test="${orderNames != null}">
-        <form method="post" action="AuthorisationServlet">
+        <form method="post" action="${pageContext.request.contextPath}/AuthorisationServlet">
             <div class="w3-container w3-margin">
                 <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom">
                     <tr class="w3-card-2 w3-cell-row w3-hover-none w3-light-blue">
@@ -35,7 +35,7 @@
                                      class="w3-circle" style="height:65px" alt="food picture">
                             </td>
                             <td class="w3-cell-bottom w3-col s1 w3-center">
-                                <input name="quantity" value="1" type="number" max="10" min="1"
+                                <input name="quantity" type="number" max="10" min="1" value="1"
                                        class="w3-input w3-border-0"/>
                             </td>
                             <td class="w3-cell-bottom w3-col s2 w3-center">

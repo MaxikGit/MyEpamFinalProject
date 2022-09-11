@@ -37,7 +37,7 @@ public class UserDAO extends AbstractDAOSimpleEntity<User> {
     }
 
     @Override
-    protected void setStatementParams(User user, PreparedStatement statement) throws SQLException {
+    protected void setStatementParams(User user, PreparedStatement statement, boolean update) throws SQLException {
         statement.setString(1, user.getEmail());
         statement.setString(2, user.getName());
         statement.setString(3, user.getLastName());
@@ -47,6 +47,8 @@ public class UserDAO extends AbstractDAOSimpleEntity<User> {
         else
             statement.setString(5, "none");
         statement.setInt(6, user.getRoleId());
+        if (update)
+            statement.setInt(7, user.getId());
     }
 
 }

@@ -35,14 +35,16 @@ public class CategoryCommand implements Command {
             List<Category> category = categoryService.findAllCategories();
             Collections.sort(category, Comparator.comparingInt(Category::getId));
             session.setAttribute(CATEGORY_LIST_ATTR, category);
+            session.removeAttribute(CATEGORY_ID);
             LOGGER.debug(TWO_PARAMS_MSG, CATEGORY_LIST_ATTR, category);
             DishService dishService = new DishService();
             dishes = dishService.findAllDishes();
         }else {
             DishService dishService = new DishService();
             dishes = dishService.findDishByCategoryId(value);
+            session.setAttribute(CATEGORY_ID, value);
         }
-        Collections.sort(dishes, Comparator.comparingInt(Dish::getCategoryId));
+        dishes.sort(Comparator.comparingInt(Dish::getCategoryId));
         session.setAttribute(DISH_LIST_ATTR, dishes);
         LOGGER.debug(TWO_PARAMS_MSG, VALUE_ATTR + request.getParameter(VALUE_ATTR), dishes.size() + " items");
         LOGGER.info(FORWARD, HOME_PAGE);

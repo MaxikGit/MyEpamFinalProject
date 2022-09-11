@@ -3,6 +3,7 @@ package com.max.restaurant.model.dao.daoimpl;
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.entity.Custom;
 
+import java.math.BigDecimal;
 import java.sql.*;
 
 import static com.max.restaurant.model.entity.UtilsEntityFields.*;
@@ -26,10 +27,12 @@ public class CustomDAO extends AbstractDAOSimpleEntity<Custom> {
     }
 
     @Override
-    protected void setStatementParams(Custom obj, PreparedStatement statement) throws SQLException {
-        statement.setDouble(1, obj.getCost());
+    protected void setStatementParams(Custom obj, PreparedStatement statement, boolean update) throws SQLException {
+        statement.setBigDecimal(1, BigDecimal.valueOf(obj.getCost()));
         statement.setTimestamp(2, obj.getCreateTime());
         statement.setInt(3, obj.getUserId());
         statement.setInt(4, obj.getStatusId());
+        if (update)
+            statement.setInt(5, obj.getId());
     }
 }

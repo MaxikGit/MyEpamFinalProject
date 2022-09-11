@@ -29,10 +29,19 @@
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
 
+    <%--    Hidden Menu Button--%>
     <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
             onclick="w3_open();"><i class="material-icons">&#xe5d2</i> &nbsp;Menu
     </button>
-    <span class="w3-bar-item">Restaurant</span>
+
+    <%--    Hidden Menu Button    --%>
+
+    <span class="w3-bar-item w3-hover-shadow">Restaurant</span>
+
+    <%--    Selector of sorting    --%>
+
+    <%--    login and signIn buttons--%>
+
     <form class="w3-right" action="AuthorisationServlet" method="get">
         <button name="action" value="login" class="w3-bar-item w3-button w3-hover-none w3-hover-text-amber">
             <i>Login</i>
@@ -42,13 +51,18 @@
             <i>Sign Up&nbsp;</i>
         </button>
     </form>
+
+    <%--    login and signIn buttons end --%>
+
 <%--    shopping cart--%>
+
     <c:if test="${dishIds!=null}">
         <a href="AuthorisationServlet?action=order" class="w3-bar-item w3-hover-amber w3-right">
-            <i class="material-icons w3-border-white">&#xe8cc</i></a>
-<%--    <span class="w3-bar-item w3-right"><i class="material-icons w3-border-white">&#xe8cc</i></span>--%>
+            <i class="material-icons w3-border-white">&#xe8cc</i>
+        </a>
     </c:if>
 </div>
+<%--shopping cart ends--%>
 
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-white w3-animate-opacity" style="z-index:3;width:300px;" id="mySidebar"><br>
@@ -94,13 +108,23 @@
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
 
     <!-- Header -->
-    <header class="w3-container" style="padding-top:22px">
-        <%--        <c:out value="${categoryNames[param.value].name}" default="fff"/>--%>
-        <c:if test="${param.action=='category'}">
-            <h4><strong>${categoryNames[param.value-1].name}</strong></h4>
-        </c:if>
-        <%--        <p><h1> Restaurant Main Page </h1></p>--%>
-    </header>
+    <div class="w3-container w3-margin-left w3-cell-row">
+            <h4 class="w3-cell w3-cell-middle"><strong>${sessionScope.categoryNames[categoryId-1].name}</strong></h4>
+
+        <%--    Selector of sorting    --%>
+<c:if test="${dishesNames != null}">
+        <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
+            <button class="w3-button " title="More">Sort by order of <i class="material-icons w3-small">&#xe5c5;</i></button>
+            <div class="w3-dropdown-content w3-bar-block ">
+                <a href="AuthorisationServlet?action=sortDishes&value=name" class="w3-bar-item w3-button">name</a>
+                <a href="AuthorisationServlet?action=sortDishes&value=cost" class="w3-bar-item w3-button">cost</a>
+                <a href="AuthorisationServlet?action=sortDishes&value=category" class="w3-bar-item w3-button">category</a>
+            </div>
+        </div>
+</c:if>
+        <%--    End Selector of sorting    --%>
+
+    </div>
     <%-- main context--%>
     <div class="w3-padding ">
         <jsp:include page="/views/dishesList.jsp"/>
@@ -136,3 +160,20 @@
 </script>
 </body>
 </html>
+
+<%--        <div class="w3-cell w3-cell-middle w3-right w3-margin-right ">--%>
+<%--            <div class="w3-cell-row w3-cell-middle w3-small w3-button w3-hover-none">--%>
+<%--                <form action="AuthorisationServlet" method="get" name="sortType" >--%>
+<%--                    <strong>--%>
+<%--                        <label for="sortDishes" class="w3-cell  ">Sort by order of&nbsp</label>--%>
+<%--                        <select name="sortDishes" id="sortDishes" onchange="this.form.submit()"--%>
+<%--                                class="w3-cell w3-left-align w3-light-grey w3-border-light-gray w3-hover-border-light-grey">--%>
+<%--                            <option value="" selected disabled>None</option>--%>
+<%--                            <option value="name" ><a href="AuthorisationServlet?action=sort">am name</a></option>--%>
+<%--                            <option value="cost">cost</option>--%>
+<%--                            <option value="category">category</option>--%>
+<%--                        </select>--%>
+<%--                    </strong>--%>
+<%--                </form>--%>
+<%--            </div>--%>
+<%--        </div>--%>

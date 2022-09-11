@@ -35,7 +35,8 @@ public class CustomHasDishService {
         if (customId < 1)
             throw new DAOServiceException(ID_EXC);
         customHasDishDAO = new CustomHasDishDAO();
-        List<CustomHasDish> list = customHasDishDAO.findObjByParam(CUSTOMHASDISH_C_ID, String.valueOf(customId));
+        List<CustomHasDish> list = customHasDishDAO
+                .findObjByParam(CUSTOMHASDISH_C_ID, String.valueOf(customId), customHasDishDAO.getConnection());
         return list;
     }
 
@@ -78,13 +79,13 @@ public class CustomHasDishService {
 //
 //    }
 
-    public List<CustomHasDish> insertCustomNum(int id, List<CustomHasDish> orderedDishes) {
-        for (CustomHasDish customHasDish : orderedDishes)
+    public void insertCustomNum(int id, List<CustomHasDish> orderedDishes) {
+        for (CustomHasDish customHasDish : orderedDishes){
             customHasDish.setCustomId(id);
-        return orderedDishes;
+        }
     }
 
-    public Map<String, List<CustomHasDish>> sortForInsertUpdate(List<CustomHasDish> orderedDishes) throws DAOException {
+    public Map<String, List<CustomHasDish>> sortToInsertUpdate(List<CustomHasDish> orderedDishes) throws DAOException {
         List<CustomHasDish> oldies = findCustomHasDishByCustomId(orderedDishes.get(0).getCustomId());
         List<CustomHasDish> toUpdate = new ArrayList<>();
         for (CustomHasDish oldOne : oldies) {

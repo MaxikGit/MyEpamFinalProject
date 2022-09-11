@@ -22,14 +22,14 @@ public class DishService {
     public Dish findDishByName(String name) throws DAOException {
         LOGGER.info(METHOD, "findDishByName", "true");
         dishDAO = new DishDAO();
-        List<Dish> list = dishDAO.findObjByParam(DISH_NAME, name);
+        List<Dish> list = dishDAO.findObjByParam(DISH_NAME, name, dishDAO.getConnection());
         LOGGER.debug(FIND_BY_PARAM, DISH_NAME, list);
         return list.size() > 0 ? list.get(0) : null;
     }
     public List<Dish> findDishByCategoryId(String name) throws DAOException {
         LOGGER.info(METHOD, "findDishByCategoryId", "true");
         dishDAO = new DishDAO();
-        List<Dish> list = dishDAO.findObjByParam(DISH_CATEGORY_ID, name);
+        List<Dish> list = dishDAO.findObjByParam(DISH_CATEGORY_ID, name, dishDAO.getConnection());
         LOGGER.debug(FIND_BY_PARAM, DISH_CATEGORY_ID, list);
         return list;
     }
