@@ -17,12 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.CUSTOM_USER_ID;
+import static com.max.restaurant.model.entity.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class CustomService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomService.class);
     private CustomDAO customDAO;
+    private String completeStatus = "4";
 
     public Custom findCustomById(int id) throws DAOException {
         LOGGER.info(METHOD, "findCustomById", "true");
@@ -30,6 +31,21 @@ public class CustomService {
             throw new DAOServiceException(ID_EXC);
         customDAO = new CustomDAO();
         return customDAO.findObjById(id);
+    }
+
+    public List<Custom> getCustomsInProgress() throws DAOException {
+        LOGGER.info(METHOD, "getCustomsInProgress", "true");
+        customDAO = new CustomDAO();
+        List<Custom> list = customDAO.findObjByParam(CUSTOM_STATUS_ID + " !", completeStatus, customDAO.getConnection());
+        return list;
+    }
+
+    public void updateCustom(Custom custom) throws DAOException {
+        LOGGER.info(METHOD, "updateCustom", "true");
+        if (customIsValid(custom)) {
+            customDAO = new CustomDAO();
+            customDAO.updateObj(custom, customDAO.getConnection());
+        } else throw new DAOServiceException(CUSTOM_VALID_EXC);
     }
 
     public List<Custom> findAllCustoms() throws DAOException {
@@ -46,6 +62,7 @@ public class CustomService {
     }
 
     public Custom getNewCustomByUserId(int userId, List<CustomHasDish> orderedDishes) throws DAOException {
+        LOGGER.info(METHOD, "getNewCustomByUserId", "true");
         Custom custom = getCustomInstanceByUserId(userId);
         if (custom.getId() > 0) {
             CustomHasDishService hasDishService = new CustomHasDishService();
@@ -60,6 +77,7 @@ public class CustomService {
     }
 
     private Custom getCustomInstanceByUserId(int userId) throws DAOException {
+        LOGGER.info(METHOD, "getCustomInstanceByUserId", "true");
         Custom custom = findNewCustomByUserIdInDB(userId, null);
         if (custom == null) {
             Timestamp creationDate = Timestamp.valueOf(LocalDateTime.now());
@@ -144,11 +162,14 @@ public class CustomService {
             custom.setCost(totalCost);
             customDAO.updateObj(custom, conn);
             conn.commit();
+            LOGGER.debug(TRANSACTION_MSG);
             return findCustomById(custom.getId());
         } catch (SQLException e) {
             try {
                 conn.rollback();
+                LOGGER.info(TRANSACTION_ROLLBACK);
             } catch (SQLException ex) {
+                LOGGER.error(TRANSACTION_ROLLBACK_FAILED);
                 throw new DAOException(ex);
             }
             throw new DAOException(e);
@@ -169,16 +190,8 @@ public class CustomService {
 //        return customDAO.findMaxId();
 //    }
 
-//    public void saveCustom(Custom custom) throws DAOException {
-//        LOGGER.info(METHOD, "saveCustom", "true");
-//        if (customIsValid(custom)){
-//            customDAO = new CustomDAO();
-//            customDAO.updateObj(custom, customDAO.getConnection());
-//        }
-//        else throw new DAOServiceException(CUSTOM_VALID_EXC);
-//    }
 
-//    private void insertCustom(Custom custom) throws DAOException {
+    //    private void insertCustom(Custom custom) throws DAOException {
 //        LOGGER.info(METHOD, "insertCustom", "true");
 //        customDAO = new CustomDAO();
 //        if (!customIsValid(custom) && !customDAO.insertObj(custom, customDAO.getConnection()))
@@ -199,7 +212,16 @@ public class CustomService {
     }
 
     private boolean customIsValid(Custom custom) {
-        return (custom.getId() >= 0 && custom.getCreateTime() != null &&
-                custom.getUserId() > 0 && custom.getCost() > 0);
+        if (custom.getId() > 0 && custom.getCreateTime() != null &&
+                custom.getUserId() > 0 ){
+            if (custom.getCost() > 0)
+                return true;
+            else customNeedsToUpdateCost(custom);
+        }
+        return true;
+    }
+
+    private void customNeedsToUpdateCost(Custom custom) {
+
     }
 }

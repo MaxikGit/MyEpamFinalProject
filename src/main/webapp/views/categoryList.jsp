@@ -28,9 +28,9 @@
 
         <c:if test="${loggedUser.roleId == 1}">
             <hr>
-            <a href="AuthorisationServlet?action=settingsCategory"
+            <a href="AuthorisationServlet?action=management"
                class="w3-bar-item w3-button w3-padding">
-                <i class="fa fa-math fa-fw"></i>&nbsp; Settings</a>
+                <i class="fa fa-math fa-fw"></i>&nbsp; Orders management</a>
         </c:if>
     </c:if>
 </div>

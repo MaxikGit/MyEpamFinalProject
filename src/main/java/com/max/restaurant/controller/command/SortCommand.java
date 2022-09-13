@@ -27,6 +27,8 @@ public class SortCommand implements Command {
         String value = request.getParameter(VALUE_ATTR);
         HttpSession session = request.getSession();
         List<Dish> dishes = (List<Dish>) session.getAttribute(DISH_LIST_ATTR);
+        if (dishes == null)
+            return;
         switch (value) {
             case "name":
                 dishes.sort((x, y) -> (CharSequence.compare(x.getName(), y.getName())));

@@ -118,29 +118,6 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
         }
     }
 
-//    @Override
-//    public int findMaxId() throws DAOException {
-//        LOGGER.info(FIND_MAX_ID, genericName);
-//        Connection conn = null;
-//        PreparedStatement statement = null;
-//        ResultSet result = null;
-//        int maxId = 0;
-//        try {
-//            conn = myDbConnection.getConnection();
-//            statement = conn.prepareStatement(getSQLFindMaxId(genericName));
-//            result = statement.executeQuery();
-//            if (result.next()) {
-//                maxId = result.getInt(USER_ID);
-//            }
-//            return maxId;
-//        } catch (SQLException | NamingException e) {
-//            LOGGER.error(FAILED_FIND_MAX_ID, genericName, e);
-//            throw new DAOException(e);
-//        } finally {
-//            closeAll(conn, statement, result);
-//        }
-//    }
-
     @Override
     public final boolean insertObj(T entity, Connection conn) throws DAOException {
         LOGGER.info(INSERT, genericName);
@@ -243,6 +220,30 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
 
 }
+
+//    @Override
+//    public int findMaxId() throws DAOException {
+//        LOGGER.info(FIND_MAX_ID, genericName);
+//        Connection conn = null;
+//        PreparedStatement statement = null;
+//        ResultSet result = null;
+//        int maxId = 0;
+//        try {
+//            conn = myDbConnection.getConnection();
+//            statement = conn.prepareStatement(getSQLFindMaxId(genericName));
+//            result = statement.executeQuery();
+//            if (result.next()) {
+//                maxId = result.getInt(USER_ID);
+//            }
+//            return maxId;
+//        } catch (SQLException | NamingException e) {
+//            LOGGER.error(FAILED_FIND_MAX_ID, genericName, e);
+//            throw new DAOException(e);
+//        } finally {
+//            closeAll(conn, statement, result);
+//        }
+//    }
+
 /*
     @Override
     public final boolean updateBatchOfObj(List<T> entities) throws DAOException {

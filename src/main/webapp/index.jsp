@@ -38,8 +38,6 @@
 
     <span class="w3-bar-item w3-hover-shadow">Restaurant</span>
 
-    <%--    Selector of sorting    --%>
-
     <%--    login and signIn buttons--%>
 
     <form class="w3-right" action="AuthorisationServlet" method="get">
@@ -111,7 +109,8 @@
     <div class="w3-container w3-margin-left w3-cell-row">
             <h4 class="w3-cell w3-cell-middle"><strong>${sessionScope.categoryNames[categoryId-1].name}</strong></h4>
 
-        <%--    Selector of sorting    --%>
+<%--    Selector of sorting    --%>
+
 <c:if test="${dishesNames != null}">
         <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
             <button class="w3-button " title="More">Sort by order of <i class="material-icons w3-small">&#xe5c5;</i></button>
@@ -122,7 +121,8 @@
             </div>
         </div>
 </c:if>
-        <%--    End Selector of sorting    --%>
+
+<%--    End Selector of sorting    --%>
 
     </div>
     <%-- main context--%>

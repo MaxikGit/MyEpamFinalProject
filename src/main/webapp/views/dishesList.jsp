@@ -1,4 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,9 +15,8 @@
 </head>
 
 <body>
-
+<fmt:setLocale value="uk_UA" />
 <c:if test="${dishesNames != null}">
-
     <c:forEach var="dish" items="${dishesNames}" varStatus="iterations">
         <c:if test="${iterations.count % 4 == 1}">
             <div class="w3-row-padding w3-padding-16 w3-center">
@@ -27,7 +27,8 @@
             <h3 class="w3-left-align"><c:out value="${dish.name}" default="едьба"/></h3>
             <p/>
             <hr class="w3-border w3-border-black w3-cente" style="margin: auto;">
-            <h5 class="w3-right-align w3-margin-right">${dish.price} UAH
+            <h5 class="w3-right-align w3-margin-right">
+                <fmt:formatNumber type="CURRENCY" value="${dish.price}"/>
                 <c:if test="${loggedUser!=null}">
 
             <a href="AuthorisationServlet?action=order&value=${dish.id}"

@@ -8,6 +8,10 @@ public class UtilsLoggerMsgs {
     public static final String ONE_PARAM = "set param is: {}";
     public static final String TWO_PARAMS_MSG = "set params are: {}, {}";
     public static final String IS_VALID = " data params are valid: {}";
+    public static final String TRANSACTION_ROLLBACK = " transaction rollback";
+    public static final String TRANSACTION_ROLLBACK_FAILED = " transaction rollback was unsuccessful";
+    public static final String TRANSACTION_MSG = "transaction done successfully {}";
+
 
     public static final String METHOD = "method {} has been started = {}";
     public static final String METHOD_FAILED = " method failed {}";
@@ -38,6 +42,5 @@ public class UtilsLoggerMsgs {
     public static final String FAILED_UPDATE = "Failed to update {}";
     public static final String DELETE_MSG = "Delete {}";
     public static final String FAILED_DELETE = "failed to delete {}";
-    public static final String TRANSACTION_MSG = "transaction done successfully {}";
 
 }
