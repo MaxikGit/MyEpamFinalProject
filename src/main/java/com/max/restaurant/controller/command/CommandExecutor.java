@@ -1,5 +1,6 @@
 package com.max.restaurant.controller.command;
 
+import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +20,6 @@ public class CommandExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandExecutor.class);
 
     private static final Map<String, Command> allKnownCommands = new HashMap<>();
-    private static final Map<String, Command> commandPostMeth = new HashMap<>();
 
     private CommandExecutor() {
     }
@@ -42,7 +42,7 @@ public class CommandExecutor {
 //        allKnownCommandsMap.put(LOGIN, new LoginCommand());
     }
 
-    public static final void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
+    public static final void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException, CommandException {
         LOGGER.info(METHOD_STARTS_MSG, "execute", "true");
         String commandName = request.getParameter(ACTION);
         String method = request.getMethod();

@@ -27,7 +27,7 @@
 <%--        Managers only--%>
 
         <c:if test="${loggedUser.roleId == 1}">
-            <hr class="w3-border-gray" style="width: 80%">
+            <hr class="w3-border-gray" style="width: 80%; margin: auto">
             <a href="AuthorisationServlet?action=management"
                class="w3-bar-item w3-button w3-padding">
                 <i class="fa fa-math fa-fw"></i>&nbsp; Orders management</a>

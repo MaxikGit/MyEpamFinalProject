@@ -34,6 +34,17 @@ public class Custom implements SimpleEntity {
     }
 
     @Override
+    public String toString() {
+        return "Custom{" +
+                "id=" + id +
+                ", cost=" + cost +
+                ", createTime=" + createTime.toLocalDateTime() +
+                ", userId=" + userId +
+                ", statusId=" + statusId +
+                '}';
+    }
+
+    @Override
     public int getId() {
         return id;
     }

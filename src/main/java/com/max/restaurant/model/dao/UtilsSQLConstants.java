@@ -2,8 +2,6 @@ package com.max.restaurant.model.dao;
 
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.dao.services.CustomHasDishService;
-import com.max.restaurant.model.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package com.max.restaurant.model.dao.services;
+package com.max.restaurant.model.services;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;

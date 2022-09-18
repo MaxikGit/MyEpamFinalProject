@@ -1,5 +1,7 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -42,9 +44,7 @@
                                        value="${dishEntry.value}" class="w3-input w3-border-2"/>
                             </td>
                             <td class="w3-cell-bottom w3-col s2 w3-center">
-                                <a href="${pageContext.request.contextPath}/AuthorisationServlet?action=orderEdit&deleteId=${dishEntry.key.id}">
-                                    <i class="material-icons w3-xxxlarge w3-text-grey w3-circle">&#xe92b;</i>
-                                </a>
+                                <mytag:DeleteForeverButton commandName="orderEdit" idToDelete="${dishEntry.key.id}"/>
                             </td>
                         </tr>
                     </c:forEach>

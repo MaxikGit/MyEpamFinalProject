@@ -1,8 +1,9 @@
 package com.max.restaurant.controller.command;
 
+import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.dao.services.CategoryService;
-import com.max.restaurant.model.dao.services.DishService;
+import com.max.restaurant.model.services.CategoryService;
+import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.entity.Category;
 import com.max.restaurant.model.entity.Dish;
 import jakarta.servlet.ServletException;
@@ -52,8 +53,8 @@ public class CategoryCommand implements Command {
     }
 
     @Override
-    public void executePost(HttpServletRequest request, HttpServletResponse response) throws DAOException {
+    public void executePost(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
-        throw new DAOException("You might not be here!");
+        throw new CommandException("You might not be here!");
     }
 }

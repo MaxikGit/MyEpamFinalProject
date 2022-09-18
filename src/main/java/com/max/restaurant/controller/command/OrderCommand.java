@@ -1,7 +1,7 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.dao.services.DishService;
+import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.entity.Dish;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

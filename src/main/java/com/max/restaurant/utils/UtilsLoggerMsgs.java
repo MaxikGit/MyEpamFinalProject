@@ -12,7 +12,6 @@ public class UtilsLoggerMsgs {
     public static final String TRANSACTION_ROLLBACK_FAILED = " transaction rollback was unsuccessful";
     public static final String TRANSACTION_MSG = "transaction done successfully {}";
 
-
     public static final String METHOD_STARTS_MSG = "method {} has been started = {}";
     public static final String METHOD_FAILED = " method failed {}";
     public static final String GET_FROM_RS = " receiving from the result ";
@@ -30,17 +29,17 @@ public class UtilsLoggerMsgs {
     public static final String FIND_MAX_ID = "finding max ID of {}";
     public static final String FAILED_FIND_MAX_ID = "failed finding max ID of {}";
 
-    public static final String CLOSE_CONN_ST = "{} close all, conn exist - {}, statement exist - {}";
-    public static final String CLOSE_TRANSACTION = "close transaction, conn exist - {}";
-    public static final String CLOSE_RESULT_SET = " close all, resultSet exist - {}";
-    public static final String FAILED_CLOSE_ST_CONN = " failed to close conn & statement ";
-    public static final String FAILED_CLOSE_ST_CONN_RS = "{} failed to close resultSet conn & statement ";
-
     public static final String INSERT_MSG = "Insert {}";
     public static final String FAILED_INSERT = "failed insert {}";
     public static final String UPDATE_MSG = "Update {}";
     public static final String FAILED_UPDATE = "Failed to update {}";
     public static final String DELETE_MSG = "Delete {}";
     public static final String FAILED_DELETE = "failed to delete {}";
+
+    public static final String CLOSE_CONN_ST = "{} close all, conn exist - {}, statement exist - {}";
+    public static final String CLOSE_TRANSACTION = "close transaction, conn exist - {}";
+    public static final String CLOSE_RESULT_SET = " close all, resultSet exist - {}";
+    public static final String FAILED_CLOSE_ST_CONN = " failed to close conn & statement ";
+    public static final String FAILED_CLOSE_ST_CONN_RS = "{} failed to close resultSet conn & statement ";
 
 }

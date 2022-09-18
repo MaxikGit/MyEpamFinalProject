@@ -1,10 +1,11 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.dao.services.CustomService;
+import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.DishService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,9 +37,11 @@ public class OrderEditingCommand implements Command {
         Map<Dish, Integer> orderedDishes = (Map<Dish, Integer>) session.getAttribute(ORDER_MAP_ATTR);
         List<Integer> dishIds = (List<Integer>) session.getAttribute(DISH_IDS_LIST_ATTR);
 
-        Dish dishToRemove = getDishById(orderedDishes, Integer.parseInt(value));
+        DishService dishService = new DishService();
+        Dish dishToRemove = dishService.getDishByIdFromMap(orderedDishes, Integer.parseInt(value));
         dishIds.remove(dishIds.lastIndexOf(Integer.parseInt(value)));
         orderedDishes.remove(dishToRemove);
+
         if (orderedDishes.size() == 0) {
             page = request.getContextPath() + HOME_PAGE;
             removeAttributes(session);
@@ -94,11 +97,5 @@ public class OrderEditingCommand implements Command {
         LOGGER.debug(DELETE_MSG, ORDER_TOTAL_COST_ATTR);
         LOGGER.debug(DELETE_MSG, ORDER_MAP_ATTR);
         LOGGER.debug(DELETE_MSG, DISH_IDS_LIST_ATTR);
-    }
-
-    private Dish getDishById(Map<Dish, Integer> map, int id) {
-        return map.entrySet().stream()
-                .filter(dishEntry -> dishEntry.getKey().getId() == id)
-                .map(x -> x.getKey()).findFirst().orElse(null);
     }
 }

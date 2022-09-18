@@ -1,4 +1,4 @@
-package com.max.restaurant.model.dao.services;
+package com.max.restaurant.model.services;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
@@ -57,9 +57,21 @@ public class CustomService {
 
     public void deleteCustom(Custom custom) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "deleteCustom", "true");
-        customDAO = new CustomDAO();
-        if (!customIsValid(custom) && !customDAO.deleteObj(custom))
+        if (!customIsValid(custom))
             throw new DAOServiceException(USER_EXC);
+        LOGGER.debug(TWO_PARAMS_MSG, "custom with id", custom.getId());
+        customDAO = new CustomDAO();
+        customDAO.deleteObj(custom);
+    }
+
+    public void deleteCustom(int id) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "deleteCustom", "true");
+        if (id < 1)
+            throw new DAOServiceException(USER_EXC);
+        LOGGER.debug(TWO_PARAMS_MSG, "id", id);
+        customDAO = new CustomDAO();
+        Custom custom = customDAO.findObjById(id);
+        deleteCustom(custom);
     }
 
     public Custom getNewCustom(int userId, Map<Dish, Integer> orderedDishes) throws DAOException {
@@ -215,7 +227,7 @@ public class CustomService {
 
     private boolean customIsValid(Custom custom) throws DAOException {
         if (custom.getId() > 0 && custom.getCreateTime() != null &&
-                custom.getUserId() > 0 ){
+                custom.getUserId() > 0) {
             if (custom.getCost() > 0)
                 return true;
             else customNeedsToUpdateCost(custom);
@@ -227,7 +239,7 @@ public class CustomService {
         CustomHasDishService customHasDishService = new CustomHasDishService();
         List<CustomHasDish> hasDishesList = customHasDishService.findCustomHasDishByCustomId(custom.getId());
         double totalCost = 0;
-        for (CustomHasDish hasDish : hasDishesList){
+        for (CustomHasDish hasDish : hasDishesList) {
             totalCost += hasDish.getPrice() * hasDish.getCount();
         }
         custom.setCost(totalCost);

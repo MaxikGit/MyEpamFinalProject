@@ -1,8 +1,10 @@
-package com.max.restaurant.model.dao.services;
+package com.max.restaurant.model.services;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.dao.daoimpl.DishDAO;
+import com.max.restaurant.model.entity.Custom;
+import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +67,6 @@ public class DishService {
         return result;
     }
 
-
     public List<Dish> findAllDishes() throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findAllDishes", "true");
         dishDAO = new DishDAO();
@@ -90,6 +91,24 @@ public class DishService {
         dishDAO = new DishDAO();
         if (!dishIsValid(dish) && !dishDAO.insertObj(dish, dishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
+    }
+
+    public Dish getDishByIdFromMap(Map<Dish, Integer> map, int id) {
+        return map.entrySet().stream()
+                .filter(dishEntry -> dishEntry.getKey().getId() == id)
+                .map(x -> x.getKey()).findFirst().orElse(null);
+    }
+
+    public Map<Dish, Integer> getDishesInOrder(Custom custom) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "getDishesInOrder", "true");
+        Map<Dish, Integer> result = new HashMap<>();
+        DishService dishService = new DishService();
+        CustomHasDishService customHasDishService = new CustomHasDishService();
+        List<CustomHasDish> customHasDishes = customHasDishService.findCustomHasDishByCustomId(custom.getId());
+        for (CustomHasDish customHasDish : customHasDishes) {
+            result.put(dishService.findDishById(customHasDish.getDishId()), customHasDish.getCount());
+        }
+        return result;
     }
 
     private boolean dishIsValid(Dish dish) {

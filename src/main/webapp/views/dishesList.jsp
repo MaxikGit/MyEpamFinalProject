@@ -32,7 +32,7 @@
                 <c:if test="${loggedUser!=null}">
 
             <a href="AuthorisationServlet?action=order&value=${dishEntry.id}"
-               class=""><i class="material-icons w3-hover-light-green">&#xe561;</i>
+               class=""><i class="material-icons w3-circle w3-hover-amber">&#xe561;</i>
             </a>
                 </c:if>
             </h5>

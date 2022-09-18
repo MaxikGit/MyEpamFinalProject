@@ -1,4 +1,4 @@
-package com.max.restaurant.model.dao.services;
+package com.max.restaurant.model.services;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
@@ -21,15 +21,6 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 public class CustomHasDishService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHasDishService.class);
     private CustomHasDishDAO customHasDishDAO;
-
-//    public List<CustomHasDish> findCustomHasDishByDishId(int dishId) throws DAOException {
-//        LOGGER.info(METHOD, "findCustomHasDishByUserId", "true");
-//        if (dishId < 1)
-//            throw new DAOServiceException(ID_EXC);
-//        customHasDishDAO = new CustomHasDishDAO();
-//        List<CustomHasDish> list = customHasDishDAO.findObjByParam(CUSTOMHASDISH_D_ID, String.valueOf(dishId));
-//        return list;
-//    }
 
     public List<CustomHasDish> findCustomHasDishByCustomId(int customId) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findCustomHasDishByCustomId", "true");
@@ -66,11 +57,6 @@ public class CustomHasDishService {
         customHasDishDAO = new CustomHasDishDAO();
         if (!customHasDishIsValid(customHasDish) && !customHasDishDAO.insertObj(customHasDish, customHasDishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
-    }
-
-    private boolean customHasDishIsValid(CustomHasDish customHasDish) {
-        return (customHasDish.getId() > 0 && customHasDish.getDishId() > 0 &&
-                customHasDish.getCount() > 0 && customHasDish.getPrice() > 0);
     }
 
     public List<CustomHasDish> fillCustomHasDishesList(int userId, Map<Dish, Integer> orderedDishes) throws DAOException {
@@ -117,4 +103,19 @@ public class CustomHasDishService {
         UPDATE,
         INSERT
     }
+
+    private boolean customHasDishIsValid(CustomHasDish customHasDish) {
+        return (customHasDish.getId() > 0 && customHasDish.getDishId() > 0 &&
+                customHasDish.getCount() > 0 && customHasDish.getPrice() > 0);
+    }
 }
+
+
+//    public List<CustomHasDish> findCustomHasDishByDishId(int dishId) throws DAOException {
+//        LOGGER.info(METHOD, "findCustomHasDishByUserId", "true");
+//        if (dishId < 1)
+//            throw new DAOServiceException(ID_EXC);
+//        customHasDishDAO = new CustomHasDishDAO();
+//        List<CustomHasDish> list = customHasDishDAO.findObjByParam(CUSTOMHASDISH_D_ID, String.valueOf(dishId));
+//        return list;
+//    }
