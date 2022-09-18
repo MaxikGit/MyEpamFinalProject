@@ -26,7 +26,7 @@ public class CategoryCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String value = request.getParameter(VALUE_ATTR);
         HttpSession session = request.getSession();
         List<Dish> dishes;
@@ -53,7 +53,7 @@ public class CategoryCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         throw new DAOException("You might not be here!");
     }
 }

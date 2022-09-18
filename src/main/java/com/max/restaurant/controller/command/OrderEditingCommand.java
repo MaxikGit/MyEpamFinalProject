@@ -2,9 +2,7 @@ package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.dao.services.CustomService;
-import com.max.restaurant.model.dao.services.DishService;
 import com.max.restaurant.model.entity.Custom;
-import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.User;
 import jakarta.servlet.ServletException;
@@ -17,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.max.restaurant.controller.command.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
@@ -29,12 +28,12 @@ public class OrderEditingCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String value = request.getParameter(DEL_FROM_ORDER_ATTR);
         LOGGER.debug(TWO_PARAMS_MSG, DEL_FROM_ORDER_ATTR, value);
         String page;
         HttpSession session = request.getSession();
-        List<Dish> orderedDishes = (List<Dish>) session.getAttribute(ORDER_LIST_ATTR);
+        Map<Dish, Integer> orderedDishes = (Map<Dish, Integer>) session.getAttribute(ORDER_MAP_ATTR);
         List<Integer> dishIds = (List<Integer>) session.getAttribute(DISH_IDS_LIST_ATTR);
 
         Dish dishToRemove = getDishById(orderedDishes, Integer.parseInt(value));
@@ -44,13 +43,14 @@ public class OrderEditingCommand implements Command {
             page = request.getContextPath() + HOME_PAGE;
             removeAttributes(session);
         } else {
-            double totalCost = orderedDishes.stream().mapToDouble(Dish::getPrice).sum();
+            double totalCost = orderedDishes.entrySet().stream()
+                    .mapToDouble(x -> (x.getKey().getPrice() * x.getValue())).sum();
             session.setAttribute(ORDER_TOTAL_COST_ATTR, totalCost);
             session.setAttribute(DISH_IDS_LIST_ATTR, dishIds);
-            session.setAttribute(ORDER_LIST_ATTR, orderedDishes);
+            session.setAttribute(ORDER_MAP_ATTR, orderedDishes);
             LOGGER.debug(TWO_PARAMS_MSG, ORDER_TOTAL_COST_ATTR, totalCost);
             LOGGER.debug(TWO_PARAMS_MSG, DISH_IDS_LIST_ATTR, dishIds);
-            LOGGER.debug(TWO_PARAMS_MSG, ORDER_LIST_ATTR, orderedDishes);
+            LOGGER.debug(TWO_PARAMS_MSG, ORDER_MAP_ATTR, orderedDishes);
             page = request.getContextPath() + ORDER_PAGE;
         }
         LOGGER.info(REDIRECT, page);
@@ -60,47 +60,45 @@ public class OrderEditingCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         String page = request.getContextPath() + HOME_PAGE;
         HttpSession session = request.getSession();
         //receiving custom with id
         User currentUser = (User) session.getAttribute(LOGGED_USER_ATTR);
-        DishService dishService = new DishService();
-        List<CustomHasDish> hasDishesList = new ArrayList<>();
-        List<Dish> orderedDishes = (List<Dish>) session.getAttribute(ORDER_LIST_ATTR);
-        String[] dishesQuantity = request.getParameterValues(QUANTITY_ATTR);
-        for (int i = 0; i < orderedDishes.size(); i++){
-            CustomHasDish customHasDish = new CustomHasDish(currentUser.getId());
-            customHasDish.setDishId(orderedDishes.get(i).getId());
-            customHasDish.setCount(Integer.parseInt(dishesQuantity[i]) );
-            double realPrice = (dishService.findDishById(orderedDishes.get(i).getId())).getPrice();
-            customHasDish.setPrice(realPrice);
-            hasDishesList.add(customHasDish);
+        Map<Dish, Integer> orderedDishes = (Map<Dish, Integer>) session.getAttribute(ORDER_MAP_ATTR);
+        for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
+            int dishCount = Integer.parseInt(request.getParameter(QUANTITY_ATTR + entry.getKey().getId()));
+            entry.setValue(dishCount);
         }
         CustomService customService = new CustomService();
-        Custom newCustom = customService.getNewCustomByUserId(currentUser.getId(), hasDishesList);
-        List<Custom> customList = (List<Custom>)session.getAttribute(CUSTOM_LIST_ATTR);
+        Custom newCustom = customService.getNewCustom(currentUser.getId(), orderedDishes);
+
+        /*
+        this part I want to use to show progress bar of Customers orders "in work"
+        this still have no implementation on pages
+        */
+        List<Custom> customList = (List<Custom>) session.getAttribute(CUSTOM_LIST_ATTR);
         if (customList == null)
             customList = new ArrayList<>();
+        customList.add(newCustom);
         session.setAttribute(CUSTOM_LIST_ATTR, customList);
+
         removeAttributes(session);
         response.sendRedirect(page);
     }
 
     private static void removeAttributes(HttpSession session) {
         session.removeAttribute(ORDER_TOTAL_COST_ATTR);
-        session.removeAttribute(ORDER_LIST_ATTR);
+        session.removeAttribute(ORDER_MAP_ATTR);
         session.removeAttribute(DISH_IDS_LIST_ATTR);
         LOGGER.debug(DELETE_MSG, ORDER_TOTAL_COST_ATTR);
-        LOGGER.debug(DELETE_MSG, ORDER_LIST_ATTR);
+        LOGGER.debug(DELETE_MSG, ORDER_MAP_ATTR);
         LOGGER.debug(DELETE_MSG, DISH_IDS_LIST_ATTR);
     }
 
-    private Dish getDishById(List<Dish> list, int id) {
-        for (Dish dish : list) {
-            if (dish.getId() == id)
-                return dish;
-        }
-        return null;
+    private Dish getDishById(Map<Dish, Integer> map, int id) {
+        return map.entrySet().stream()
+                .filter(dishEntry -> dishEntry.getKey().getId() == id)
+                .map(x -> x.getKey()).findFirst().orElse(null);
     }
 }

@@ -19,12 +19,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
-        body, h1, h2, h3, h4, h5, h6 .w3-font {
+        body, h1, h2, h3, h4, h5, h6 .w3-font
+        {
             font-family: "Amatic SC", sans-serif
         }
     </style>
 </head>
-<body class="w3-light-grey w3-font">
+<body class="w3-light-grey ">
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
@@ -63,7 +64,7 @@
 <%--shopping cart ends--%>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-opacity" style="z-index:3;width:300px;" id="mySidebar"><br>
+<nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:300px;" id="mySidebar"><br>
     <div class="w3-container w3-row">
         <div class="w3-col s4">
             <c:if test="${loggedUser!=null}">

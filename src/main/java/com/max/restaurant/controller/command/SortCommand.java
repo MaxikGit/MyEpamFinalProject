@@ -16,14 +16,14 @@ import java.util.List;
 import static com.max.restaurant.controller.command.UtilsCommandNames.DISH_LIST_ATTR;
 import static com.max.restaurant.controller.command.UtilsCommandNames.VALUE_ATTR;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
-import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 public class SortCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String value = request.getParameter(VALUE_ATTR);
         HttpSession session = request.getSession();
         List<Dish> dishes = (List<Dish>) session.getAttribute(DISH_LIST_ATTR);
@@ -46,7 +46,7 @@ public class SortCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         throw new DAOException("You might not be here!");
     }
 }

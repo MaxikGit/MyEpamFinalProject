@@ -22,7 +22,7 @@ public class SignUpCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         request.removeAttribute(UNSUCCESS_MSG);
         request.getSession().removeAttribute(UNSUCCESS_ATTR);
         LOGGER.info(FORWARD, SIGN_UP_PAGE);
@@ -31,7 +31,7 @@ public class SignUpCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         boolean isValid = validateUser(request);
         LOGGER.info(IS_VALID, isValid);
         String forwardPage;

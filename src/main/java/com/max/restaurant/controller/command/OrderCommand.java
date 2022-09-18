@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static com.max.restaurant.controller.command.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
@@ -27,7 +24,7 @@ public class OrderCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String value = request.getParameter(VALUE_ATTR);
         LOGGER.debug(TWO_PARAMS_MSG, VALUE_ATTR, value);
         String page;
@@ -36,13 +33,9 @@ public class OrderCommand implements Command {
         //value == null -> pressed "shopping cart"
         if (value == null) {
             DishService dishService = new DishService();
-            List<Dish> orderedDishes = new ArrayList<>();
-            for (int dishId : dishIds){
-                orderedDishes.add(dishService.findDishById(dishId));
-            }
-            Collections.sort(orderedDishes, Comparator.comparingInt(Dish::getId));
-            session.setAttribute(ORDER_LIST_ATTR, orderedDishes);
-            double totalCost = orderedDishes.stream().mapToDouble(Dish::getPrice).sum();
+            Map<Dish, Integer> orderedDishes = dishService.findDishesById(dishIds);
+            session.setAttribute(ORDER_MAP_ATTR, orderedDishes);
+            double totalCost = orderedDishes.entrySet().stream().mapToDouble(x-> (x.getKey().getPrice() * x.getValue()) ).sum();
             session.setAttribute(ORDER_TOTAL_COST_ATTR, totalCost);
             page = request.getContextPath() + ORDER_PAGE;
         }
@@ -61,7 +54,7 @@ public class OrderCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
 
 //        CustomService customService = new CustomService();
 //        HttpSession session = request.getSession();

@@ -4,6 +4,7 @@ import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.dao.daoimpl.CustomHasDishDAO;
 import com.max.restaurant.model.entity.CustomHasDish;
+import com.max.restaurant.model.entity.Dish;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ import java.util.Map;
 import static com.max.restaurant.exceptions.UtilsExceptionMsgs.ID_EXC;
 import static com.max.restaurant.exceptions.UtilsExceptionMsgs.USER_EXC;
 import static com.max.restaurant.model.entity.UtilsEntityFields.CUSTOMHASDISH_C_ID;
-import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class CustomHasDishService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHasDishService.class);
@@ -31,7 +32,7 @@ public class CustomHasDishService {
 //    }
 
     public List<CustomHasDish> findCustomHasDishByCustomId(int customId) throws DAOException {
-        LOGGER.info(METHOD, "findCustomHasDishByCustomId", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findCustomHasDishByCustomId", "true");
         if (customId < 1)
             throw new DAOServiceException(ID_EXC);
         customHasDishDAO = new CustomHasDishDAO();
@@ -41,27 +42,27 @@ public class CustomHasDishService {
     }
 
     public List<CustomHasDish> findAll() throws DAOException {
-        LOGGER.info(METHOD, "findAllCategories", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findAllCategories", "true");
         customHasDishDAO = new CustomHasDishDAO();
         return customHasDishDAO.findAll();
     }
 
     public void deleteCustomHasDish(CustomHasDish customHasDish) throws DAOException {
-        LOGGER.info(METHOD, "deleteCustomHasDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "deleteCustomHasDish", "true");
         customHasDishDAO = new CustomHasDishDAO();
         if (!customHasDishIsValid(customHasDish) && !customHasDishDAO.deleteObj(customHasDish))
             throw new DAOServiceException(USER_EXC);
     }
 
     public void updateCustomHasDish(CustomHasDish customHasDish) throws DAOException {
-        LOGGER.info(METHOD, "updateCustomHasDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "updateCustomHasDish", "true");
         customHasDishDAO = new CustomHasDishDAO();
         if (!customHasDishIsValid(customHasDish) && !customHasDishDAO.updateObj(customHasDish, customHasDishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
     }
 
     public void insertCustomHasDish(CustomHasDish customHasDish) throws DAOException {
-        LOGGER.info(METHOD, "insertCustomHasDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "insertCustomHasDish", "true");
         customHasDishDAO = new CustomHasDishDAO();
         if (!customHasDishIsValid(customHasDish) && !customHasDishDAO.insertObj(customHasDish, customHasDishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
@@ -72,12 +73,19 @@ public class CustomHasDishService {
                 customHasDish.getCount() > 0 && customHasDish.getPrice() > 0);
     }
 
-//    public void saveAll(List<CustomHasDish> customHasDishList) throws DAOException {
-//        for (CustomHasDish customHasDish : customHasDishList){
-//            customHasDishDAO = new CustomHasDishDAO();
-//        }
-//
-//    }
+    public List<CustomHasDish> fillCustomHasDishesList(int userId, Map<Dish, Integer> orderedDishes) throws DAOException {
+        List<CustomHasDish> hasDishesList = new ArrayList<>();
+        for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
+            CustomHasDish customHasDish = new CustomHasDish(userId);
+            customHasDish.setDishId(entry.getKey().getId());
+            customHasDish.setCount(entry.getValue());
+            DishService dishService = new DishService();
+            double realPrice = (dishService.findDishById(entry.getKey().getId())).getPrice();
+            customHasDish.setPrice(realPrice);
+            hasDishesList.add(customHasDish);
+        }
+        return hasDishesList;
+    }
 
     public void insertCustomNum(int id, List<CustomHasDish> orderedDishes) {
         for (CustomHasDish customHasDish : orderedDishes){
@@ -85,7 +93,7 @@ public class CustomHasDishService {
         }
     }
 
-    public Map<String, List<CustomHasDish>> sortToInsertUpdate(List<CustomHasDish> orderedDishes) throws DAOException {
+    public Map<SortToUpdate, List<CustomHasDish>> sortToInsertUpdate(List<CustomHasDish> orderedDishes) throws DAOException {
         List<CustomHasDish> oldies = findCustomHasDishByCustomId(orderedDishes.get(0).getCustomId());
         List<CustomHasDish> toUpdate = new ArrayList<>();
         for (CustomHasDish oldOne : oldies) {
@@ -99,9 +107,14 @@ public class CustomHasDishService {
         for (CustomHasDish deleteMe : toUpdate){
             orderedDishes.remove(deleteMe);
         }
-        Map<String, List<CustomHasDish>> map = new HashMap<>();
-        map.put("update", toUpdate);
-        map.put("insert", orderedDishes);
+        Map<SortToUpdate, List<CustomHasDish>> map = new HashMap<>();
+        map.put(SortToUpdate.UPDATE, toUpdate);
+        map.put(SortToUpdate.INSERT, orderedDishes);
         return map;
+    }
+
+    public enum SortToUpdate{
+        UPDATE,
+        INSERT
     }
 }

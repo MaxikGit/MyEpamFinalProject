@@ -43,7 +43,7 @@ public class CommandExecutor {
     }
 
     public static final void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "execute", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "execute", "true");
         String commandName = request.getParameter(ACTION);
         String method = request.getMethod();
         LOGGER.debug(TWO_PARAMS_MSG, method, commandName);

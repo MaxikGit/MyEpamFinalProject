@@ -11,21 +11,21 @@ import java.io.IOException;
 
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.FORWARD;
-import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 public class NullCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(NullCommand.class);
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         LOGGER.info(FORWARD, HOME_PAGE);
         request.getRequestDispatcher(HOME_PAGE).forward(request, response);
     }
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         LOGGER.info(FORWARD, HOME_PAGE);
         request.getRequestDispatcher(HOME_PAGE).forward(request, response);
     }

@@ -27,7 +27,7 @@ public class UtilsCommandNames {
     public static final String DISH_IDS_LIST_ATTR = "dishIds";
     public static final String DISH_LIST_ATTR = "dishesNames";
     public static final String CUSTOM_LIST_ATTR = "customsList";
-    public static final String ORDER_LIST_ATTR = "orderNames";
+    public static final String ORDER_MAP_ATTR = "orderNames";
     public static final String STATUS_LIST_ATTR = "statusNames";
 
     public static final String ORDER_MANAGEMENT_ATTR = "orderManagement";

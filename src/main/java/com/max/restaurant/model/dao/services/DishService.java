@@ -7,10 +7,12 @@ import com.max.restaurant.model.entity.Dish;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.ID_EXC;
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.USER_EXC;
+import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.DISH_CATEGORY_ID;
 import static com.max.restaurant.model.entity.UtilsEntityFields.DISH_NAME;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
@@ -20,14 +22,15 @@ public class DishService {
     private DishDAO dishDAO;
 
     public Dish findDishByName(String name) throws DAOException {
-        LOGGER.info(METHOD, "findDishByName", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findDishByName", "true");
         dishDAO = new DishDAO();
         List<Dish> list = dishDAO.findObjByParam(DISH_NAME, name, dishDAO.getConnection());
         LOGGER.debug(FIND_BY_PARAM, DISH_NAME, list);
         return list.size() > 0 ? list.get(0) : null;
     }
+
     public List<Dish> findDishByCategoryId(String name) throws DAOException {
-        LOGGER.info(METHOD, "findDishByCategoryId", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findDishByCategoryId", "true");
         dishDAO = new DishDAO();
         List<Dish> list = dishDAO.findObjByParam(DISH_CATEGORY_ID, name, dishDAO.getConnection());
         LOGGER.debug(FIND_BY_PARAM, DISH_CATEGORY_ID, list);
@@ -35,7 +38,7 @@ public class DishService {
     }
 
     public Dish findDishById(int id) throws DAOException {
-        LOGGER.info(METHOD, "findDishById", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findDishById", "true");
         if (id < 1)
             throw new DAOServiceException(ID_EXC);
         dishDAO = new DishDAO();
@@ -44,27 +47,46 @@ public class DishService {
         return dish;
     }
 
+    public Map<Dish, Integer> findDishesById(List<Integer> ids) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "findDishesById", "true");
+        if (ids == null || ids.isEmpty())
+            throw new DAOServiceException(IDS_EXC);
+
+        Map<Integer,Integer> idsWithQuantity = ids.stream()
+                .collect(Collectors
+                        .toMap(x -> x, y -> 1, (oldVal, newVal) -> (oldVal + newVal)));
+
+        Map<Dish, Integer> result = new HashMap<>();
+        for (Integer id: idsWithQuantity.keySet()){
+            Dish dish = findDishById(id);
+            result.put(dish, idsWithQuantity.get(id));
+        }
+        LOGGER.debug(FIND_BY_ID, result.size());
+        return result;
+    }
+
+
     public List<Dish> findAllDishes() throws DAOException {
-        LOGGER.info(METHOD, "findAllDishes", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findAllDishes", "true");
         dishDAO = new DishDAO();
         return dishDAO.findAll();
     }
 
     public void deleteDish(Dish dish) throws DAOException {
-        LOGGER.info(METHOD, "deleteDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "deleteDish", "true");
         dishDAO = new DishDAO();
         if (!dishIsValid(dish) && !dishDAO.deleteObj(dish))
             throw new DAOServiceException(USER_EXC);
     }
 
     public void updateDish(Dish dish) throws DAOException {
-        LOGGER.info(METHOD, "updateDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "updateDish", "true");
         dishDAO = new DishDAO();
         if (!dishIsValid(dish) && !dishDAO.updateObj(dish, dishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
     }
     public void insertDish(Dish dish) throws DAOException {
-        LOGGER.info(METHOD, "insertDish", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "insertDish", "true");
         dishDAO = new DishDAO();
         if (!dishIsValid(dish) && !dishDAO.insertObj(dish, dishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);

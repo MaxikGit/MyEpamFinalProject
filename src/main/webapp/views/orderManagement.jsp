@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,6 +16,7 @@
 </div>
 <div class="w3-container w3-center w3-margin-bottom">
     <c:if test="${orderManagement != null}">
+
         <form method="post" action="${pageContext.request.contextPath}/AuthorisationServlet">
             <div class="w3-container w3-margin">
                 <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom">
@@ -22,27 +24,27 @@
                         <th class="w3-cell-middle w3-col s2 w3-center">Order #</th>
                         <th class="w3-cell-middle w3-quarter">Customer</th>
                         <th class="w3-cell-middle w3-col s2">Price</th>
-                        <th class="w3-cell-middle w3-col s2">Dishes</th>
-<%--                        <th class="w3-cell-middle w3-col s2 w3-center">Dish</th>--%>
-<%--                        <th class="w3-cell-middle w3-col s1 w3-center">Quantity</th>--%>
+                        <th class="w3-cell-middle w3-col s2 w3-center">Dishes</th>
                         <th class="w3-cell-middle w3-col s2 ">Status</th>
                     </tr>
 
-                    <c:forEach var="order" items="${orderManagement}" varStatus="num">
+                    <c:forEach var="orderData" items="${orderManagement}" varStatus="num">
                         <tr class="w3-card-2 w3-cell-row">
                             <td class="w3-cell-middle w3-col s2 w3-center">${num.count}</td>
-                            <td class="w3-cell-middle w3-quarter">${order.user.name} ${order.user.lastName}</td>
+                            <td class="w3-cell-middle w3-quarter">${orderData.user.name} ${orderData.user.lastName}</td>
                             <td class="w3-cell-bottom w3-col s2">
-                                <fmt:setLocale value="uk_UA" />
-                                <fmt:formatNumber type="CURRENCY" value="${order.custom.cost}" />
-                                </td>
-                            <td class="w3-cell-middle w3-col s2">details</td>
+                                <fmt:setLocale value="uk_UA"/>
+                                <fmt:formatNumber type="CURRENCY" value="${orderData.custom.cost}" currencySymbol="UAH"/>
+                            </td>
+                            <td class="w3-cell-middle w3-col s2 w3-center ">
+                                <mytag:ModalDishInOrder orderData="${orderData}" divNum="${num.count}"/>
+                            </td>
                             <td class="w3-cell-bottom w3-col s2">
                                 <select name="statusSelect" id="statusSelect" class="w3-dropdown-hover w3-light-grey">
-                                    <option value="${order.status.id}" selected disabled >${order.status.name}</option>
+                                    <option value="${orderData.status.id}" selected disabled>${orderData.status.name}</option>
                                     <c:forEach var="status" varStatus="statNum" items="${statusNames}">
-                                        <c:if test="${status.id != order.status.id}">
-                                        <option value="${status.id} ${order.custom.id}" >${status.name}</option>
+                                        <c:if test="${status.id != orderData.status.id}">
+                                            <option value="${status.id} ${orderData.custom.id}">${status.name}</option>
                                         </c:if>
                                     </c:forEach>
                                 </select>
@@ -53,15 +55,15 @@
                 </table>
             </div>
 
-<%--            Adding two Buttons to react--%>
+                <%--            Adding two Buttons to react--%>
 
-            <div class="w3-cell-row w3-half w3-right">
+            <div class="w3-cell-row w3-half w3-right w3-display-position и">
                 <h5>
                     <button name="action" value="management" type="reset"
                             class="w3-button w3-card-4 w3-third w3-pale-red w3-hover-red w3-round-large">Reset
                     </button>
                     <a class="w3-third w3-hover-none">
-                        Total: <fmt:formatNumber type="CURRENCY" value="${totalOrdersCost}"/>
+                        Total: <fmt:formatNumber type="CURRENCY" value="${totalOrdersCost}" currencySymbol="UAH"/>
                     </a>
                     <button name="action" value="management" type="submit"
                             class="w3-button w3-card-4 w3-third w3-pale-green w3-hover-green w3-round-large">Accept
@@ -71,7 +73,7 @@
         </form>
     </c:if>
 
-<%--            End of Adding two Buttons to react--%>
+    <%--            End of Adding two Buttons to react--%>
 
     <c:if test="${orderManagement == null}">
         <div class="w3-panel w3-pale-yellow w3-display-container w3-card-4 w3-round">
@@ -90,6 +92,7 @@
 </div>
 
 <jsp:include page="footer.jsp"/>
+
 </body>
 </html>
 

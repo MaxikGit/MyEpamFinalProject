@@ -13,7 +13,7 @@ public class UtilsLoggerMsgs {
     public static final String TRANSACTION_MSG = "transaction done successfully {}";
 
 
-    public static final String METHOD = "method {} has been started = {}";
+    public static final String METHOD_STARTS_MSG = "method {} has been started = {}";
     public static final String METHOD_FAILED = " method failed {}";
     public static final String GET_FROM_RS = " receiving from the result ";
     public static final String SET_STATEMENT = "{} set statement params";
@@ -36,9 +36,9 @@ public class UtilsLoggerMsgs {
     public static final String FAILED_CLOSE_ST_CONN = " failed to close conn & statement ";
     public static final String FAILED_CLOSE_ST_CONN_RS = "{} failed to close resultSet conn & statement ";
 
-    public static final String INSERT = "Insert {}";
+    public static final String INSERT_MSG = "Insert {}";
     public static final String FAILED_INSERT = "failed insert {}";
-    public static final String UPDATE = "Update {}";
+    public static final String UPDATE_MSG = "Update {}";
     public static final String FAILED_UPDATE = "Failed to update {}";
     public static final String DELETE_MSG = "Delete {}";
     public static final String FAILED_DELETE = "failed to delete {}";

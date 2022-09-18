@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.max.restaurant.controller.command.UtilsCommandNames.DISH_LIST_ATTR;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
-import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.TWO_PARAMS_MSG;
 
 public class DishCommand implements Command {
@@ -22,7 +22,7 @@ public class DishCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         DishService dishService = new DishService();
         List<Dish> dishes = dishService.findAllDishes();
         LOGGER.info(TWO_PARAMS_MSG, DISH_LIST_ATTR,dishes.size() + " items");
@@ -32,6 +32,6 @@ public class DishCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
     }
 }

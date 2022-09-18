@@ -32,7 +32,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     public Connection getConnection() throws DAOException {
         try {
-            LOGGER.info(METHOD, "getConnection()", true);
+            LOGGER.info(METHOD_STARTS_MSG, "getConnection()", true);
             MyDBConnection myDbConnection = MyDBConnection.getInstance();
             return myDbConnection.getConnection();
         } catch (SQLException | NamingException e) {
@@ -120,7 +120,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     @Override
     public final boolean insertObj(T entity, Connection conn) throws DAOException {
-        LOGGER.info(INSERT, genericName);
+        LOGGER.info(INSERT_MSG, genericName);
 //        Connection conn = null;
         PreparedStatement statement = null;
         try {
@@ -139,7 +139,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
 
     @Override
     public final boolean updateObj(T entity, Connection conn) throws DAOException {
-        LOGGER.info(UPDATE, genericName);
+        LOGGER.info(UPDATE_MSG, genericName);
 //        Connection conn = null;
         PreparedStatement statement = null;
         try {

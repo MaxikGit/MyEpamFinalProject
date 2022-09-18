@@ -11,14 +11,14 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static com.max.restaurant.exceptions.UtilsExceptionMsgs.ID_EXC;
-import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 public class StatusService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StatusService.class);
     private StatusDAO statusDAO;
 
     public Status findStatusById(int id) throws DAOException {
-        LOGGER.info(METHOD, "findStatusById", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findStatusById", "true");
         if (id < 1)
             throw new DAOServiceException(ID_EXC);
         statusDAO = new StatusDAO();
@@ -26,7 +26,7 @@ public class StatusService {
     }
 
     public List<Status> findAll() throws DAOException {
-        LOGGER.info(METHOD, "findAll", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "findAll", "true");
         statusDAO = new StatusDAO();
         return statusDAO.findAll();
     }

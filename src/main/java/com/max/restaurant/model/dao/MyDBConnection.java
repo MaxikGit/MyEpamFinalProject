@@ -36,7 +36,7 @@ public class MyDBConnection {
         Context envContext = (Context) initContext.lookup("java:/comp/env");
         DataSource ds = (DataSource) envContext.lookup("jdbc/restaurant");
         Connection conn = ds.getConnection();
-        logger.debug(METHOD, "getConnection", conn);
+        logger.debug(METHOD_STARTS_MSG, "getConnection", conn);
         return conn;
     }
 }

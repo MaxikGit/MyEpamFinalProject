@@ -30,7 +30,7 @@ public class ManageOrdersCommand implements Command {
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executeGet", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         CustomService customService = new CustomService();
         StatusService statusService = new StatusService();
         UserService userService = new UserService();
@@ -54,7 +54,7 @@ public class ManageOrdersCommand implements Command {
     }
 
     private Map<Dish, Integer> getDishesInOrder(Custom custom) throws DAOException {
-        LOGGER.info(METHOD, "getDishesInOrder", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "getDishesInOrder", "true");
         Map<Dish, Integer> result = new HashMap<>();
         DishService dishService = new DishService();
         CustomHasDishService customHasDishService = new CustomHasDishService();
@@ -67,7 +67,7 @@ public class ManageOrdersCommand implements Command {
 
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
-        LOGGER.info(METHOD, "executePost", "true");
+        LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         String[] statusesSelected = request.getParameterValues(STATUS_ATTR);
         String page;
         if (statusesSelected == null || statusesSelected.length == 0) {

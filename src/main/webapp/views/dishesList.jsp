@@ -17,22 +17,22 @@
 <body>
 <fmt:setLocale value="uk_UA" />
 <c:if test="${dishesNames != null}">
-    <c:forEach var="dish" items="${dishesNames}" varStatus="iterations">
+    <c:forEach var="dishEntry" items="${dishesNames}" varStatus="iterations">
         <c:if test="${iterations.count % 4 == 1}">
             <div class="w3-row-padding w3-padding-16 w3-center">
         </c:if>
         <div class="w3-quarter w3-padding w3-animate-opacity">
-            <img src="${pageContext.request.contextPath}${dish.imagePath}"
+            <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
                  style="width:95%" alt="food picture" class="w3-round-large">
-            <h3 class="w3-left-align"><c:out value="${dish.name}" default="едьба"/></h3>
+            <h3 class="w3-left-align"><c:out value="${dishEntry.name}" default="едьба"/></h3>
             <p/>
             <hr class="w3-border w3-border-black w3-cente" style="margin: auto;">
             <h5 class="w3-right-align w3-margin-right">
-                <fmt:formatNumber type="CURRENCY" value="${dish.price}"/>
+                <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="UAH"/>
                 <c:if test="${loggedUser!=null}">
 
-            <a href="AuthorisationServlet?action=order&value=${dish.id}"
-               class=""><i class="material-icons w3-hover-text-greenn">&#xe561;</i>
+            <a href="AuthorisationServlet?action=order&value=${dishEntry.id}"
+               class=""><i class="material-icons w3-hover-light-green">&#xe561;</i>
             </a>
                 </c:if>
             </h5>

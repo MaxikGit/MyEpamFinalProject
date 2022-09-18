@@ -16,7 +16,7 @@
 <div class="w3-container w3-center w3-margin-bottom">
     <c:if test="${orderNames != null}">
         <fmt:setLocale value="uk_UA" />
-        <form method="post" action="${pageContext.request.contextPath}/AuthorisationServlet">
+        <form id="orderTable" name="orderTable" method="post" action="${pageContext.request.contextPath}/AuthorisationServlet">
             <div class="w3-container w3-margin">
                 <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom">
                     <tr class="w3-card-2 w3-cell-row w3-hover-none w3-light-blue">
@@ -27,22 +27,22 @@
                         <th class="w3-cell-middle w3-col s1 w3-center">Quantity</th>
                         <th class="w3-cell-middle w3-col s2 w3-center"></th>
                     </tr>
-                    <c:forEach var="dish" items="${orderNames}" varStatus="num">
+                    <c:forEach var="dishEntry" items="${orderNames}" varStatus="num">
                         <tr class="w3-card-2 w3-cell-row">
                             <td class="w3-cell-middle w3-col s2 w3-center">${num.count}</td>
-                            <td class="w3-cell-middle w3-quarter">${dish.name}</td>
+                            <td class="w3-cell-middle w3-quarter">${dishEntry.key.name}</td>
                             <td class="w3-cell-bottom w3-col s2">
-                                <fmt:formatNumber type="CURRENCY" value="${dish.price}"/></td>
+                                <fmt:formatNumber type="CURRENCY" value="${dishEntry.key.price}" currencySymbol="UAH"/></td>
                             <td class="w3-cell-bottom w3-col s2 w3-center">
-                                <img src="${pageContext.request.contextPath}${dish.imagePath}"
+                                <img src="${pageContext.request.contextPath}${dishEntry.key.imagePath}"
                                      class="w3-circle" style="height:65px" alt="food picture">
                             </td>
                             <td class="w3-cell-bottom w3-col s1 w3-center">
-                                <input name="quantity" type="number" max="10" min="1" value="1"
-                                       class="w3-input w3-border-2"/>
+                                <input name="quantity${dishEntry.key.id}" type="number" max="10" min="1"
+                                       value="${dishEntry.value}" class="w3-input w3-border-2"/>
                             </td>
                             <td class="w3-cell-bottom w3-col s2 w3-center">
-                                <a href="${pageContext.request.contextPath}/AuthorisationServlet?action=orderEdit&deleteId=${dish.id}">
+                                <a href="${pageContext.request.contextPath}/AuthorisationServlet?action=orderEdit&deleteId=${dishEntry.key.id}">
                                     <i class="material-icons w3-xxxlarge w3-text-grey w3-circle">&#xe92b;</i>
                                 </a>
                             </td>
@@ -55,12 +55,12 @@
 
             <div class="w3-cell-row w3-half w3-right">
                 <h5>
-                    <button name="action" value="orderEdit" type="submit"
-                            class="w3-button w3-card-4 w3-third w3-pale-red w3-hover-red w3-round-large">Reject
+                    <button name="action" value="orderEdit" type="reset"
+                            class="w3-button w3-card-4 w3-third w3-pale-red w3-hover-red w3-round-large">Reset
                     </button>
 
                     <a class="w3-third w3-hover-none">Total:
-                        <fmt:formatNumber type="CURRENCY" value="${totalCost}"/>
+                        <fmt:formatNumber type="CURRENCY" value="${totalCost}" currencySymbol="UAH"/>
                     </a>
                         <%--                    <button class="w3-button w3-third w3-hover-none">Total: ${totalCost}</button>--%>
                     <button name="action" value="orderEdit" type="submit"
@@ -84,7 +84,8 @@
     </c:if>
 </div>
 <div class="w3-container w3-grey w3-opacity w3-right-align w3-padding w3-display-container">
-    <button class="w3-btn w3-round-large" onclick="location.href='${pageContext.request.contextPath}/'">Back to main
+    <button class="w3-btn w3-round-large" onclick="location.href='${pageContext.request.contextPath}/'">
+        Back to main
     </button>
 </div>
 <div class="w3-container" style="height: 65px">
