@@ -39,8 +39,8 @@ public class UtilsSQLConstants {
             CUSTOM_COST, CUSTOM_TIME, CUSTOM_USER_ID, CUSTOM_STATUS_ID, CUSTOM_ID);
     //Custom_has_dishDAO
     private static final String SQL_UPDATE_CUSTOMHASDISH_BY_CUSTOM_ID = String.format(
-            "UPDATE %%s SET %s=?, %s=?, %s=? WHERE %s=?",
-            CUSTOMHASDISH_D_ID, CUSTOMHASDISH_COUNT, CUSTOMHASDISH_PRICE, CUSTOMHASDISH_C_ID);
+            "UPDATE %%s SET %s=?, %s=? WHERE %s=? AND %s=?",
+            CUSTOMHASDISH_COUNT, CUSTOMHASDISH_PRICE, CUSTOMHASDISH_C_ID, CUSTOMHASDISH_D_ID);
     //DishDAO
     private static final String SQL_UPDATE_DISH_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?",

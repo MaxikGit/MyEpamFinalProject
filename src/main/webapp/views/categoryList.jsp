@@ -1,8 +1,5 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.max.restaurant.model.entity.User" %>
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Users list</title>
@@ -18,7 +15,7 @@
     <c:if test="${categoryNames != null}">
         <c:forEach var="category" items="${categoryNames}">
             <a href="AuthorisationServlet?action=category&value=${category.id}"
-               class="w3-bar-item w3-button w3-padding w3-animate-left">
+               class="w3-bar-item w3-button w3-padding">
                 <i class="fa fa-math fa-fw"></i>&nbsp; ${category.name}</a>
         </c:forEach>
     </c:if>

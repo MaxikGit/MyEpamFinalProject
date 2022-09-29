@@ -33,7 +33,7 @@ public class CategoryService {
     public void deleteCategory(Category category) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "deleteCategory", "true");
         categoryDAO = new CategoryDAO();
-        if (!categoryIsValid(category) && !categoryDAO.deleteObj(category))
+        if (!categoryIsValid(category) && !categoryDAO.deleteObj(category, categoryDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
     }
 

@@ -32,10 +32,10 @@ public class CommandExecutor {
         allKnownCommands.put(null, new NullCommand());
         allKnownCommands.put(CATEGORY, new CategoryCommand());
         allKnownCommands.put(ORDER, new OrderCommand());
-        allKnownCommands.put(ORDER_EDIT, new OrderEditingCommand());
+        allKnownCommands.put(EDIT_ORDER, new OrderEditingCommand());
         allKnownCommands.put(SORT_DISHES, new SortCommand());
         allKnownCommands.put(MANAGEMENT, new ManageOrdersCommand());
-        //commandGetMeth.put(CATEGORY_ID, new DishByCategoryCommand());
+        allKnownCommands.put(MANAGER_EDIT_ORDER, new ManagerOrderEditingCommand());
 //        allKnownCommandsMap.put(DEPOSIT, new DepositCommand());
 //        allKnownCommandsMap.put(WITHDRAW, new WithdrawCommand());
 //        allKnownCommandsMap.put(EXIT, new ExitCommand());

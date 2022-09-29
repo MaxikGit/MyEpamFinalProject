@@ -1,6 +1,6 @@
 package com.max.restaurant.exceptions;
 
-public class CommandException extends Exception{
+public class CommandException extends DAOException{
     public CommandException(){}
     public CommandException(String message){
         super(message);

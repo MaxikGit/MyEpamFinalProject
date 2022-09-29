@@ -40,7 +40,7 @@ public class UserService {
 
     public void deleteUser(User user) throws DAOException {
         userDAO = new UserDAO();
-        if (!(userIsValid(user) && userDAO.deleteObj(user)))
+        if (!(userIsValid(user) && userDAO.deleteObj(user, userDAO.getConnection())))
             throw new DAOServiceException(USER_EXC);
     }
 

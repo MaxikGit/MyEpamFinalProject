@@ -18,17 +18,21 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=fire">
     <style>
-        body, h1, h2, h3, h4, h5, h6 .w3-font
-        {
-            font-family: "Amatic SC", sans-serif
+        .restik {
+            font-family: "Sofia", sans-serif;
+            font-size: 25px;
         }
     </style>
 </head>
-<body class="w3-light-grey ">
 
+<body class="w3-light-grey">
+<header>
 <!-- Top container -->
-<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+<div class="w3-bar w3-top w3-black" style="z-index:4">
+
+    <div class="w3-bar-item font-effect-fire restik w3-center">Restaurant</div>
 
     <%--    Hidden Menu Button--%>
     <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
@@ -37,32 +41,33 @@
 
     <%--    Hidden Menu Button    --%>
 
-    <span class="w3-bar-item w3-hover-shadow">Restaurant</span>
-
     <%--    login and signIn buttons--%>
 
-    <form class="w3-right" action="AuthorisationServlet" method="get">
-        <button name="action" value="login" class="w3-bar-item w3-button w3-hover-none w3-hover-text-amber">
-            <i>Login</i>
-        </button>
-        <i class="w3-bar-item">/</i>
-        <button name="action" value="sign_up" class="w3-bar-item w3-button w3-hover-none w3-hover-text-amber">
-            <i>Sign Up&nbsp;</i>
-        </button>
-    </form>
+    <span class="w3-bar-item w3-cell-middle w3-right">
+
+            <a href="AuthorisationServlet?action=login" class="w3-bar-item w3-hover-none w3-hover-text-amber" style="text-decoration: none">
+                <i>Login</i>
+            </a>
+            <i class="w3-bar-item">/</i>
+            <a href="AuthorisationServlet?action=sign_up" class="w3-bar-item w3-hover-none w3-hover-text-amber w3-hover-shadow" style="text-decoration: none">
+                <i>Sign Up&nbsp;</i>
+            </a>
+
+    </span>
 
     <%--    login and signIn buttons end --%>
 
-<%--    shopping cart--%>
-
+    <%--    shopping cart--%>
+<div class="w3-bar-item w3-right w3-hover-amber">
     <c:if test="${dishIds!=null}">
-        <a href="AuthorisationServlet?action=order" class="w3-bar-item w3-hover-amber w3-right">
-            <i class="material-icons w3-border-white">&#xe8cc</i>
+        <a href="AuthorisationServlet?action=order" >
+            <i class="material-icons w3-border-white" style="margin-top: 5px">&#xe8cc</i>
         </a>
     </c:if>
 </div>
+</div>
 <%--shopping cart ends--%>
-
+</header>
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:300px;" id="mySidebar"><br>
     <div class="w3-container w3-row">
@@ -104,30 +109,31 @@
      style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div class="w3-main" style="margin-left:300px;margin-top:50px">
 
     <!-- Header -->
     <div class="w3-container w3-margin-left w3-cell-row">
-            <h4 class="w3-cell w3-cell-middle"><strong>${sessionScope.categoryNames[categoryId-1].name}</strong></h4>
+        <h4 class="w3-cell w3-cell-middle"><strong>${sessionScope.categoryNames[categoryId-1].name}</strong></h4>
 
-<%--    Selector of sorting    --%>
+        <%--    Selector of sorting    --%>
 
-<c:if test="${dishesNames != null}">
-        <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
-            <button class="w3-button " title="More">Sort by order of <i class="material-icons w3-small">&#xe5c5;</i></button>
-            <div class="w3-dropdown-content w3-bar-block ">
-                <a href="AuthorisationServlet?action=sortDishes&value=name" class="w3-bar-item w3-button">name</a>
-                <a href="AuthorisationServlet?action=sortDishes&value=cost" class="w3-bar-item w3-button">cost</a>
-                <a href="AuthorisationServlet?action=sortDishes&value=category" class="w3-bar-item w3-button">category</a>
+        <c:if test="${dishesNames != null}">
+            <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
+                <button class="w3-button " title="More">Sort by order of <i class="material-icons w3-small">&#xe5c5;</i>
+                </button>
+                <div class="w3-dropdown-content w3-bar-block ">
+                    <a href="AuthorisationServlet?action=sortDishes&value=name" class="w3-bar-item w3-button">name</a>
+                    <a href="AuthorisationServlet?action=sortDishes&value=cost" class="w3-bar-item w3-button">cost</a>
+                    <a href="AuthorisationServlet?action=sortDishes&value=category" class="w3-bar-item w3-button">category</a>
+                </div>
             </div>
-        </div>
-</c:if>
+        </c:if>
 
-<%--    End Selector of sorting    --%>
+        <%--    End Selector of sorting    --%>
 
     </div>
     <%-- main context--%>
-    <div class="w3-padding ">
+    <div class="w3-padding" style="margin-bottom: 65px">
         <jsp:include page="/views/dishesList.jsp"/>
     </div>
 </div>

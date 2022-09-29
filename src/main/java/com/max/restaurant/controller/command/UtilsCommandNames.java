@@ -9,7 +9,8 @@ public class UtilsCommandNames {
     public static final String ORDER = "order";
     public static final String MANAGEMENT = "management";
 
-    public static final String ORDER_EDIT = "orderEdit";
+    public static final String MANAGER_EDIT_ORDER = "orderEditManagement";
+    public static final String EDIT_ORDER = "orderEdit";
     public static final String SORT_DISHES = "sortDishes";
     public static final String CATEGORY_ID = "categoryId";
     public static final String SETTINGS_CATTEGORY = "settingsCategory";
@@ -30,9 +31,11 @@ public class UtilsCommandNames {
     public static final String ORDER_MAP_ATTR = "orderNames";
     public static final String STATUS_LIST_ATTR = "statusNames";
 
-    public static final String ORDER_MANAGEMENT_ATTR = "orderManagement";
+    public static final String MANAGEMENT_ORDERDATA_LIST_ATTR = "orderManagement";
+    public static final String MANAGEMENT_ORDERDATA_ATTR = "orderDataManagement";
 
 //     stand alone values attr
+    public static final String INPROGRESS_ATTR = "inProgress";
     public static final String VALUE_ATTR = "value";
     public static final String STATUS_ATTR = "statusSelect";
     public static final String ORDER_TOTAL_COST_ATTR = "totalCost";

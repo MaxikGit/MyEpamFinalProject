@@ -6,18 +6,41 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Restaurant footer</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=fire">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap">
+    <style>
+        .restik {
+            font-family: "Sofia", sans-serif;
+            font-size: 25px;
+        }
+
+        body,h1,h5 {font-family: "Raleway", sans-serif}
+        body, html {height: 100%}
+        .bgimg {
+            background-image: url('${pageContext.request.contextPath}/views/images/serverovka_stola.jpg');
+            min-height: 100%;
+            background-position: center;
+            background-size: cover;
+        }
+        .font-login {
+            font-family: 'Caveat', cursive;
+            font-size: 30px;
+        }
+    </style>
 </head>
-<body>
-<!-- Top container -->
-<div class="w3-container w3-blue-grey w3-opacity w3-right-align">
-    <h3>Restaurant</h3>
-</div>
-</body>
-</html>
+<header>
+    <div class="w3-container w3-black w3-left-align font-effect-fire restik ">
+        <h3 class="restik">Restaurant</h3>
+    </div>
+
+<%--    <div class="w3-container w3-bar w3-top w3-black" >--%>
+
+<%--        <div class="w3-bar-item font-effect-fire restik w3-center">Restaurant</div>--%>
+
+<%--        &lt;%&ndash;    Hidden Menu Button&ndash;%&gt;--%>
+
+<%--    </div>--%>
+</header>
+

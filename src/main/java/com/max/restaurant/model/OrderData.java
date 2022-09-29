@@ -1,9 +1,14 @@
 package com.max.restaurant.model;
 
+import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.Status;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.CustomService;
+import com.max.restaurant.model.services.DishService;
+import com.max.restaurant.model.services.StatusService;
+import com.max.restaurant.model.services.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +19,22 @@ public class OrderData {
     private Map<Dish, Integer> dishes = new HashMap<>();
     private Status status;
 
-    public OrderData(Custom custom) {
+    public OrderData() {
+    }
+
+    public OrderData(Custom custom) throws DAOException {
         this.custom = custom;
+        initialize();
+    }
+
+    private void initialize() throws DAOException {
+        StatusService statusService = new StatusService();
+        UserService userService = new UserService();
+        DishService dishService = new DishService();
+
+        setStatus(statusService.findStatusById(custom.getStatusId()));
+        setUser(userService.findUserById(custom.getUserId()));
+        setDishes(dishService.getDishesInOrder(custom));
     }
 
     public Custom getCustom() {
@@ -49,7 +68,5 @@ public class OrderData {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-
 
 }

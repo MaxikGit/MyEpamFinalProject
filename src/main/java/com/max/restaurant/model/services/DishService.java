@@ -76,7 +76,7 @@ public class DishService {
     public void deleteDish(Dish dish) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "deleteDish", "true");
         dishDAO = new DishDAO();
-        if (!dishIsValid(dish) && !dishDAO.deleteObj(dish))
+        if (!dishIsValid(dish) && !dishDAO.deleteObj(dish, dishDAO.getConnection()))
             throw new DAOServiceException(USER_EXC);
     }
 
@@ -104,7 +104,7 @@ public class DishService {
         Map<Dish, Integer> result = new HashMap<>();
         DishService dishService = new DishService();
         CustomHasDishService customHasDishService = new CustomHasDishService();
-        List<CustomHasDish> customHasDishes = customHasDishService.findCustomHasDishByCustomId(custom.getId());
+        List<CustomHasDish> customHasDishes = customHasDishService.findByCustomId(custom.getId());
         for (CustomHasDish customHasDish : customHasDishes) {
             result.put(dishService.findDishById(customHasDish.getDishId()), customHasDish.getCount());
         }

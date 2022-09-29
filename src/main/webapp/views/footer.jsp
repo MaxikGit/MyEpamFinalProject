@@ -23,6 +23,8 @@
 <%--    <button class="w3-btn w3-round-large" onclick="location.href='${pageContext.request.contextPath}/'">Back to main--%>
 <%--    </button>--%>
 <%--</div>--%>
+
+
 <footer class="w3-container w3-bottom w3-topbar w3-center w3-light-grey w3-display-container">
     <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">Maxim Bezzubov </a></p>
 </footer>

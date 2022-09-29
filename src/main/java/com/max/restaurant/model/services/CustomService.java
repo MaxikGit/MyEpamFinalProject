@@ -40,8 +40,13 @@ public class CustomService {
         List<Custom> list = customDAO.findObjByParam(CUSTOM_STATUS_ID + " !", completeStatus, customDAO.getConnection());
         return list;
     }
-
-    public void updateCustom(Custom custom) throws DAOException {
+    public List<Custom> getCustomsCompleted() throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "getCustomsCompleted", "true");
+        customDAO = new CustomDAO();
+        List<Custom> list = customDAO.findObjByParam(CUSTOM_STATUS_ID, completeStatus, customDAO.getConnection());
+        return list;
+    }
+    public void update(Custom custom) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "updateCustom", "true");
         if (customIsValid(custom)) {
             customDAO = new CustomDAO();
@@ -49,10 +54,39 @@ public class CustomService {
         } else throw new DAOServiceException(CUSTOM_VALID_EXC);
     }
 
-    public List<Custom> findAllCustoms() throws DAOException {
-        LOGGER.info(METHOD_STARTS_MSG, "findAllCategories", "true");
-        customDAO = new CustomDAO();
-        return customDAO.findAll();
+    public void updateTransaction(Custom custom, Map<Dish, Integer> orderedDishes) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "updateTransaction", "true");
+        if (customIsValid(custom)) {
+            CustomHasDishService hasDishService = new CustomHasDishService();
+            List<CustomHasDish> hasDishList = hasDishService.createList(custom.getId(), orderedDishes);
+            customDAO = new CustomDAO();
+            Connection connection = customDAO.getConnection();
+            try {
+                connection.setAutoCommit(false);
+                CustomHasDishDAO hasDishDAO = new CustomHasDishDAO();
+                double totalCost = 0;
+                for (CustomHasDish customHasDish : hasDishList) {
+                    hasDishDAO.updateObj(customHasDish, connection);
+                    totalCost += customHasDish.getPrice() * customHasDish.getCount();
+                }
+                custom.setCost(totalCost);
+                customDAO.updateObj(custom, connection);
+                connection.commit();
+                LOGGER.debug(TRANSACTION_MSG);
+            } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                    LOGGER.info(TRANSACTION_ROLLBACK);
+                } catch (SQLException ex) {
+                    LOGGER.error(TRANSACTION_ROLLBACK_FAILED);
+                    throw new DAOServiceException(ex);
+                }
+                throw new DAOServiceException(e);
+            } finally {
+                closeConn(connection);
+            }
+
+        } else throw new DAOServiceException(CUSTOM_VALID_EXC);
     }
 
     public void deleteCustom(Custom custom) throws DAOException {
@@ -61,7 +95,7 @@ public class CustomService {
             throw new DAOServiceException(USER_EXC);
         LOGGER.debug(TWO_PARAMS_MSG, "custom with id", custom.getId());
         customDAO = new CustomDAO();
-        customDAO.deleteObj(custom);
+        customDAO.deleteObj(custom, customDAO.getConnection());
     }
 
     public void deleteCustom(int id) throws DAOException {
@@ -78,11 +112,11 @@ public class CustomService {
         LOGGER.info(METHOD_STARTS_MSG, "getNewCustomByUserId", "true");
         Custom custom = getCustomInstanceByUserId(userId);
         CustomHasDishService hasDishService = new CustomHasDishService();
-        List<CustomHasDish> hasDishesList = hasDishService.fillCustomHasDishesList(userId, orderedDishes);
+        List<CustomHasDish> hasDishesList = hasDishService.createList(custom.getId(), orderedDishes);
         if (custom.getId() > 0) {
-            hasDishService.insertCustomNum(custom.getId(), hasDishesList);
+//            hasDishService.insertCustomNum(custom.getId(), hasDishesList);
             Map<CustomHasDishService.SortToUpdate, List<CustomHasDish>> map = hasDishService.sortToInsertUpdate(hasDishesList);
-            updateCustomTransaction(custom, map);
+            combineCustomsTransaction(custom, map);
             custom = findCustomById(custom.getId());
         } else {
             custom = insertCustomTransaction(custom, hasDishesList);
@@ -122,8 +156,8 @@ public class CustomService {
         return custom;
     }
 
-    private void updateCustomTransaction(Custom custom, Map<CustomHasDishService.SortToUpdate, List<CustomHasDish>> map) throws DAOException {
-        LOGGER.info(METHOD_STARTS_MSG, "insertCustomTransaction", true);
+    private void combineCustomsTransaction(Custom custom, Map<CustomHasDishService.SortToUpdate, List<CustomHasDish>> map) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "combineCustomsTransaction", true);
         customDAO = new CustomDAO();
         List<CustomHasDish> toUpdate = map.get(CustomHasDishService.SortToUpdate.UPDATE);
         List<CustomHasDish> toInsert = map.get(CustomHasDishService.SortToUpdate.INSERT);
@@ -134,6 +168,7 @@ public class CustomService {
             double totalCost = 0;
             for (CustomHasDish c : toUpdate) {
                 totalCost += c.getCount() * c.getPrice();
+                hasDishDAO.updateObj(c, conn);
             }
             for (CustomHasDish c : toInsert) {
                 totalCost += c.getCount() * c.getPrice();
@@ -146,7 +181,7 @@ public class CustomService {
             try {
                 conn.rollback();
             } catch (SQLException ex) {
-                throw new DAOException(ex);
+                throw new DAOServiceException(ex);
             }
             throw new DAOException(e);
         } finally {
@@ -192,25 +227,6 @@ public class CustomService {
         }
     }
 
-//    public List<Custom> findCustomsByCreateTime(Timestamp timestamp) throws DAOException {
-//        LOGGER.info(METHOD, "findCustomsByCreateTime", "true");
-//        customDAO = new CustomDAO();
-//        List<Custom> list = customDAO.findObjByParam(CUSTOM_TIME, timestamp.toString());
-//        return list;
-//    }
-
-//    public int getNewCustomNumber() throws DAOException {
-//        customDAO = new CustomDAO();
-//        return customDAO.findMaxId();
-//    }
-
-
-    //    private void insertCustom(Custom custom) throws DAOException {
-//        LOGGER.info(METHOD, "insertCustom", "true");
-//        customDAO = new CustomDAO();
-//        if (!customIsValid(custom) && !customDAO.insertObj(custom, customDAO.getConnection()))
-//            throw new DAOServiceException(USER_EXC);
-//    }
     private void closeConn(Connection conn) throws DAOException {
         if (conn != null) {
             try {
@@ -237,7 +253,7 @@ public class CustomService {
 
     private void customNeedsToUpdateCost(Custom custom) throws DAOException {
         CustomHasDishService customHasDishService = new CustomHasDishService();
-        List<CustomHasDish> hasDishesList = customHasDishService.findCustomHasDishByCustomId(custom.getId());
+        List<CustomHasDish> hasDishesList = customHasDishService.findByCustomId(custom.getId());
         double totalCost = 0;
         for (CustomHasDish hasDish : hasDishesList) {
             totalCost += hasDish.getPrice() * hasDish.getCount();
@@ -247,3 +263,33 @@ public class CustomService {
         customDAO.updateObj(custom, customDAO.getConnection());
     }
 }
+
+/* Not used methods
+
+    public List<Custom> findCustomsByCreateTime(Timestamp timestamp) throws DAOException {
+        LOGGER.info(METHOD, "findCustomsByCreateTime", "true");
+        customDAO = new CustomDAO();
+        List<Custom> list = customDAO.findObjByParam(CUSTOM_TIME, timestamp.toString());
+        return list;
+    }
+
+    public int getNewCustomNumber() throws DAOException {
+        customDAO = new CustomDAO();
+        return customDAO.findMaxId();
+    }
+
+
+        private void insertCustom(Custom custom) throws DAOException {
+        LOGGER.info(METHOD, "insertCustom", "true");
+        customDAO = new CustomDAO();
+        if (!customIsValid(custom) && !customDAO.insertObj(custom, customDAO.getConnection()))
+            throw new DAOServiceException(USER_EXC);
+    }
+
+
+    public List<Custom> findAllCustoms() throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "findAllCategories", "true");
+        customDAO = new CustomDAO();
+        return customDAO.findAll();
+    }
+*/
