@@ -29,20 +29,20 @@
             <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
                  style="width:95%" alt="food picture" class="w3-round-large">
             <h3 class="w3-left-align">${dishEntry.name}</h3>
-            <p/>
+
             <div >
                 <hr class="w3-border w3-border-black w3-center" style="margin: auto;">
                 <h5 class="w3-right-align w3-margin-right">
                     <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="UAH"/>
                     <c:if test="${loggedUser!=null}">
 
-                        <a href="AuthorisationServlet?action=order&value=${dishEntry.id}"
-                           class=""><i class="material-icons w3-circle w3-hover-amber">&#xe561;</i>
+                        <a href="AuthorisationServlet?action=orderEdit&value=${dishEntry.id}"
+                           class=""><i class="material-icons w3-circle w3-hover-amber w3-animate-fading">&#xe561;</i>
                         </a>
                     </c:if>
                 </h5>
             </div>
-            <p>details...</p>
+            <p>${dishEntry.details}</p>
         </div>
         <c:if test="${iterations.count % 4 == 0}">
             </div>

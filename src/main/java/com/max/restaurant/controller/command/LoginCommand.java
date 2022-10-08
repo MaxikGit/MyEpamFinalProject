@@ -23,9 +23,21 @@ public class LoginCommand implements Command {
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
-        request.removeAttribute(UNSUCCESS_MSG);
-        request.getSession().removeAttribute(UNSUCCESS_ATTR);
-        request.getRequestDispatcher(LOGIN_PAGE).forward(request, response);
+        String page;
+        if (request.getSession().getAttribute(LOGGED_USER_ATTR) != null) {
+            request.getSession().removeAttribute(LOGGED_USER_ATTR);
+            request.getSession().invalidate();
+            page = request.getContextPath() + HOME_PAGE;
+            LOGGER.debug(REDIRECT, page);
+            response.sendRedirect(page);
+            return;
+        } else {
+            request.removeAttribute(UNSUCCESS_MSG);
+            request.getSession().removeAttribute(UNSUCCESS_ATTR);
+            page = LOGIN_PAGE;
+        }
+        LOGGER.debug(FORWARD, page);
+        request.getRequestDispatcher(page).forward(request, response);
     }
 
     @Override

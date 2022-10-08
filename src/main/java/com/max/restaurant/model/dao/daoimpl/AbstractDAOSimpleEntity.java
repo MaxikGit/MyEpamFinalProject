@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.max.restaurant.model.dao.UtilsSQLConstants.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.CUSTOM_ID;
 import static com.max.restaurant.model.entity.UtilsEntityFields.USER_ID;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
@@ -179,6 +178,29 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
         } finally {
             closeAll(conn, statement);
         }
+    }
+
+    @Override
+    public int getNumOfRecords() throws DAOException {
+        LOGGER.info(DELETE_MSG, genericName);
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            conn = getConnection();
+            statement = conn.prepareStatement(getSqlNumberOfRecords(genericName));
+            result = statement.executeQuery();
+            if (result.next()) {
+                return result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error(FAILED_DELETE, genericName, e);
+            throw new DAOException(e);
+        } finally {
+            closeAll(conn, statement, result);
+        }
+        return 0;
     }
 
     protected abstract T getEntityFromResult(ResultSet result) throws SQLException;

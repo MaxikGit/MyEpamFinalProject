@@ -2,6 +2,8 @@ package com.max.restaurant.controller.command;
 
 public class UtilsCommandNames {
 //    command names are the ones, followed after the "action" in GET or POST: action=command
+
+    public static final String FIRST_START = "AuthorisationServlet?action=category";
     public static final String ACTION = "action";
     public static final String LOGIN = "login";
     public static final String SIGN_UP = "sign_up";
@@ -42,5 +44,11 @@ public class UtilsCommandNames {
     public static final String ORDER_TOTAL_INPROGRESS_ATTR = "totalOrdersCost";
     public static final String DEL_FROM_ORDER_ATTR = "deleteId";
     public static final String QUANTITY_ATTR = "quantity";
+    public static final String ORDER_ACCEPT_ATTR = "accepted";
+
+    public static final String PAGE_ATTR = "pageNum";
+    public static final String PAGES_MAX_ATTR = "pagesMax";
+    public static final String PAGES_MIN_ATTR = "pagesMin";
+    public static final String RECS_PER_PAGE_ATTR = "pagesRecs";
 
 }

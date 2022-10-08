@@ -22,32 +22,33 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class ManagerOrderEditingCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagerOrderEditingCommand.class);
-
+    private int recordsPerPage = 3;
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String customId = request.getParameter(VALUE_ATTR);
-        String dishIdToDel = request.getParameter(DEL_FROM_ORDER_ATTR);
+//        String dishIdToDel = request.getParameter(DEL_FROM_ORDER_ATTR);
         String page = request.getContextPath() + EDIT_ORDER_MANAGEMENT_PAGE;
         HttpSession session = request.getSession();
 
-        if (dishIdToDel != null && customId == null) {
-            OrderData orderData = (OrderData)session.getAttribute(MANAGEMENT_ORDERDATA_ATTR);
-            CustomHasDishService hasDishService = new CustomHasDishService();
-            CustomHasDish customHasDish = hasDishService.findByCustomIdDishId(
-                    orderData.getCustom().getId(), Integer.parseInt(dishIdToDel));
-            boolean deleted = hasDishService.deleteTransactional(customHasDish);
-            if (!deleted){
-                LOGGER.info(REDIRECT, page);
-                response.sendRedirect(page);
-                return;
-            }
-            customId = String.valueOf(orderData.getCustom().getId());
-        }
+//        if (dishIdToDel != null && customId == null) {
+//            OrderData orderData = (OrderData) session.getAttribute(MANAGEMENT_ORDERDATA_ATTR);
+//            CustomHasDishService hasDishService = new CustomHasDishService();
+//            CustomHasDish customHasDish = hasDishService.findByCustomIdDishId(
+//                    orderData.getCustom().getId(), Integer.parseInt(dishIdToDel));
+//            boolean deleted = hasDishService.deleteTransactional(customHasDish);
+//            if (!deleted) {
+//                LOGGER.info(REDIRECT, page);
+//                response.sendRedirect(page);
+//                return;
+//            }
+//            customId = String.valueOf(orderData.getCustom().getId());
+//        }
         CustomService customService = new CustomService();
         Custom custom = customService.findCustomById(Integer.parseInt(customId));
         OrderData orderData = new OrderData(custom);
+        UtilsPaginationHelper.paginationCounter(request, orderData.getDishes().size(), recordsPerPage);
 
         session.setAttribute(MANAGEMENT_ORDERDATA_ATTR, orderData);
         LOGGER.debug(TWO_PARAMS_MSG, MANAGEMENT_ORDERDATA_ATTR, orderData);
@@ -60,22 +61,48 @@ public class ManagerOrderEditingCommand implements Command {
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         HttpSession session = request.getSession();
+        String page;
+        String customId = request.getParameter(VALUE_ATTR);
+        String dishIdToDel = request.getParameter(DEL_FROM_ORDER_ATTR);
         OrderData orderData = (OrderData) session.getAttribute(MANAGEMENT_ORDERDATA_ATTR);
+        //update quantities
+        boolean updated = false;
         for (Map.Entry<Dish, Integer> entry : orderData.getDishes().entrySet()) {
-            int dishCount = Integer.parseInt(request.getParameter(QUANTITY_ATTR + entry.getKey().getId()));
-            entry.setValue(dishCount);
+            String newQuantity = request.getParameter(QUANTITY_ATTR + entry.getKey().getId());
+            if (newQuantity == null)
+                continue;
+            int dishCount = Integer.parseInt(newQuantity);
+            updated = dishCount == entry.setValue(dishCount) || updated;
         }
-
-        CustomService customService = new CustomService();
-        Custom custom = orderData.getCustom();
-        customService.updateTransaction(custom, orderData.getDishes());
-        custom = customService.findCustomById(custom.getId());
-        orderData = new OrderData(custom);
-
+        //not accepted
+        if (request.getParameter(ORDER_ACCEPT_ATTR) == null) {
+            //delete dishes
+            if (dishIdToDel != null && customId == null) {
+                CustomHasDishService hasDishService = new CustomHasDishService();
+                CustomHasDish customHasDish = hasDishService.findByCustomIdDishId(
+                        orderData.getCustom().getId(), Integer.parseInt(dishIdToDel));
+                hasDishService.deleteTransactional(customHasDish);
+                updated = true;
+            }
+            page = request.getContextPath() + EDIT_ORDER_MANAGEMENT_PAGE;
+        }
+        //accepted
+        else {
+            page = request.getContextPath() + ORDER_MANAGEMENT_PAGE;
+            LOGGER.info(REDIRECT, page);
+            response.sendRedirect(page);
+            return;
+        }
+        if (updated){
+            CustomService customService = new CustomService();
+            Custom custom = orderData.getCustom();
+            customService.updateTransaction(custom, orderData.getDishes());
+            custom = customService.findCustomById(custom.getId());
+            orderData = new OrderData(custom);
+        }
+        UtilsPaginationHelper.paginationCounter(request, orderData.getDishes().size(), recordsPerPage);
         session.setAttribute(MANAGEMENT_ORDERDATA_ATTR, orderData);
-        String page = request.getContextPath() + EDIT_ORDER_MANAGEMENT_PAGE;
-
+        LOGGER.info(REDIRECT, page);
         response.sendRedirect(page);
     }
-
 }

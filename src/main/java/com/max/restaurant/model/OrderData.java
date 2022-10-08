@@ -19,9 +19,6 @@ public class OrderData {
     private Map<Dish, Integer> dishes = new HashMap<>();
     private Status status;
 
-    public OrderData() {
-    }
-
     public OrderData(Custom custom) throws DAOException {
         this.custom = custom;
         initialize();

@@ -42,4 +42,6 @@ public class UtilsLoggerMsgs {
     public static final String FAILED_CLOSE_ST_CONN = " failed to close conn & statement ";
     public static final String FAILED_CLOSE_ST_CONN_RS = "{} failed to close resultSet conn & statement ";
 
+    public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
+
 }

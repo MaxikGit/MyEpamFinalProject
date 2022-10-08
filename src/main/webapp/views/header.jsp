@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maxim
-  Date: 25.08.22
-  Time: 18:11
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <head>
@@ -32,15 +25,10 @@
 </head>
 <header>
     <div class="w3-container w3-black w3-left-align font-effect-fire restik ">
-        <h3 class="restik">Restaurant</h3>
+        <a href="AuthorisationServlet">
+            <h3 class="restik">Restaurant</h3>
+        </a>
     </div>
 
-<%--    <div class="w3-container w3-bar w3-top w3-black" >--%>
-
-<%--        <div class="w3-bar-item font-effect-fire restik w3-center">Restaurant</div>--%>
-
-<%--        &lt;%&ndash;    Hidden Menu Button&ndash;%&gt;--%>
-
-<%--    </div>--%>
 </header>
 

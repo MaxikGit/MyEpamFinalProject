@@ -31,15 +31,11 @@ public class CommandExecutor {
         allKnownCommands.put(SIGN_UP, new SignUpCommand());
         allKnownCommands.put(null, new NullCommand());
         allKnownCommands.put(CATEGORY, new CategoryCommand());
-        allKnownCommands.put(ORDER, new OrderCommand());
         allKnownCommands.put(EDIT_ORDER, new OrderEditingCommand());
         allKnownCommands.put(SORT_DISHES, new SortCommand());
         allKnownCommands.put(MANAGEMENT, new ManageOrdersCommand());
         allKnownCommands.put(MANAGER_EDIT_ORDER, new ManagerOrderEditingCommand());
-//        allKnownCommandsMap.put(DEPOSIT, new DepositCommand());
-//        allKnownCommandsMap.put(WITHDRAW, new WithdrawCommand());
-//        allKnownCommandsMap.put(EXIT, new ExitCommand());
-//        allKnownCommandsMap.put(LOGIN, new LoginCommand());
+
     }
 
     public static final void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException, CommandException {

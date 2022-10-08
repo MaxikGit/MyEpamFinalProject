@@ -32,7 +32,7 @@
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black" style="z-index:4">
 
-    <div class="w3-bar-item font-effect-fire restik w3-center">Restaurant</div>
+    <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
 
     <%--    Hidden Menu Button--%>
     <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
@@ -45,8 +45,10 @@
 
     <span class="w3-bar-item w3-cell-middle w3-right">
 
+
             <a href="AuthorisationServlet?action=login" class="w3-bar-item w3-hover-none w3-hover-text-amber" style="text-decoration: none">
-                <i>Login</i>
+                <c:if test="${empty loggedUser}"><i>Login</i></c:if>
+                <c:if test="${!empty loggedUser}"><i>Logout</i></c:if>
             </a>
             <i class="w3-bar-item">/</i>
             <a href="AuthorisationServlet?action=sign_up" class="w3-bar-item w3-hover-none w3-hover-text-amber w3-hover-shadow" style="text-decoration: none">
@@ -60,13 +62,14 @@
     <%--    shopping cart--%>
 <div class="w3-bar-item w3-right w3-hover-amber">
     <c:if test="${dishIds!=null}">
-        <a href="AuthorisationServlet?action=order" >
-            <i class="material-icons w3-border-white" style="margin-top: 5px">&#xe8cc</i>
+        <a href="AuthorisationServlet?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
+            <i class="material-icons w3-border-white" >&#xe8cc</i>${dishIds.size()}
         </a>
     </c:if>
 </div>
 </div>
 <%--shopping cart ends--%>
+
 </header>
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:300px;" id="mySidebar"><br>
@@ -98,8 +101,6 @@
         <jsp:include page="views/categoryList.jsp"/>
         <%--        <jsp:param name="categoryNames"  value="${categoryNames}"/>--%>
         <%--        </jsp:include>--%>
-
-
         <br><br>
     </div>
 </nav>
@@ -127,9 +128,10 @@
                     <a href="AuthorisationServlet?action=sortDishes&value=category" class="w3-bar-item w3-button">category</a>
                 </div>
             </div>
+
+            <%--    End Selector of sorting    --%>
         </c:if>
 
-        <%--    End Selector of sorting    --%>
 
     </div>
     <%-- main context--%>

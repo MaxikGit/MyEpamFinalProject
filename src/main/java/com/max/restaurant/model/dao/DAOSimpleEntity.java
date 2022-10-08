@@ -8,7 +8,8 @@ import java.util.List;
 
 
 /**
- * The {@code DAOSimpleEntity} interface provides the parameterized methods for interaction with database.
+ * The {@code DAOSimpleEntity} interface provides the parameterized methods for simple interaction with database
+ * in order to provide CRUD operations.
  * All methods suppress all SQL exceptions and throws own general one {@link DAOException}.
  *
  * @param <T> the object type of {@link SimpleEntity} interface
@@ -68,5 +69,12 @@ public interface DAOSimpleEntity<T extends SimpleEntity> {
      * @throws DAOException if any SQLException occurs
      */
     boolean deleteObj(T obj, Connection conn) throws DAOException;
+
+    /**
+     * Gets the number of records of the table that corresponds to {@link SimpleEntity} class
+     * @return number of records
+     * @throws DAOException if any SQLException occurs
+     */
+    int getNumOfRecords() throws DAOException;
 
 }

@@ -49,19 +49,19 @@ public class DishService {
         return dish;
     }
 
-    public Map<Dish, Integer> findDishesById(List<Integer> ids) throws DAOException {
+    public Map<Dish, Integer> findDishesById(Map<Integer, Integer> ids) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findDishesById", "true");
         if (ids == null || ids.isEmpty())
             throw new DAOServiceException(IDS_EXC);
 
-        Map<Integer,Integer> idsWithQuantity = ids.stream()
-                .collect(Collectors
-                        .toMap(x -> x, y -> 1, (oldVal, newVal) -> (oldVal + newVal)));
+//        Map<Integer,Integer> idsWithQuantity = ids.stream()
+//                .collect(Collectors
+//                        .toMap(x -> x, y -> 1, (oldVal, newVal) -> (oldVal + newVal)));
 
         Map<Dish, Integer> result = new HashMap<>();
-        for (Integer id: idsWithQuantity.keySet()){
+        for (Integer id: ids.keySet()){
             Dish dish = findDishById(id);
-            result.put(dish, idsWithQuantity.get(id));
+            result.put(dish, ids.get(id));
         }
         LOGGER.debug(FIND_BY_ID, result.size());
         return result;

@@ -17,22 +17,20 @@ import static com.max.restaurant.controller.command.UtilsCommandNames.CATEGORY_L
 import static com.max.restaurant.utils.UtilsFileNames.FIRST_START;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = {"/index.jsp"})
 public class StartFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(StartFilter.class);
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         LOGGER.info(METHOD_STARTS_MSG, "doFilter", "true");
-        HttpSession session = ((HttpServletRequest)request).getSession();
+        HttpSession session = ((HttpServletRequest) request).getSession();
         List<Category> category = (List<Category>) session.getAttribute(CATEGORY_LIST_ATTR);
-//        User user = (User) session.getAttribute(LOGGED_USER_ATTR)
-        if (session.isNew() || category == null){// || user == null){
-            LOGGER.debug(TWO_PARAMS_MSG, ("session is new=" + session.isNew()), "category is null=" + (category==null) );
+        if (category == null) {// || user == null){
+            LOGGER.debug(TWO_PARAMS_MSG, ("session is new=" + session.isNew()), "category is null=" + (category == null));
             LOGGER.info(FORWARD, FIRST_START);
             request.getRequestDispatcher(FIRST_START).forward(request, response);
-        }
-        else {
+        } else {
             LOGGER.debug(TWO_PARAMS_MSG, ("session is new=" + session.isNew()), "category is null=" + false);
             chain.doFilter(request, response);
         }

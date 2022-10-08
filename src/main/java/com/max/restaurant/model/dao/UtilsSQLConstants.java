@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import static com.max.restaurant.model.entity.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.SQL_EXPR_MSG;
 
+/**
+ * Utility class used to keep all SQL expressions in one place & .
+ */
 public class UtilsSQLConstants {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsSQLConstants.class);
 
@@ -52,27 +55,30 @@ public class UtilsSQLConstants {
     private static final String SQL_UPDATE_STATUS_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=? WHERE %s=?",
             STATUS_NAME, STATUS_DETAILS, STATUS_ID);
+    //get count of records
+    private static final String SQL_RECORDS_COUNT = "SELECT count(*) FROM %s";
 
 
     //"SELECT * FROM %s WHERE %s=?";
     public static String getSQLFindByParam(String simpleClassName, String paramName) throws DAOException {
         String ss = String.format(SQL_FIND_ENTITY_BY_PARAM, getTableNameByClass(simpleClassName), paramName);
-        LOGGER.debug(SQL_EXPR_MSG, "FIND", simpleClassName, ss);
+        LOGGER.trace(SQL_EXPR_MSG, "FIND", simpleClassName, ss);
         return ss;
     }
 
 //    "SELECT * FROM %s";
     public static String getSQLFindAll(String simpleClassName) throws DAOException {
         String ss = String.format(SQL_FIND_ALL_ENTITIES, getTableNameByClass(simpleClassName));
-        LOGGER.debug(SQL_EXPR_MSG, "FIND ALL", simpleClassName, ss);
+        LOGGER.trace(SQL_EXPR_MSG, "FIND ALL", simpleClassName, ss);
         return ss;
     }
-    //    "SELECT MAX(id) FROM %s";
-//    public static String getSQLFindMaxId(String simpleClassName) throws DAOException {
-//        String ss = String.format(SQL_FIND_ENTITIES_MAX_ID, getTableNameByClass(simpleClassName));
-//        LOGGER.debug(SQL_EXPR_MSG, "FINDbyID", simpleClassName, ss);
-//        return ss;
-//    }
+
+    //    "SELECT count(*) FROM %s";
+    public static String getSqlNumberOfRecords(String simpleClassName) throws DAOException {
+        String ss = String.format(SQL_RECORDS_COUNT, getTableNameByClass(simpleClassName));
+        LOGGER.trace(SQL_EXPR_MSG, "getSqlNumberOfRecords", simpleClassName, ss);
+        return ss;
+    }
 
     public static String getSqlInsertEntity(String simpleClassName) throws DAOException {
         String params;
@@ -106,7 +112,7 @@ public class UtilsSQLConstants {
     //"DELETE FROM %s WHERE %s=?";
     public static String getSQLDeleteByParam(String simpleClassName, String paramName) throws DAOException {
         String ss = String.format(SQL_DELETE_ENTITY_BY_PARAM, getTableNameByClass(simpleClassName), paramName);
-        LOGGER.debug(SQL_EXPR_MSG, "DELETE", simpleClassName, ss);
+        LOGGER.trace(SQL_EXPR_MSG, "DELETE", simpleClassName, ss);
         return ss;
     }
     //"DELETE FROM %s WHERE %s=?";

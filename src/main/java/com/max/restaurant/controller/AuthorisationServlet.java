@@ -37,7 +37,7 @@ public class AuthorisationServlet extends HttpServlet {
         }
          catch (Throwable e) {
             LOGGER.error(METHOD_FAILED,e.getMessage(), e);
-            throw new RuntimeException("якась фігня малята!\n",e);
+            throw new RuntimeException("я!\n",e);
         }
     }
 }

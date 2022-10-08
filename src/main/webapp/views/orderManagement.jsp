@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="s" uri="http://restaurant.max.com" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -10,6 +11,7 @@
 </head>
 
 <body class="w3-light-grey w3-opacity-min">
+<s:managersOnlyTag/>
 <jsp:include page="header.jsp"/>
 <div class="w3-display-container">
     <div class="w3-container w3-light-blue  w3-center">
@@ -21,16 +23,16 @@
                 <c:set var="Completed" value="w3-light-blue"/>
                 <c:set var="InProgress" value=""/>
             </c:if>
-            <c:if test="${empty inProgress}">
+            <c:if test="${empty inProgress || inProgress == 'true'}">
                 <c:set var="Completed" value=""/>
                 <c:set var="InProgress" value="w3-light-blue"/>
             </c:if>
-            <form method="post" action="AuthorisationServlet">
+            <form method="post" action="AuthorisationServlet?action=management">
                 <div class="w3-container w3-margin">
 
-                    <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom">
+                    <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom" style="margin-bottom: 200px">
                         <div class="w3-row w3-card w3-border-light-blue w3-large ">
-                            <a id="progress" href="AuthorisationServlet?action=management"
+                            <a id="progress" href="AuthorisationServlet?action=management&inProgress=true"
                                class="w3-col s6 w3-button ${InProgress} tablink w3-hover-light-blue">
                                 In progress</a>
                             <a id="finished" href="AuthorisationServlet?action=management&inProgress=false"
@@ -47,10 +49,11 @@
                             <th class="w3-cell-middle w3-col s1 w3-right"></th>
                         </tr>
                         <c:if test="${orderManagement[0].custom != null}">
-                            <c:forEach var="orderData" items="${orderManagement}" varStatus="num">
+                            <c:forEach var="orderData" items="${orderManagement}" varStatus="num"
+                                       begin="${(pageNum-1) * pagesRecs}" end="${pageNum * pagesRecs - 1}">
                                 <tr class="w3-card-2">
                                     <div class="w3-cell-row">
-                                    <td class="w3-cell-middle w3-col s1 w3-center">${num.count}</td>
+                                    <td class="w3-cell-middle w3-col s1 w3-center">${num.index + 1}</td>
                                     <td class="w3-cell-middle w3-col s3">${orderData.user.name} ${orderData.user.lastName}</td>
                                     <td class="w3-cell-middle w3-col s2">
                                         <fmt:setLocale value="uk_UA"/>
@@ -87,17 +90,18 @@
 
                                         </td>
                                         <td class="w3-cell-middle w3-col s1 w3-right">
-                                            <mytag:DeleteForeverButton commandName="management"
-                                                                       idToDelete="${orderData.custom.id}"/>
+<%--                                            <mytag:DeleteForeverButton commandName="management"--%>
+<%--                                                                       idToDelete="${orderData.custom.id}"/>--%>
+                                            <mytag:DeleteForeverButton commandName="management" idToDelete="${orderData.custom.id}"/>
                                         </td>
                                     </c:if>
                                     <c:if test="${inProgress == 'false'}">
-                                        <td class="w3-cell-middle w3-col s1 w3-right-align w3-opacity-max">
-                                            <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe3c9;</i>
+                                        <td class="w3-cell-middle w3-col s1 w3-right-align">
+                                            <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe415;</i>
                                         </td>
-                                        <td class="w3-cell-middle w3-col s1 w3-right w3-opacity-max w3-hover-none">
-                                            <mytag:DeleteForeverButton commandName=""
-                                                                       idToDelete="${0}"/>
+                                        <td class="w3-cell-middle w3-col s1 w3-right w3-hover-none">
+<%--                                            <mytag:DeleteForeverButton commandName=""--%>
+<%--                                                                       idToDelete="${0}"/>--%>
                                         </td>
                                     </c:if>
                                     </div>
@@ -125,7 +129,7 @@
                                 Total: <fmt:formatNumber type="CURRENCY" value="${totalOrdersCost}"
                                                          currencySymbol="UAH"/>
                             </a>
-                            <button name="action" value="management" type="submit"
+                            <button name="accepted" value="yes" type="submit"
                                     class="w3-button w3-card-4 w3-third w3-pale-green w3-hover-green w3-round-large">
                                 Accept
                             </button>
@@ -133,6 +137,12 @@
                     </div>
                 </c:if>
                     <%--            End of Adding two Buttons to react--%>
+
+                    <%--Pagination begins            --%>
+
+                <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}"/>
+
+                    <%--                    Pagination ends                    --%>
 
             </form>
         </c:if>

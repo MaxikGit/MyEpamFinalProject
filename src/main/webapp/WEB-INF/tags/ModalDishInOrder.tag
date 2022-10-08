@@ -1,12 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="s" uri="http://restaurant.max.com" %>
 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 
 <%@attribute name="orderData" type="com.max.restaurant.model.OrderData" required="true" %>
 <%@attribute name="divNum" type="java.lang.Integer" required="true" %>
 
-
+<s:managersOnlyTag/>
 <button onclick="document.getElementById('id0${divNum}').style.display='block'" type="button"
         class="w3-button w3-hover-shadow w3-round-large"> Oder details...
 </button>
