@@ -6,6 +6,7 @@ import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.services.*;
+import com.max.restaurant.utils.UtilsPaginationHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 

@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 

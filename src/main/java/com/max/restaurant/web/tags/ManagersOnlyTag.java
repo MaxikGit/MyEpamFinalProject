@@ -1,4 +1,4 @@
-package com.max.restaurant.tags;
+package com.max.restaurant.web.tags;
 
 
 import com.max.restaurant.model.entity.User;
@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.FIRST_START;
-import static com.max.restaurant.controller.command.UtilsCommandNames.LOGGED_USER_ATTR;
+import static com.max.restaurant.utils.UtilsCommandNames.FIRST_START;
+import static com.max.restaurant.utils.UtilsCommandNames.LOGGED_USER_ATTR;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.UNAUTH_MSG;
 

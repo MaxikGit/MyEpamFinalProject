@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;

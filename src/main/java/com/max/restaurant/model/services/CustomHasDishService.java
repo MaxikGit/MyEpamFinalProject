@@ -4,6 +4,7 @@ import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.dao.daoimpl.CustomDAO;
 import com.max.restaurant.model.dao.daoimpl.CustomHasDishDAO;
+import com.max.restaurant.model.entity.Category;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
@@ -17,10 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.CUSTOMHASDISH_C_ID;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * This is a service class, that presents methods to operate over {@link CustomHasDish} objects on requests
+ * from controller to DAO layer.
+ */
 public class CustomHasDishService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHasDishService.class);
     private CustomHasDishDAO customHasDishDAO;

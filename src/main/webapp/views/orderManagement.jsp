@@ -1,9 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="mytag" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="s" uri="http://restaurant.max.com" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
+
+<html lang="${lang}">
 <head>
     <title>Manager Order editing list</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
@@ -15,7 +19,7 @@
 <jsp:include page="header.jsp"/>
 <div class="w3-display-container">
     <div class="w3-container w3-light-blue  w3-center">
-        <h3>Orders info </h3>
+        <h3 class="font-login"><fmt:message key="order.management.page"/></h3>
     </div>
     <div class="w3-container w3-center w3-margin-bottom w3-display-container">
         <c:if test="${orderManagement != null}">
@@ -27,24 +31,47 @@
                 <c:set var="Completed" value=""/>
                 <c:set var="InProgress" value="w3-light-blue"/>
             </c:if>
-            <form method="post" action="AuthorisationServlet?action=management">
+            <form method="post" action="ServletController?action=management">
                 <div class="w3-container w3-margin">
 
-                    <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom" style="margin-bottom: 200px">
+                    <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom"
+                           style="margin-bottom: 200px">
                         <div class="w3-row w3-card w3-border-light-blue w3-large ">
-                            <a id="progress" href="AuthorisationServlet?action=management&inProgress=true"
+                            <a id="progress" href="ServletController?action=management&inProgress=true"
                                class="w3-col s6 w3-button ${InProgress} tablink w3-hover-light-blue">
-                                In progress</a>
-                            <a id="finished" href="AuthorisationServlet?action=management&inProgress=false"
+                                <strong class="font-login"><i><fmt:message key="order.inprogress"/></i></strong>
+                            </a>
+                            <a id="finished" href="ServletController?action=management&inProgress=false"
                                class="w3-col s6 w3-button tablink w3-hover-light-blue ${Completed} ">
-                                Finished</a>
+                                <strong class="font-login"><i><fmt:message key="order.finished"/></i></strong>
+                            </a>
                         </div>
                         <tr class="w3-card-2 w3-cell-row w3-light-blue">
-                            <th class="w3-cell-middle w3-col s1 w3-center">Order #</th>
-                            <th class="w3-cell-middle w3-col s3">Customer</th>
-                            <th class="w3-cell-middle w3-col s2">Price</th>
-                            <th class="w3-cell-middle w3-col s2 w3-center">Dishes</th>
-                            <th class="w3-cell-middle w3-col s2 w3-center">Status</th>
+                            <th class="w3-cell-middle w3-col s1 w3-center">
+                                <fmt:message key="order.num"/>
+                            </th>
+                            <th class="w3-cell-middle w3-col s3">
+                                <a href="ServletController?action=management&sort=customer"
+                                   style="text-decoration: none">
+                                    <fmt:message key="order.customer"/>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle  w3-cell-middle">&#xe053;</i>
+                                </a>
+                            </th>
+                            <th class="w3-cell-middle w3-col s2">
+                                <a href="ServletController?action=management&sort=price"
+                                   style="text-decoration: none">
+                                    <fmt:message key="order.price"/>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">&#xe053;</i>
+                                </a>
+                            </th>
+                            <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.dish.name"/></th>
+                            <th class="w3-cell-middle w3-col s2 w3-center">
+                                <a href="ServletController?action=management&sort=status"
+                                   style="text-decoration: none">
+                                    <fmt:message key="order.status"/>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">&#xe053;</i>
+                                </a>
+                            </th>
                             <th class="w3-cell-middle w3-col s1 w3-right-align"></th>
                             <th class="w3-cell-middle w3-col s1 w3-right"></th>
                         </tr>
@@ -52,27 +79,28 @@
                             <c:forEach var="orderData" items="${orderManagement}" varStatus="num"
                                        begin="${(pageNum-1) * pagesRecs}" end="${pageNum * pagesRecs - 1}">
                                 <tr class="w3-card-2">
-                                    <div class="w3-cell-row">
                                     <td class="w3-cell-middle w3-col s1 w3-center">${num.index + 1}</td>
                                     <td class="w3-cell-middle w3-col s3">${orderData.user.name} ${orderData.user.lastName}</td>
                                     <td class="w3-cell-middle w3-col s2">
-                                        <fmt:setLocale value="uk_UA"/>
+                                        <c:set var="currSymb"><fmt:message key="currency"/></c:set>
                                         <fmt:formatNumber type="CURRENCY" value="${orderData.custom.cost}"
-                                                          currencySymbol="UAH"/>
+                                                          currencySymbol="${currSymb}"/>
                                     </td>
                                     <td class="w3-cell-middle w3-col s2 w3-center ">
 
-                                        <mytag:ModalDishInOrder orderData="${orderData}" divNum="${num.count}"/>
+                                        <my:ModalDishInOrder orderData="${orderData}" divNum="${num.count}"/>
                                     </td>
                                     <td class="w3-cell-bottom w3-col s2 w3-center">
                                         <c:if test="${inProgress != 'false' }">
-                                            <select name="statusSelect" id="statusSelect"
+                                            <select id="statusSelect" name="statusSelect"
                                                     class="w3-dropdown-hover w3-light-grey">
-                                                <option value="${orderData.status.id}" selected
-                                                        disabled>${orderData.status.name}</option>
+                                                <option value="${orderData.status.id}" selected disabled>
+                                                    <fmt:message key="${orderData.status.name}"/>
+                                                </option>
                                                 <c:forEach var="status" varStatus="statNum" items="${statusNames}">
                                                     <c:if test="${status.id != orderData.status.id}">
-                                                        <option value="${status.id} ${orderData.custom.id}">${status.name}</option>
+                                                        <option value="${status.id} ${orderData.custom.id}">
+                                                            <fmt:message key="${status.name}"/></option>
                                                     </c:if>
                                                 </c:forEach>
                                             </select>
@@ -83,16 +111,13 @@
                                     </td>
                                     <c:if test="${inProgress != 'false' }">
                                         <td class="w3-cell-middle w3-col s1 w3-right-align">
-
-                                            <a href="AuthorisationServlet?action=orderEditManagement&value=${orderData.custom.id}">
+                                            <a href="ServletController?action=orderEditManagement&value=${orderData.custom.id}">
                                                 <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe3c9;</i>
                                             </a>
-
                                         </td>
                                         <td class="w3-cell-middle w3-col s1 w3-right">
-<%--                                            <mytag:DeleteForeverButton commandName="management"--%>
-<%--                                                                       idToDelete="${orderData.custom.id}"/>--%>
-                                            <mytag:DeleteForeverButton commandName="management" idToDelete="${orderData.custom.id}"/>
+                                            <my:DeleteForeverButton commandName="management"
+                                                                    idToDelete="${orderData.custom.id}"/>
                                         </td>
                                     </c:if>
                                     <c:if test="${inProgress == 'false'}">
@@ -100,49 +125,25 @@
                                             <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe415;</i>
                                         </td>
                                         <td class="w3-cell-middle w3-col s1 w3-right w3-hover-none">
-<%--                                            <mytag:DeleteForeverButton commandName=""--%>
-<%--                                                                       idToDelete="${0}"/>--%>
                                         </td>
                                     </c:if>
-                                    </div>
                                 </tr>
                             </c:forEach>
                         </c:if>
                         <c:if test="${orderManagement[0].custom == null}">
                             <tr class="w3-card-2 w3-cell-row w3-pale-yellow">
                                 <th class="w3-cell-middle w3-center">
-                                    <h3>There are no orders yet!</h3>
+                                    <h3><fmt:message key="order.fail"/></h3>
                                 </th>
                             </tr>
                         </c:if>
                     </table>
                 </div>
 
-                    <%--            Adding two Buttons to react--%>
                 <c:if test="${inProgress != 'false' }">
-                    <div class="w3-cell-row w3-half w3-right">
-                        <h5>
-                            <button name="action" value="management" type="reset"
-                                    class="w3-button w3-card-4 w3-third w3-pale-red w3-hover-red w3-round-large">Reset
-                            </button>
-                            <a class="w3-third w3-hover-none">
-                                Total: <fmt:formatNumber type="CURRENCY" value="${totalOrdersCost}"
-                                                         currencySymbol="UAH"/>
-                            </a>
-                            <button name="accepted" value="yes" type="submit"
-                                    class="w3-button w3-card-4 w3-third w3-pale-green w3-hover-green w3-round-large">
-                                Accept
-                            </button>
-                        </h5>
-                    </div>
+                    <my:ResetAccessButton lang="${lang}" totalCost="${totalOrdersCost}"/>
                 </c:if>
-                    <%--            End of Adding two Buttons to react--%>
-
-                    <%--Pagination begins            --%>
-
-                <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}"/>
-
-                    <%--                    Pagination ends                    --%>
+                <my:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}"/>
 
             </form>
         </c:if>
@@ -151,18 +152,11 @@
                    <span onclick="this.parentElement.style.display='none'"
                          class="w3-button w3-margin-right w3-display-right w3-round-large w3-hover-red w3-border w3-border-red w3-hover-border-grey">
                    </span>
-                <h5>There are no orders yet!</h5>
+                <h5><fmt:message key="order.fail"/></h5>
             </div>
         </c:if>
     </div>
-<%--    <div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">--%>
-<%--        <button class="w3-btn w3-round-large " onclick="location.href='${pageContext.request.contextPath}/'">Back to--%>
-<%--            main--%>
-<%--        </button>--%>
-<%--    </div>--%>
-<%--    <div class="w3-container" style="height: 65px">--%>
-<%--    </div>--%>
-    <mytag:BackHomeButton/>
+    <my:BackHomeButton/>
 </div>
 
 <jsp:include page="footer.jsp"/>
@@ -193,7 +187,7 @@
 <%--                                       class="w3-input w3-border-2"/>--%>
 <%--                            </td>--%>
 <%--                            <td class="w3-cell-bottom w3-col s2 w3-center">--%>
-<%--                                <a href="${pageContext.request.contextPath}/AuthorisationServlet?action=orderEdit&deleteId=${dish.id}">--%>
+<%--                                <a href="${pageContext.request.contextPath}/ServletController?action=orderEdit&deleteId=${dish.id}">--%>
 <%--                                    <i class="material-icons w3-xxxlarge w3-text-grey w3-circle">&#xe92b;</i>--%>
 <%--                                </a>--%>
 <%--                            </td>--%>

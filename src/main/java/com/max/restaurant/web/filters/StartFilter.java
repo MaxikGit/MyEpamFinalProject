@@ -1,7 +1,6 @@
-package com.max.restaurant.filters;
+package com.max.restaurant.web.filters;
 
 import com.max.restaurant.model.entity.Category;
-import com.max.restaurant.model.entity.User;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,9 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.CATEGORY_LIST_ATTR;
+import static com.max.restaurant.utils.UtilsCommandNames.CATEGORY_LIST_ATTR;
 import static com.max.restaurant.utils.UtilsFileNames.FIRST_START;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 

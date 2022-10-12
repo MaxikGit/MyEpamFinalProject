@@ -1,15 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="s" uri="http://restaurant.max.com" %>
-
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
+
+<fmt:setLocale value="${lang}"/>
+<fmt:setBundle basename="messages"/>
 
 <%@attribute name="orderData" type="com.max.restaurant.model.OrderData" required="true" %>
 <%@attribute name="divNum" type="java.lang.Integer" required="true" %>
 
 <s:managersOnlyTag/>
 <button onclick="document.getElementById('id0${divNum}').style.display='block'" type="button"
-        class="w3-button w3-hover-shadow w3-round-large"> Oder details...
+        class="w3-button w3-hover-shadow w3-round-large"><fmt:message key="order.details"/>...
 </button>
 
 <div id="id0${divNum}" class="w3-modal">
@@ -17,7 +19,7 @@
 <div class="w3-container w3-ligh">
 <span onclick="document.getElementById('id0${divNum}').style.display='none'"
       class="w3-button w3-display-topright">&times;</span>
-<h3 class="w3-left-align w3-margin-left w3-margin-top" >
+<h3 class="w3-left-align w3-margin-left w3-margin-top w3-padding font-login" >
         <mytag:OrderCreatedDate custom="${orderData.custom}" />
     </h3>
     </div>
@@ -27,13 +29,13 @@
     <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom ">
     <tr class="w3-cell-row w3-hover-none w3-light-blue">
     <%--                        column 1 /8.33% --%>
-    <th class="w3-cell-middle w3-col s2 w3-center">id#</th>
+    <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.num"/></th>
     <%--                        column 2 /41.66% --%>
-    <th class="w3-cell-middle w3-col s6">Dish</th>
+    <th class="w3-cell-middle w3-col s6"><fmt:message key="order.dish.name"/></th>
     <%--                        column 3 /16.66%--%>
-    <th class="w3-cell-middle w3-col s2">Price</th>
+    <th class="w3-cell-middle w3-col s2"><fmt:message key="order.price"/></th>
     <%--                        column 4 /8.33%--%>
-    <th class="w3-cell-middle w3-col s2 w3-center">Quantity</th>
+    <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.quantity"/></th>
     </tr>
 
     <c:forEach var="dishEntry" items="${orderData.dishes}" varStatus="num">
@@ -44,8 +46,8 @@
             <td class="w3-cell-middle w3-col s6">${dishEntry.key.name}</td>
                 <%--                        column 3--%>
             <td class="w3-cell-bottom w3-col s2">
-                <fmt:setLocale value="uk_UA"/>
-                <fmt:formatNumber type="CURRENCY" value="${dishEntry.key.price}" currencySymbol="UAH"/>
+                <c:set var="currSymb"><fmt:message key="currency"/></c:set>
+                <fmt:formatNumber type="CURRENCY" value="${dishEntry.key.price}" currencySymbol="${currSymb}"/>
             </td>
                 <%--                        column 4--%>
             <td class="w3-cell-middle w3-col s2 w3-center ">${dishEntry.value}</td>

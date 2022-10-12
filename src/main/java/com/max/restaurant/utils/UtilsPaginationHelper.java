@@ -1,11 +1,14 @@
-package com.max.restaurant.controller.command;
+package com.max.restaurant.utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 /**
  * Helper class, calculates the number of pages to display. Results are set in {@code HttpSession} object as attributes.
@@ -17,10 +20,12 @@ import static com.max.restaurant.controller.command.UtilsCommandNames.*;
  */
 
 public class UtilsPaginationHelper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilsPaginationHelper.class);
     private static int NUM_OF_RECS = 3;
     private static int PAGINATION_SIZE = 3;
 
     public static void paginationCounter(HttpServletRequest request, int containerSize) {
+        LOGGER.info(METHOD_STARTS_MSG, "paginationCounter", "true");
         int totalOfpages = (int) Math.ceil(containerSize * 1.0 / NUM_OF_RECS);
         HttpSession session  = request.getSession(false);
         int currPageNum = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGE_ATTR)).orElse("1"));
@@ -29,7 +34,6 @@ public class UtilsPaginationHelper {
         int currNumOfPages = Math.min(totalOfpages, PAGINATION_SIZE);
 
         if (totalOfpages == 1) {
-//            pageNumMax = Optional.ofNullable((Integer) session.getAttribute(PAGES_MAX_ATTR)).orElse(1);
             pageNumMax = 1;
         } else
         {
@@ -56,7 +60,6 @@ public class UtilsPaginationHelper {
                 }
             }
         }
-//        HttpSession session = request.getSession();
         session.setAttribute(PAGES_MIN_ATTR, pageNumMin);
         session.setAttribute(PAGES_MAX_ATTR, pageNumMax);
         session.setAttribute(PAGE_ATTR, currPageNum);
@@ -67,10 +70,5 @@ public class UtilsPaginationHelper {
         NUM_OF_RECS = recsPerPage;
         paginationCounter(request, containerSize);
     }
-    public static void paginationCounter(HttpServletRequest request, int containerSize,
-                                         int recsPerPage, int paginationSize) {
-        NUM_OF_RECS = recsPerPage;
-        PAGINATION_SIZE = paginationSize;
-        paginationCounter(request, containerSize);
-    }
+
 }

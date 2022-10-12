@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.List;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.DISH_LIST_ATTR;
+import static com.max.restaurant.utils.UtilsCommandNames.DISH_LIST_ATTR;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.TWO_PARAMS_MSG;

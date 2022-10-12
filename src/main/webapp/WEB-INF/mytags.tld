@@ -9,7 +9,7 @@
     <uri>http://restaurant.max.com</uri>
     <tag>
         <name>managersOnlyTag</name>
-        <tag-class>com.max.restaurant.tags.ManagersOnlyTag</tag-class>
+        <tag-class>com.max.restaurant.web.tags.ManagersOnlyTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 

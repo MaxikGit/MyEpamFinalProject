@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.max.restaurant.controller.command.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
@@ -47,24 +47,21 @@ public class SignUpCommand implements Command {
                 user.setLastName(request.getParameter(USER_LASTNAME));
                 user.setPassword(request.getParameter(USER_PASSWORD));
                 user.setRoleId(ROLE_CLIENT_ID);
-//                if (request.getParameter(USER_DETAILS) != null)
-//                    user.setDetails(request.getParameter(USER_DETAILS));
                 userService.insertUser(user);
                 LOGGER.info("registration");
                 session.setAttribute(USER_EMAIL, email);
                 forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
             } else {
                 session.setAttribute(USER_EMAIL, email);
+                session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG3);
                 forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
             }
         } else {
             session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
             forwardPage = request.getServletContext().getContextPath() + SIGN_UP_PAGE;
         }
-//        RequestDispatcher requestDispatcher = request.getServletContext().getRequestDispatcher(forwardPage);
         LOGGER.info(REDIRECT, forwardPage);
         response.sendRedirect(forwardPage);
-//        requestDispatcher.forward(request, response);
     }
 
     private static boolean validateUser(HttpServletRequest request) {

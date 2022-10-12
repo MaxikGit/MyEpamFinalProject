@@ -17,10 +17,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * This is a service class, that presents methods to operate over {@link Custom} objects on requests
+ * from controller to DAO layer.
+ */
 public class CustomService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomService.class);
     private CustomDAO customDAO;

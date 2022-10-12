@@ -1,4 +1,4 @@
-<%@tag import="com.max.restaurant.controller.command.UtilsCommandNames" %>
+<%@tag import="com.max.restaurant.utils.UtilsCommandNames" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ attribute name="pagesMax" required="true" type="java.lang.Integer" %>
 <%@ attribute name="pagesMin" required="true" type="java.lang.Integer" %>

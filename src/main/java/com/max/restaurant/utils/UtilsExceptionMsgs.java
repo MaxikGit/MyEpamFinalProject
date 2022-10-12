@@ -1,4 +1,4 @@
-package com.max.restaurant.exceptions;
+package com.max.restaurant.utils;
 
 public class UtilsExceptionMsgs {
     public static final String EMAIL_EXC = "illegal email";

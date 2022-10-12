@@ -12,13 +12,16 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.*;
 import static com.max.restaurant.model.entity.UtilsEntityFields.DISH_CATEGORY_ID;
 import static com.max.restaurant.model.entity.UtilsEntityFields.DISH_NAME;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * This is a service class, that presents methods to operate over {@link Dish} objects on requests
+ * from controller to DAO layer.
+ */
 public class DishService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DishService.class);
     private DishDAO dishDAO;

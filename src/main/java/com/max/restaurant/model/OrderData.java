@@ -10,10 +10,15 @@ import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.services.StatusService;
 import com.max.restaurant.model.services.UserService;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OrderData {
+/**
+ * This is a data transfer class, used to transfer special kit of
+ * {@link com.max.restaurant.model.entity.SimpleEntity} objects to the view layer
+ */
+public class OrderData implements Serializable {
     private Custom custom;
     private User users;
     private Map<Dish, Integer> dishes = new HashMap<>();

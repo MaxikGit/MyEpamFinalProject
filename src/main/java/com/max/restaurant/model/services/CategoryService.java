@@ -9,9 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.max.restaurant.exceptions.UtilsExceptionMsgs.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
+/**
+ * This is a service class, that presents methods to operate over {@link Category} objects on requests from controller
+ * to DAO layer.
+ */
 public class CategoryService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
     private CategoryDAO categoryDAO;

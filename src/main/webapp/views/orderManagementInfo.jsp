@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
 <%@ taglib prefix="s" uri="http://restaurant.max.com" %>
-<%@ page import="com.max.restaurant.controller.command.UtilsCommandNames" %>
+<%@ page import="com.max.restaurant.utils.UtilsCommandNames" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -28,7 +28,7 @@
     <%--    <c:if test="${orderNames != null}">--%>
     <fmt:setLocale value="uk_UA"/>
     <form id="orderTable" name="orderTable" method="post"
-          action="${pageContext.request.contextPath}/AuthorisationServlet?action=orderEditManagement">
+          action="${pageContext.request.contextPath}/ServletController?action=orderEditManagement">
         <div class="w3-container w3-margin">
             <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom">
                 <tr class="w3-card-2 w3-cell-row w3-hover-none w3-light-blue">
@@ -95,11 +95,11 @@
     <%--            <h5>There are no orders yet!</h5>--%>
     <%--        </div>--%>
     <%--    </c:if>--%>
-        <mytag:BackHomeButton altPath="/AuthorisationServlet?action=management" altName="Back to order management"/>
+        <mytag:BackHomeButton altPath="/ServletController?action=management" altName="Back to order management"/>
 </div>
 <%--<div class="w3-container w3-grey w3-opacity w3-right-align w3-padding w3-display-container">--%>
 <%--    <button class="w3-btn w3-round-large"--%>
-<%--            onclick="location.href='${pageContext.request.contextPath}/AuthorisationServlet?action=management'">--%>
+<%--            onclick="location.href='${pageContext.request.contextPath}/ServletController?action=management'">--%>
 <%--        Back to order management--%>
 <%--    </button>--%>
 <%--</div>--%>
