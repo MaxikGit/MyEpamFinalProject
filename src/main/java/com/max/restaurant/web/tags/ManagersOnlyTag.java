@@ -1,4 +1,4 @@
-package com.max.restaurant.tags;
+package com.max.restaurant.web.tags;
 
 
 import com.max.restaurant.model.entity.User;

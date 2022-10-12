@@ -20,7 +20,8 @@ public class UserService {
 
     public User findUserByEmail(String email) throws DAOException {
         if (!emailIsValid(email))
-            throw new DAOServiceException(EMAIL_EXC);
+            return null;
+//            throw new DAOServiceException(EMAIL_EXC);
         userDAO = new UserDAO();
         List<User> users = userDAO.findObjByParam(USER_EMAIL, email, userDAO.getConnection());
         return users.size() > 0 ? users.get(0) : null;

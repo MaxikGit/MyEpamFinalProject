@@ -15,15 +15,16 @@ import java.util.Map;
 import static com.max.restaurant.controller.command.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-
+/**
+ * This is a helper class that is used to work with servlet commands.
+ * It holds all known commands of {@link Command} interface.
+ */
 public class CommandExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandExecutor.class);
-
     private static final Map<String, Command> allKnownCommands = new HashMap<>();
 
     private CommandExecutor() {
     }
-
 
     static {
         LOGGER.info(STATIC_INI);
@@ -35,9 +36,19 @@ public class CommandExecutor {
         allKnownCommands.put(SORT_DISHES, new SortCommand());
         allKnownCommands.put(MANAGEMENT, new ManageOrdersCommand());
         allKnownCommands.put(MANAGER_EDIT_ORDER, new ManagerOrderEditingCommand());
-
+        allKnownCommands.put(LANGUAGE, new ChangeLangCommand());
     }
 
+    /**
+     * Method which calls an appropriate {@link Command} interface object, depending on "action" parameters of
+     * request. It also parses servlet requests to POST or GET processing methods of {@link Command} interface object.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws DAOException
+     * @throws CommandException
+     */
     public static final void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException, CommandException {
         LOGGER.info(METHOD_STARTS_MSG, "execute", "true");
         String commandName = request.getParameter(ACTION);

@@ -12,14 +12,13 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_FAILED;
 
-@WebServlet(name = "AuthorisationServlet", value = "/AuthorisationServlet")
-public class AuthorisationServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorisationServlet.class);
+@WebServlet(name = "ServletController", value = "/ServletController")
+public class ServletController extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServletController.class);
 
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //doPost(request, response);
         LOGGER.info("doGet");
         try {
             CommandExecutor.execute(request, response);
@@ -37,7 +36,7 @@ public class AuthorisationServlet extends HttpServlet {
         }
          catch (Throwable e) {
             LOGGER.error(METHOD_FAILED,e.getMessage(), e);
-            throw new RuntimeException("я!\n",e);
+            throw new RuntimeException(e);
         }
     }
 }

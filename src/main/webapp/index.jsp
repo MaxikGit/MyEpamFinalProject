@@ -1,15 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maxim
-  Date: 25.08.22
-  Time: 18:11
-  To change this template use File | Settings | File Templates.
---%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<!-- view-source:https://www.w3schools.com/w3css/tryw3css_templates_analytics.htm -->
-<html lang="en">
+
+<%--<c:set var="lang" value="uk"/>--%>
+<fmt:setLocale value="${lang}"/>
+
+<fmt:setBundle basename="messages"/>
+
+<html lang="${lang}">
+
 <head>
     <meta charset="UTF-8">
     <title>Restaurant EPAM final project</title>
@@ -27,48 +28,52 @@
     </style>
 </head>
 
-<body class="w3-light-grey">
+<body class="w3-light-grey ">
 <header>
-<!-- Top container -->
-<div class="w3-bar w3-top w3-black" style="z-index:4">
+    <!-- Top container -->
+    <div class="w3-container w3-bar w3-cell w3-top w3-black" style="z-index:4">
 
-    <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
+        <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
 
-    <%--    Hidden Menu Button--%>
-    <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
-            onclick="w3_open();"><i class="material-icons">&#xe5d2</i> &nbsp;Menu
-    </button>
+        <%--    Hidden Menu Button--%>
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
+                onclick="w3_open();"><i class="material-icons">&#xe5d2</i> &nbsp;<fmt:message key="main.menu"/>
+        </button>
 
-    <%--    Hidden Menu Button    --%>
+        <%--    Hidden Menu Button    --%>
 
-    <%--    login and signIn buttons--%>
+        <my:LanguageButton lang="${lang}"/>
 
-    <span class="w3-bar-item w3-cell-middle w3-right">
+        <%--    login and signIn buttons--%>
 
-
-            <a href="AuthorisationServlet?action=login" class="w3-bar-item w3-hover-none w3-hover-text-amber" style="text-decoration: none">
-                <c:if test="${empty loggedUser}"><i>Login</i></c:if>
-                <c:if test="${!empty loggedUser}"><i>Logout</i></c:if>
+        <span class="w3-bar-item w3-cell-middle w3-right">
+            <a href="ServletController?action=login" class="w3-bar-item w3-hover-none w3-hover-text-amber"
+               style="text-decoration: none">
+                <c:if test="${empty loggedUser}"><i><fmt:message key="main.login"/></i></c:if>
+                <c:if test="${!empty loggedUser}"><i><fmt:message key="main.logout"/></i></c:if>
             </a>
             <i class="w3-bar-item">/</i>
-            <a href="AuthorisationServlet?action=sign_up" class="w3-bar-item w3-hover-none w3-hover-text-amber w3-hover-shadow" style="text-decoration: none">
-                <i>Sign Up&nbsp;</i>
+            <a href="ServletController?action=sign_up"
+               class="w3-bar-item w3-hover-none w3-hover-text-amber w3-hover-shadow" style="text-decoration: none">
+                <i><fmt:message key="main.signup"/>&nbsp;</i>
             </a>
 
     </span>
 
-    <%--    login and signIn buttons end --%>
+        <%--    login and signIn buttons end --%>
 
-    <%--    shopping cart--%>
-<div class="w3-bar-item w3-right w3-hover-amber">
-    <c:if test="${dishIds!=null}">
-        <a href="AuthorisationServlet?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
-            <i class="material-icons w3-border-white" >&#xe8cc</i>${dishIds.size()}
-        </a>
-    </c:if>
-</div>
-</div>
-<%--shopping cart ends--%>
+        <%--    shopping cart--%>
+
+        <c:if test="${not empty dishIds}">
+            <div class="w3-bar-item w3-right w3-hover-amber" style="margin-top: 5px">
+                <a href="ServletController?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
+                    <i class="material-icons w3-border-white">&#xe8cc</i>${dishIds.size()}
+                </a>
+            </div>
+        </c:if>
+
+        <%--shopping cart ends--%>
+    </div>
 
 </header>
 <!-- Sidebar/menu -->
@@ -85,22 +90,20 @@
             </c:if>
         </div>
         <div class="w3-col s8 w3-bar">
-            <h3>Welcome, <strong><c:out value="${sessionScope.loggedUser.name}"
-                                        default="User"/></strong></h3><br>
+            <h3><fmt:message key="main.welcome"/>, <c:set var="userSet"><fmt:message key="main.user"/></c:set>
+                <strong>${not empty loggedUser.name ? loggedUser.name : userSet}</strong></h3><br>
         </div>
     </div>
     <hr>
     <!-- Sidebar/menu categories menu list-->
     <div class="w3-container">
-        <h3><strong>Dish categories</strong></h3>
+        <h3><strong><fmt:message key="main.dish.category"/></strong></h3>
     </div>
     <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-blue w3-hover-amber"
-           onclick="w3_close()" title="close menu"><i class="material-icons">&#xe5cd;</i>&nbsp; Close Menu</a>
-
+           onclick="w3_close()" title="close menu"><i class="material-icons">&#xe5cd;</i>&nbsp; <fmt:message
+                key="main.close.menu"/></a>
         <jsp:include page="views/categoryList.jsp"/>
-        <%--        <jsp:param name="categoryNames"  value="${categoryNames}"/>--%>
-        <%--        </jsp:include>--%>
         <br><br>
     </div>
 </nav>
@@ -114,18 +117,26 @@
 
     <!-- Header -->
     <div class="w3-container w3-margin-left w3-cell-row">
-        <h4 class="w3-cell w3-cell-middle"><strong>${sessionScope.categoryNames[categoryId-1].name}</strong></h4>
+        <h4 class="w3-cell w3-cell-middle"><strong>
+            <c:if test="${not empty sessionScope.categoryNames[categoryId-1].name}">
+                <fmt:message key="${sessionScope.categoryNames[categoryId-1].name}"/>
+            </c:if>
+        </strong></h4>
 
         <%--    Selector of sorting    --%>
 
         <c:if test="${dishesNames != null}">
             <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
-                <button class="w3-button " title="More">Sort by order of <i class="material-icons w3-small">&#xe5c5;</i>
+                <button class="w3-button " title="More"><fmt:message key="main.sort"/> <i
+                        class="material-icons w3-small">&#xe5c5;</i>
                 </button>
                 <div class="w3-dropdown-content w3-bar-block ">
-                    <a href="AuthorisationServlet?action=sortDishes&value=name" class="w3-bar-item w3-button">name</a>
-                    <a href="AuthorisationServlet?action=sortDishes&value=cost" class="w3-bar-item w3-button">cost</a>
-                    <a href="AuthorisationServlet?action=sortDishes&value=category" class="w3-bar-item w3-button">category</a>
+                    <a href="ServletController?action=sortDishes&value=name" class="w3-bar-item w3-button">
+                        <fmt:message key="main.sort.name"/></a>
+                    <a href="ServletController?action=sortDishes&value=cost" class="w3-bar-item w3-button">
+                        <fmt:message key="main.sort.cost"/></a>
+                    <a href="ServletController?action=sortDishes&value=category" class="w3-bar-item w3-button">
+                        <fmt:message key="main.sort.category"/></a>
                 </div>
             </div>
 
@@ -169,20 +180,3 @@
 </script>
 </body>
 </html>
-
-<%--        <div class="w3-cell w3-cell-middle w3-right w3-margin-right ">--%>
-<%--            <div class="w3-cell-row w3-cell-middle w3-small w3-button w3-hover-none">--%>
-<%--                <form action="AuthorisationServlet" method="get" name="sortType" >--%>
-<%--                    <strong>--%>
-<%--                        <label for="sortDishes" class="w3-cell  ">Sort by order of&nbsp</label>--%>
-<%--                        <select name="sortDishes" id="sortDishes" onchange="this.form.submit()"--%>
-<%--                                class="w3-cell w3-left-align w3-light-grey w3-border-light-gray w3-hover-border-light-grey">--%>
-<%--                            <option value="" selected disabled>None</option>--%>
-<%--                            <option value="name" ><a href="AuthorisationServlet?action=sort">am name</a></option>--%>
-<%--                            <option value="cost">cost</option>--%>
-<%--                            <option value="category">category</option>--%>
-<%--                        </select>--%>
-<%--                    </strong>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </div>--%>

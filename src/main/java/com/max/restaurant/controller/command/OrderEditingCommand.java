@@ -33,7 +33,6 @@ public class OrderEditingCommand implements Command {
         String page;
         HttpSession session = request.getSession();
         Map<Integer, Integer> dishIds = ((Map<Integer, Integer>) session.getAttribute(DISH_IDS_LIST_ATTR));
-        //value == null -> pressed "shopping cart"
         if (value == null) {
             DishService dishService = new DishService();
             Map<Dish, Integer> orderedDishes = dishService.findDishesById(dishIds);
@@ -49,7 +48,6 @@ public class OrderEditingCommand implements Command {
             LOGGER.info(FORWARD, page);
             request.getRequestDispatcher(page).forward(request, response);
         }
-        //else -> choosing dishes
         else {
             if (dishIds == null)
                 dishIds = new HashMap<>();
@@ -75,6 +73,14 @@ public class OrderEditingCommand implements Command {
         Map<Integer, Integer> dishIds = (Map<Integer, Integer>) session.getAttribute(DISH_IDS_LIST_ATTR);
         Map<Dish, Integer> orderedDishes = (Map<Dish, Integer>) session.getAttribute(ORDER_MAP_ATTR);
 
+        for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
+            String countParam = request.getParameter(QUANTITY_ATTR + entry.getKey().getId());
+            if (countParam == null)
+                continue;
+            int dishCount = Integer.parseInt(countParam);
+            entry.setValue(dishCount);
+            dishIds.replace(entry.getKey().getId(), entry.getValue());
+        }
         //if order not accepted
         if (request.getParameter(ORDER_ACCEPT_ATTR) == null)
         {
@@ -91,14 +97,6 @@ public class OrderEditingCommand implements Command {
                 page = request.getContextPath() + HOME_PAGE;
                 removeAttributes(session);
             } else {
-                for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
-                    String countParam = request.getParameter(QUANTITY_ATTR + entry.getKey().getId());
-                    if (countParam == null)
-                        continue;
-                    int dishCount = Integer.parseInt(countParam);
-                    entry.setValue(dishCount);
-                    dishIds.replace(entry.getKey().getId(), entry.getValue());
-                }
                 UtilsPaginationHelper.paginationCounter(request, orderedDishes.size(), recordsPerPage);
                 page = request.getContextPath() + ORDER_PAGE;
 
