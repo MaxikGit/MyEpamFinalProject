@@ -5,7 +5,6 @@ import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.Status;
 import com.max.restaurant.model.entity.User;
-import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.services.StatusService;
 import com.max.restaurant.model.services.UserService;

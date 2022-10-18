@@ -1,8 +1,9 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.services.UserService;
+import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,8 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
-import static com.max.restaurant.utils.UtilsFileNames.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsFileNames.LOGIN_PAGE;
+import static com.max.restaurant.utils.UtilsFileNames.SIGN_UP_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class SignUpCommand implements Command {
@@ -47,10 +49,14 @@ public class SignUpCommand implements Command {
                 user.setLastName(request.getParameter(USER_LASTNAME));
                 user.setPassword(request.getParameter(USER_PASSWORD));
                 user.setRoleId(ROLE_CLIENT_ID);
+                try{
                 userService.insertUser(user);
-                LOGGER.info("registration");
                 session.setAttribute(USER_EMAIL, email);
                 forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
+                }catch (DAOServiceException e){
+                    session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
+                    forwardPage = request.getServletContext().getContextPath() + SIGN_UP_PAGE;
+                }
             } else {
                 session.setAttribute(USER_EMAIL, email);
                 session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG3);
@@ -69,6 +75,6 @@ public class SignUpCommand implements Command {
                 || request.getParameter(USER_NAME) == null || request.getParameter(USER_NAME).isBlank()
                 || request.getParameter(USER_LASTNAME) == null || request.getParameter(USER_LASTNAME).isBlank()
                 || request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank()
-                || !request.getParameter(USER_PASSWORD).equals(request.getParameter("re-password")));
+                || !request.getParameter(USER_PASSWORD).equals(request.getParameter(USER_REPASSWORD)));
     }
 }

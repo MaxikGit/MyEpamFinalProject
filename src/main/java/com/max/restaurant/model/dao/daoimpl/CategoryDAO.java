@@ -1,18 +1,18 @@
 package com.max.restaurant.model.dao.daoimpl;
 
-import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.entity.Category;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.CATEGORY_ID;
+import static com.max.restaurant.utils.UtilsEntityFields.CATEGORY_NAME;
 
 public class CategoryDAO extends AbstractDAOSimpleEntity<Category> {
     private static final String genericName = Category.class.getSimpleName();
 
-    public CategoryDAO() throws DAOException {
+    public CategoryDAO(){
         super(genericName);
     }
 

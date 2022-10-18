@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 
 public class StatusDAO extends AbstractDAOSimpleEntity<Status> {
     private static final String genericName = Status.class.getSimpleName();

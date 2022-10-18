@@ -10,15 +10,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.max.restaurant.model.dao.UtilsSQLConstants.getSQLDeleteByParam;
-import static com.max.restaurant.model.dao.UtilsSQLConstants.getSQLUpdateEntityById;
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
+import static com.max.restaurant.utils.UtilsSQLConstants.getSQLDeleteByParam;
+import static com.max.restaurant.utils.UtilsSQLConstants.getSQLUpdateEntityById;
 
 public class CustomHasDishDAO extends AbstractDAOSimpleEntity<CustomHasDish> {
     private static final String genericName = CustomHasDish.class.getSimpleName();
 
-    public CustomHasDishDAO() throws DAOException {
+    public CustomHasDishDAO() {
         super(genericName);
     }
 
@@ -66,7 +66,7 @@ public class CustomHasDishDAO extends AbstractDAOSimpleEntity<CustomHasDish> {
     }
 
     @Override
-    public final boolean updateObj(CustomHasDish entity, Connection conn) throws DAOException {
+    public boolean updateObj(CustomHasDish entity, Connection conn) throws DAOException {
         Logger LOGGER = LoggerFactory.getLogger(this.getClass());
         LOGGER.info(METHOD_STARTS_MSG, "updateObj", true);
         PreparedStatement statement = null;

@@ -4,9 +4,11 @@ import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.entity.Custom;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 
 public class CustomDAO extends AbstractDAOSimpleEntity<Custom> {
     private static final String genericName = Custom.class.getSimpleName();

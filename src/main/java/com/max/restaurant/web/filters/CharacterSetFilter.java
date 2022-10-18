@@ -1,7 +1,6 @@
 package com.max.restaurant.web.filters;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

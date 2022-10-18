@@ -1,8 +1,8 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.services.UserService;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.USER_EMAIL;
+import static com.max.restaurant.utils.UtilsEntityFields.USER_PASSWORD;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 

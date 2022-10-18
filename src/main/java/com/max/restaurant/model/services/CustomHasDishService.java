@@ -4,7 +4,6 @@ import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.dao.daoimpl.CustomDAO;
 import com.max.restaurant.model.dao.daoimpl.CustomHasDishDAO;
-import com.max.restaurant.model.entity.Category;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
@@ -18,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.max.restaurant.utils.UtilsEntityFields.CUSTOMHASDISH_C_ID;
 import static com.max.restaurant.utils.UtilsExceptionMsgs.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.CUSTOMHASDISH_C_ID;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 /**
@@ -28,13 +27,15 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
  */
 public class CustomHasDishService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomHasDishService.class);
-    private CustomHasDishDAO customHasDishDAO;
+    private CustomHasDishDAO customHasDishDAO = new CustomHasDishDAO();
+
+    public CustomHasDishService() throws DAOException {
+    }
 
     public List<CustomHasDish> findByCustomId(int customId) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findByCustomId", "true");
         if (customId < 1)
             throw new DAOServiceException(ID_EXC);
-        customHasDishDAO = new CustomHasDishDAO();
         List<CustomHasDish> list = customHasDishDAO
                 .findObjByParam(CUSTOMHASDISH_C_ID, String.valueOf(customId), customHasDishDAO.getConnection());
         return list;
@@ -42,9 +43,9 @@ public class CustomHasDishService {
 
     public CustomHasDish findByCustomIdDishId(int customId, int dishId) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findByCustomIdDishId", "true");
-        if (customId < 1 || dishId < 1)
+        if (customId < 1 || dishId < 1){
             throw new DAOServiceException(ID_EXC);
-        customHasDishDAO = new CustomHasDishDAO();
+        }
         List<CustomHasDish> list = findByCustomId(customId);
         for (CustomHasDish hasDish : list) {
             if (hasDish.getDishId() == dishId)
@@ -55,7 +56,6 @@ public class CustomHasDishService {
 
     public List<CustomHasDish> findAll() throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "findAllCategories", "true");
-        customHasDishDAO = new CustomHasDishDAO();
         return customHasDishDAO.findAll();
     }
 
@@ -69,7 +69,6 @@ public class CustomHasDishService {
             throw new DAOServiceException(CUSTOM_HAS_DISH_EXC + customHasDish);
         CustomDAO customDAO = new CustomDAO();
         Custom custom = customDAO.findObjById(customHasDish.getCustomId());
-        customHasDishDAO = new CustomHasDishDAO();
         Connection conn = customHasDishDAO.getConnection();
         try {
             conn.setAutoCommit(false);
@@ -98,29 +97,12 @@ public class CustomHasDishService {
 
     public void update(CustomHasDish customHasDish) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "updateCustomHasDish", "true");
-        customHasDishDAO = new CustomHasDishDAO();
-        if (!customHasDishIsValid(customHasDish) && !customHasDishDAO.updateObj(customHasDish, customHasDishDAO.getConnection()))
+        boolean bu = customHasDishIsValid(customHasDish);
+        if (!customHasDishIsValid(customHasDish) || !customHasDishDAO.updateObj(customHasDish, customHasDishDAO.getConnection())){
+            LOGGER.info(METHOD_FAILED, "update" + customHasDish);
             throw new DAOServiceException(USER_EXC);
-
+        }
     }
-
-//    public void update(Custom custom, Map<Dish, Integer> orderedDishes) throws DAOException {
-//        List<CustomHasDish> hasDishesList = new ArrayList<>();
-//        for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
-//            CustomHasDish customHasDish = findByCustomIdDishId(custom.getId(), entry.getKey().getId());
-//            customHasDish.setCount(entry.getValue());
-//            hasDishesList.add(customHasDish);
-//        }
-//        customHasDishDAO = new CustomHasDishDAO();
-//        CustomService customService = new CustomService();
-//        Connection connection = customHasDishDAO.getConnection();
-//        try {
-//            connection.setAutoCommit(false);
-//
-//        } catch (SQLException e) {
-//            throw new DAOServiceException(e);
-//        }
-//    }
 
     public List<CustomHasDish> createList(int customID, Map<Dish, Integer> orderedDishes) throws DAOException {
         List<CustomHasDish> hasDishesList = new ArrayList<>();
@@ -175,7 +157,6 @@ public class CustomHasDishService {
         if (conn != null) {
             try {
                 LOGGER.info(CLOSE_TRANSACTION, true);
-//                    conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 conn.setAutoCommit(true);
                 conn.close();
             } catch (SQLException e) {
@@ -187,6 +168,25 @@ public class CustomHasDishService {
 }
 
 /* Not used methods
+
+
+//    public void update(Custom custom, Map<Dish, Integer> orderedDishes) throws DAOException {
+//        List<CustomHasDish> hasDishesList = new ArrayList<>();
+//        for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
+//            CustomHasDish customHasDish = findByCustomIdDishId(custom.getId(), entry.getKey().getId());
+//            customHasDish.setCount(entry.getValue());
+//            hasDishesList.add(customHasDish);
+//        }
+//        customHasDishDAO = new CustomHasDishDAO();
+//        CustomService customService = new CustomService();
+//        Connection connection = customHasDishDAO.getConnection();
+//        try {
+//            connection.setAutoCommit(false);
+//
+//        } catch (SQLException e) {
+//            throw new DAOServiceException(e);
+//        }
+//    }
 
     public void insertCustomHasDish(CustomHasDish customHasDish) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "insertCustomHasDish", "true");

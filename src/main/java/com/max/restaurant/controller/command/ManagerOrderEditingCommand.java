@@ -5,7 +5,8 @@ import com.max.restaurant.model.OrderData;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.CustomHasDish;
 import com.max.restaurant.model.entity.Dish;
-import com.max.restaurant.model.services.*;
+import com.max.restaurant.model.services.CustomHasDishService;
+import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.utils.UtilsPaginationHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +19,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
-import static com.max.restaurant.utils.UtilsFileNames.*;
+import static com.max.restaurant.utils.UtilsFileNames.EDIT_ORDER_MANAGEMENT_PAGE;
+import static com.max.restaurant.utils.UtilsFileNames.ORDER_MANAGEMENT_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class ManagerOrderEditingCommand implements Command {

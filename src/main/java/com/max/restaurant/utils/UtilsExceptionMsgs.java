@@ -5,6 +5,7 @@ public class UtilsExceptionMsgs {
     public static final String IDS_EXC = "illegal list of id-s";
     public static final String ID_EXC = "illegal id";
     public static final String USER_EXC = "no such user";
+    public static final String WRONG_INPUT_EXC = "wrong input";
     public static final String CUSTOM_HAS_DISH_EXC = "not valid entity ";
     public static final String CUSTOM_DAO_EXC = "there are doubled customs in DB";
     public static final String CUSTOM_VALID_EXC = "trying to insert not valid custom";

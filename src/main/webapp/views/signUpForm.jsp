@@ -34,13 +34,13 @@
                 <b><fmt:message key="signup.name"/></b>
             </label>
             <input type="text" placeholder="${namePlace}" name="name" id="name" required
-                   class="w3-input w3-border w3-hover-border-light-gray">
+                   minlength="2" class="w3-input w3-border w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="last_name">
                 <b><fmt:message key="signup.lastname"/></b>
             </label>
             <input type="text" placeholder="${lastNamePlace}" name="last_name" id="last_name"
-                   required class="w3-input w3-hover-border-light-gray">
+                   minlength="1" required class="w3-input w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="email">
                 <b><fmt:message key="signup.email"/></b>

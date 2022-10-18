@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static com.max.restaurant.utils.UtilsFileNames.*;
+import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.FORWARD;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 

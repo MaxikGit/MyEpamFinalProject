@@ -1,18 +1,16 @@
-package com.max.restaurant.model.dao;
+package com.max.restaurant.utils;
 
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.entity.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.management.relation.Role;
 import java.util.stream.Stream;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 
 class UtilsSQLConstantsTest {
 
@@ -34,7 +32,7 @@ class UtilsSQLConstantsTest {
 
     public static Stream<Arguments> insertCases() {
         return Stream.of(
-                Arguments.of(String.format("INSERT INTO %s VALUES (%s)", USER_TABLE, "DEFAULT, ?, ?, ?, ?, DEFAULT, ?"), User.class.getSimpleName()),
+                Arguments.of(String.format("INSERT INTO %s VALUES (%s)", USER_TABLE, "DEFAULT, ?, ?, ?, ?, ?, ?"), User.class.getSimpleName()),
                 Arguments.of(String.format("INSERT INTO %s VALUES (%s)",ROLE_TABLE, "DEFAULT, ?"), Role.class.getSimpleName()),
                 Arguments.of(String.format("INSERT INTO %s VALUES (%s)", CUSTOM_HAS_DISH_TABLE, "?, ?, ?, ?"), CustomHasDish.class.getSimpleName())
         );
@@ -61,11 +59,11 @@ class UtilsSQLConstantsTest {
                         "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE %s=?", CUSTOM_TABLE,
                         CUSTOM_COST, CUSTOM_TIME, CUSTOM_USER_ID, CUSTOM_STATUS_ID, CUSTOM_ID), Custom.class.getSimpleName()),
                 Arguments.of(String.format(
-                        "UPDATE %s SET %s=?, %s=?, %s=? WHERE %s=?", CUSTOM_HAS_DISH_TABLE,
-                        CUSTOMHASDISH_D_ID, CUSTOMHASDISH_COUNT, CUSTOMHASDISH_PRICE, CUSTOMHASDISH_C_ID), CustomHasDish.class.getSimpleName()),
+                        "UPDATE %s SET %s=?, %s=? WHERE %s=? AND %s=?", CUSTOM_HAS_DISH_TABLE,
+                        CUSTOMHASDISH_COUNT, CUSTOMHASDISH_PRICE, CUSTOMHASDISH_C_ID, CUSTOMHASDISH_D_ID), CustomHasDish.class.getSimpleName()),
                 Arguments.of(String.format(
-                        "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE %s=?", DISH_TABLE,
-                        DISH_NAME, DISH_PRICE, DISH_DETAILS, DISH_CATEGORY_ID, DISH_ID), Dish.class.getSimpleName()),
+                        "UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?", DISH_TABLE,
+                        DISH_NAME, DISH_PRICE, DISH_DETAILS, DISH_CATEGORY_ID, DISH_IMAGE_PATH, DISH_ID), Dish.class.getSimpleName()),
                 Arguments.of(String.format(
                         "UPDATE %s SET %s=? WHERE %s=?", ROLE_TABLE, ROLE_NAME, ROLE_ID), Role.class.getSimpleName()),
                 Arguments.of(String.format(
@@ -77,7 +75,6 @@ class UtilsSQLConstantsTest {
     @ParameterizedTest
     @MethodSource("findAllSomeCases")
     void getSQLFindAll(String expected, String simpleClassName) {
-
         try {
             String actual = UtilsSQLConstants.getSQLFindAll(simpleClassName);
             Assertions.assertDoesNotThrow(() -> new Exception());
@@ -86,8 +83,6 @@ class UtilsSQLConstantsTest {
             System.out.println(e.getMessage());
         }
     }
-
-
 
     @ParameterizedTest
     @MethodSource("findByParamCases")
@@ -100,7 +95,6 @@ class UtilsSQLConstantsTest {
         } catch (DAOException e) {
             System.out.println(e);
         }
-
     }
 
     @ParameterizedTest

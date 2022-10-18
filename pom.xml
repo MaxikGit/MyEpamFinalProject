@@ -40,21 +40,21 @@
             <scope>provided</scope>
         </dependency>
 
-<!-- taglib territory -->
+        <!-- taglib territory -->
         <!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl-api -->
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet.jsp.jstl</groupId>-->
-<!--            <artifactId>jstl-api</artifactId>-->
-<!--            <version>1.2</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.servlet.jsp.jstl</groupId>-->
+        <!--            <artifactId>jstl-api</artifactId>-->
+        <!--            <version>1.2</version>-->
+        <!--        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/jakarta.servlet.jsp.jstl/jakarta.servlet.jsp.jstl-api -->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.servlet.jsp.jstl</groupId>-->
-<!--            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/javax.servlet/jstl &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>jakarta.servlet.jsp.jstl</groupId>-->
+        <!--            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>-->
+        <!--            <version>3.0.0</version>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/javax.servlet/jstl &ndash;&gt;-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -62,29 +62,28 @@
         </dependency>
 
 
-
         <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-spec &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.taglibs</groupId>-->
-<!--            <artifactId>taglibs-standard-spec</artifactId>-->
-<!--            <version>1.2.5</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.taglibs</groupId>-->
+        <!--            <artifactId>taglibs-standard-spec</artifactId>-->
+        <!--            <version>1.2.5</version>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-jstlel &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.taglibs</groupId>-->
-<!--            <artifactId>taglibs-standard-jstlel</artifactId>-->
-<!--            <version>1.2.5</version>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.taglibs/taglibs-standard-jstlel &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.taglibs</groupId>-->
+        <!--            <artifactId>taglibs-standard-jstlel</artifactId>-->
+        <!--            <version>1.2.5</version>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/jstl/jstl &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>jstl</groupId>-->
-<!--            <artifactId>jstl</artifactId>-->
-<!--            <version>1.2</version>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/jstl/jstl &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>jstl</groupId>-->
+        <!--            <artifactId>jstl</artifactId>-->
+        <!--            <version>1.2</version>-->
+        <!--        </dependency>-->
 
-<!-- loggers territory -->
+        <!-- loggers territory -->
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
@@ -105,7 +104,7 @@
             <version>1.2.22</version>
         </dependency>
 
-<!-- Unit Tests territory -->
+        <!-- Unit Tests territory -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -118,15 +117,21 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.8.0</version>
+            <scope>test</scope>
+        </dependency>
 
+    </dependencies>
     <build>
         <plugins>
             <plugin>

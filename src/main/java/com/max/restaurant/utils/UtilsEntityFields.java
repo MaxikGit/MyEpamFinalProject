@@ -1,6 +1,7 @@
-package com.max.restaurant.model.entity;
+package com.max.restaurant.utils;
 
 import com.max.restaurant.exceptions.DAOException;
+import com.max.restaurant.model.entity.*;
 
 public class UtilsEntityFields {
 	public static final String USER_TABLE = "user";
@@ -16,6 +17,7 @@ public class UtilsEntityFields {
 	public static final String USER_EMAIL = "email";
 	public static final String USER_LASTNAME = "last_name";
 	public static final String USER_PASSWORD = "password";
+	public static final String USER_REPASSWORD = "re-password";
 	public static final String USER_DETAILS = "details";
 	public static final String USER_DETAILS_DEFAULT = "none";
 	public static final String USER_ROLE_ID = "role_id";

@@ -12,9 +12,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.max.restaurant.model.dao.UtilsSQLConstants.*;
-import static com.max.restaurant.model.entity.UtilsEntityFields.USER_ID;
+import static com.max.restaurant.utils.UtilsEntityFields.USER_ID;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
+import static com.max.restaurant.utils.UtilsSQLConstants.*;
 
 /**
  * This class provides a skeletal implementation of the DAOSimpleEntity interface to minimize the effort required
@@ -23,7 +23,7 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
  *
  * @param <T> the object type of {@link SimpleEntity} interface
  */
-abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSimpleEntity<T> {
+public abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSimpleEntity<T> {
     //    private MyDBConnection myDbConnection;
     private final Logger LOGGER;
     private final String genericName;
@@ -33,7 +33,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
      * @param genericSimpleName used to achieve SQL expression for the concrete entity.
      *                          Its value is equal to {@code Class.getSimpleName()}
      */
-    protected AbstractDAOSimpleEntity(String genericSimpleName){
+    public AbstractDAOSimpleEntity(String genericSimpleName){
         this.LOGGER = LoggerFactory.getLogger(this.getClass());
         this.genericName = genericSimpleName;
         LOGGER.info(CONSTRUCTOR);
@@ -51,7 +51,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
     }
 
     @Override
-    public final T findObjById(int id) throws DAOException {
+    public T findObjById(int id) throws DAOException {
         LOGGER.info(genericName + FIND_BY_ID, id);
         Connection conn = null;
         PreparedStatement statement = null;
@@ -75,7 +75,7 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
     }
 
     @Override
-    public final List<T> findObjByParam(String paramName, String param, Connection conn) throws DAOException {
+    public List<T> findObjByParam(String paramName, String param, Connection conn) throws DAOException {
         LOGGER.info(genericName + FIND_BY_PARAM, paramName, param);
 //        Connection conn = null;
         PreparedStatement statement = null;
@@ -127,14 +127,11 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
     }
 
     @Override
-    public final boolean insertObj(T entity, Connection conn) throws DAOException {
+    public boolean insertObj(T entity, Connection conn) throws DAOException {
         LOGGER.info(INSERT_MSG, genericName);
-//        Connection conn = null;
         PreparedStatement statement = null;
         try {
-//            conn = getConnection();
             statement = conn.prepareStatement(getSqlInsertEntity(genericName));
-            //implement this
             setAbstractStatementParams(entity, statement, false);
             return 1 == statement.executeUpdate();
         } catch (SQLException e) {
@@ -148,10 +145,8 @@ abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements DAOSim
     @Override
     public boolean updateObj(T entity, Connection conn) throws DAOException {
         LOGGER.info(UPDATE_MSG, genericName);
-//        Connection conn = null;
         PreparedStatement statement = null;
         try {
-//            conn = myDbConnection.getConnection();
             statement = conn.prepareStatement(getSQLUpdateEntityById(genericName));
             setAbstractStatementParams(entity, statement, true);
             LOGGER.debug(SQL_EXPR_MSG, "update", genericName, statement);

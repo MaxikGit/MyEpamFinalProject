@@ -7,7 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.ROLE_ID;
+import static com.max.restaurant.utils.UtilsEntityFields.ROLE_NAME;
 
 public class RoleDAO extends AbstractDAOSimpleEntity<Role> {
     private static final String genericName = Role.class.getSimpleName();

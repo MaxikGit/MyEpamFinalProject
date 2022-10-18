@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 
 public class UserDAO extends AbstractDAOSimpleEntity<User> {
     //    private final Logger logger = LoggerFactory.getLogger(UserDAO.class);
@@ -15,12 +15,7 @@ public class UserDAO extends AbstractDAOSimpleEntity<User> {
 
     public UserDAO() throws DAOException {
         super(genericName);
-//        super(genericName, LoggerFactory.getLogger(UserDAO.class));
     }
-
-//public User findUserByEmail(String email) throws DAOException {
-//        return findObjByParam(USER_EMAIL, email);
-//}
 
     @Override
     protected User getEntityFromResult(ResultSet result) throws SQLException {

@@ -19,6 +19,8 @@ public class UtilsLoggerMsgs {
     public static final String FORWARD = "forwarding to {}";
     public static final String REDIRECT = "redirecting to {}";
     public static final String SQL_EXPR_MSG = "for {} operation, entity {}, expr = {}";
+    public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
+    public static final String ENCODE_MSG = "encoding {} was replaced with {}";
 
     public static final String FIND_BY_ID = "find by Id = {}";
     public static final String FAILED_FIND_BY_ID = "{} can't find By Id";
@@ -26,8 +28,6 @@ public class UtilsLoggerMsgs {
     public static final String FAILED_FIND_BY_PARAM = " can't be find By {}";
     public static final String FIND_ALL = "finding every {}";
     public static final String FAILED_FIND_ALL = "failed find every {}";
-    public static final String FIND_MAX_ID = "finding max ID of {}";
-    public static final String FAILED_FIND_MAX_ID = "failed finding max ID of {}";
 
     public static final String INSERT_MSG = "Insert {}";
     public static final String FAILED_INSERT = "failed insert {}";
@@ -42,7 +42,5 @@ public class UtilsLoggerMsgs {
     public static final String FAILED_CLOSE_ST_CONN = " failed to close conn & statement ";
     public static final String FAILED_CLOSE_ST_CONN_RS = "{} failed to close resultSet conn & statement ";
 
-    public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
-    public static final String ENCODE_MSG = "encoding {} was replaced with {}";
 
 }

@@ -1,11 +1,11 @@
-package com.max.restaurant.model.dao;
+package com.max.restaurant.utils;
 
 
 import com.max.restaurant.exceptions.DAOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.max.restaurant.model.entity.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsEntityFields.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.SQL_EXPR_MSG;
 
 /**
@@ -33,29 +33,22 @@ public class UtilsSQLConstants {
     private static final String SQL_UPDATE_USER_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=?, %s=?, %s=? %s=? %s=? WHERE %s=?",
             USER_EMAIL, USER_NAME, USER_LASTNAME, USER_PASSWORD, USER_DETAILS, USER_ROLE_ID, USER_ID);
-    //CategoryDAO
     private static final String SQL_UPDATE_CATEGORY_BY_ID =String.format(
             "UPDATE %%s SET %s=? WHERE %s=?", CATEGORY_NAME, CATEGORY_ID);
-    //CustomDAO
     private static final String SQL_UPDATE_CUSTOM_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=?, %s=?, %s=? WHERE %s=?",
             CUSTOM_COST, CUSTOM_TIME, CUSTOM_USER_ID, CUSTOM_STATUS_ID, CUSTOM_ID);
-    //Custom_has_dishDAO
     private static final String SQL_UPDATE_CUSTOMHASDISH_BY_CUSTOM_ID = String.format(
             "UPDATE %%s SET %s=?, %s=? WHERE %s=? AND %s=?",
             CUSTOMHASDISH_COUNT, CUSTOMHASDISH_PRICE, CUSTOMHASDISH_C_ID, CUSTOMHASDISH_D_ID);
-    //DishDAO
     private static final String SQL_UPDATE_DISH_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?",
             DISH_NAME, DISH_PRICE, DISH_DETAILS, DISH_CATEGORY_ID, DISH_IMAGE_PATH, DISH_ID);
-    //RoleDAO
     private static final String SQL_UPDATE_ROLE_BY_ID =String.format(
             "UPDATE %%s SET %s=? WHERE %s=?", ROLE_NAME, ROLE_ID);
-    //StatusDAO
     private static final String SQL_UPDATE_STATUS_BY_ID = String.format(
             "UPDATE %%s SET %s=?, %s=? WHERE %s=?",
             STATUS_NAME, STATUS_DETAILS, STATUS_ID);
-    //get count of records
     private static final String SQL_RECORDS_COUNT = "SELECT count(*) FROM %s";
 
 

@@ -2,10 +2,10 @@ package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
-import com.max.restaurant.model.services.CategoryService;
-import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.entity.Category;
 import com.max.restaurant.model.entity.Dish;
+import com.max.restaurant.model.services.CategoryService;
+import com.max.restaurant.model.services.DishService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
-import static com.max.restaurant.utils.UtilsFileNames.*;
+import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class CategoryCommand implements Command {

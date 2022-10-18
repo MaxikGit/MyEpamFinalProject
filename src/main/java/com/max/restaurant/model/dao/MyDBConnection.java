@@ -10,7 +10,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.CONSTRUCTOR;
+import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 public class MyDBConnection {
     private static Logger logger = LoggerFactory.getLogger(MyDBConnection.class);
