@@ -24,7 +24,7 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 public class ManageOrdersCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
-    private int recordsPerPage = 5;
+    private int recordsPerPage = 4;
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {

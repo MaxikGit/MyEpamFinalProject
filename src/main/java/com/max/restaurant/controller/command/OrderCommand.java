@@ -1,6 +1,7 @@
 package com.max.restaurant.controller.command;
 
 import com.max.restaurant.exceptions.DAOException;
+import com.max.restaurant.model.OrderData;
 import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.User;
@@ -15,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +25,22 @@ import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsFileNames.ORDER_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-public class OrderEditingCommand implements Command {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderEditingCommand.class);
+/**
+ * Command that forms order cart, processes users order & registers it in database.
+ */
+public class OrderCommand implements Command {
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderCommand.class);
     private int recordsPerPage = 3;
 
+    /**
+     * Method forms user cart: collects ids of dishes from request parameter
+     * {@link com.max.restaurant.utils.UtilsCommandNames#VALUE_ATTR}, then passes it to order page
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws DAOException
+     */
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
@@ -67,6 +79,15 @@ public class OrderEditingCommand implements Command {
         }
     }
 
+    /**
+     *
+     * Method processes changes made by user in his cart. If order is accepted, then register it in database
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     * @throws DAOException
+     */
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException, DAOException {
@@ -118,20 +139,19 @@ public class OrderEditingCommand implements Command {
             page = request.getContextPath() + HOME_PAGE;
             User currentUser = (User) session.getAttribute(LOGGED_USER_ATTR);
             CustomService customService = new CustomService();
-            Custom newCustom = customService.getNewCustom(currentUser.getId(), orderedDishes);
-            /*
-        this part I want to use to show progress bar of Customers orders "in work"
-        this still have no implementation on pages
-        */
-            List<Custom> customList = (List<Custom>) session.getAttribute(CUSTOM_LIST_ATTR);
-            if (customList == null)
-                customList = new ArrayList<>();
-            customList.add(newCustom);
-            session.setAttribute(CUSTOM_LIST_ATTR, customList);
+            customService.getNewCustom(currentUser.getId(), orderedDishes);
+            List<OrderData> orders = getOrdersPending(currentUser.getId());
+            session.setAttribute(CUSTOM_LIST_ATTR, orders);
             removeAttributes(session);
         }
         LOGGER.debug(REDIRECT, page);
         response.sendRedirect(page);
+    }
+    private List<OrderData> getOrdersPending(int userId) throws DAOException {
+        CustomService service = new CustomService();
+        List<Custom> customList = service.getUsersCustomsInProgress(userId);
+        List<OrderData> ordersList = OrderData.getOrderDataList(customList);
+        return ordersList;
     }
 
     private static void removeAttributes(HttpSession session) {

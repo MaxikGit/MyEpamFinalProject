@@ -15,11 +15,9 @@
     <meta charset="UTF-8">
     <title>Restaurant EPAM final project</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=fire">
+
     <style>
         .restik {
             font-family: "Sofia", sans-serif;
@@ -35,6 +33,11 @@
 
         <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
 
+        <c:if test="${loggedUser == null}">
+            <span class="w3-display-topmiddle w3-animate-fading w3-text-light-blue" style="margin-top: 18px;">
+            <i><fmt:message key="main.please.login"/></i>
+            </span>
+        </c:if>
         <%--    Hidden Menu Button--%>
         <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-amber"
                 onclick="w3_open();"><i class="material-icons">&#xe5d2</i> &nbsp;<fmt:message key="main.menu"/>
@@ -55,9 +58,8 @@
             <i class="w3-bar-item">/</i>
             <a href="ServletController?action=sign_up"
                class="w3-bar-item w3-hover-none w3-hover-text-amber w3-hover-shadow" style="text-decoration: none">
-                <i><fmt:message key="main.signup"/>&nbsp;</i>
+                <i><fmt:message key="main.signup"/></i>
             </a>
-
     </span>
 
         <%--    login and signIn buttons end --%>
@@ -74,39 +76,79 @@
 
         <%--shopping cart ends--%>
     </div>
-
 </header>
+
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white" style="z-index:3;width:300px;" id="mySidebar"><br>
-    <div class="w3-container w3-row">
-        <div class="w3-col s4">
+
+<nav class="w3-sidebar w3-collapse w3-white w3-bar-block" style="z-index:3;width:300px;" id="mySidebar"><br>
+    <div class="w3-container w3-cell-row">
+        <div class="w3-cell w3-col s4 w3-cell-middle">
             <c:if test="${loggedUser!=null}">
                 <img src="${pageContext.request.contextPath}/views/images/smile.png"
-                     class="w3-circle w3-margin-right" style="width:66px" alt=":/">
+                     class="w3-circle w3-margin-right " style="width:86px" alt=":/">
             </c:if>
             <c:if test="${loggedUser==null}">
                 <img src="${pageContext.request.contextPath}/views/images/question_mark.png"
-                     class="w3-circle w3-margin-right" style="width:66px" alt=":/">
+                     class="w3-circle w3-margin-right" style="width:86px" alt=":/">
             </c:if>
         </div>
-        <div class="w3-col s8 w3-bar">
-            <h3><fmt:message key="main.welcome"/>, <c:set var="userSet"><fmt:message key="main.user"/></c:set>
-                <strong>${not empty loggedUser.name ? loggedUser.name : userSet}</strong></h3><br>
+        <div class="w3-cell w3-col s8 w3-center font-login w3-xxlarge">
+            <fmt:message key="main.welcome"/>, <c:set var="userSet"><fmt:message key="main.user"/></c:set>
+            <strong>${not empty loggedUser.name ? loggedUser.name : userSet}</strong>
         </div>
     </div>
-    <hr>
-    <!-- Sidebar/menu categories menu list-->
+
+    <%--    Pending orders info    --%>
+
+    <c:if test="${not empty customsList }">
+
+        <div class="w3-block w3-bar-item w3-dropdown-hover w3-small w3-white">
+            <button class="w3-button w3-cursive" title="More">
+                <i><fmt:message key="main.order.info"/></i>
+                <i class="material-icons w3-small">arrow_drop_down</i>
+            </button>
+            <div class="w3-dropdown-content w3-bar-block w3-light-grey">
+                <c:forEach var="orderData" items="${customsList}" varStatus="counter">
+                    <c:set var="statusName" value="${orderData.status.name}"/>
+                    <div class="w3-bar-item w3-button  w3-cursive">
+                        <c:set var="orderBriefInfo">
+                            <fmt:message key="order"/>${counter.count}, <fmt:message key="${statusName}"/>
+                            , <fmt:formatDate value="${orderData.custom.createTime}" type="BOTH" dateStyle="short"
+                                              timeStyle="short"/>
+                        </c:set>
+                        <my:ModalDishInOrder orderData="${orderData}" divNum="${counter.count}"
+                                             buttonText="${orderBriefInfo}" buttonTextStyle="w3-left-align"/>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${empty customsList }">
+        <br>
+    </c:if>
+
+    <%--    Pending orders info. The end.    --%>
+
     <div class="w3-container">
-        <h3><strong><fmt:message key="main.dish.category"/></strong></h3>
+        <hr class="w3-border-gray" style="width: 95%; margin: auto">
+    </div>
+
+    <!-- Sidebar/menu categories menu list-->
+
+    <div class="w3-container">
+        <h4 class="font-login"><strong><fmt:message key="main.dish.category"/></strong></h4>
     </div>
     <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-blue w3-hover-amber"
-           onclick="w3_close()" title="close menu"><i class="material-icons">&#xe5cd;</i>&nbsp; <fmt:message
-                key="main.close.menu"/></a>
+           onclick="w3_close()" title="close menu"><i class="material-icons">&#xe5cd;</i>&nbsp;
+            <fmt:message key="main.close.menu"/>
+        </a>
         <jsp:include page="views/categoryList.jsp"/>
         <br><br>
     </div>
 </nav>
+
+<jsp:include page="views/footer.jsp"/>
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()"
@@ -116,42 +158,44 @@
 <div class="w3-main" style="margin-left:300px;margin-top:50px">
 
     <!-- Header -->
-    <div class="w3-container w3-margin-left w3-cell-row">
-        <h4 class="w3-cell w3-cell-middle"><strong>
+    <div class="w3-container w3-margin-left w3-bar">
+        <div class="w3-bar-item w3-cell-middle w3-text-dark-gray w3-cursive w3-large">
             <c:if test="${not empty sessionScope.categoryNames[categoryId-1].name}">
-                <fmt:message key="${sessionScope.categoryNames[categoryId-1].name}"/>
+                <i><fmt:message key="${sessionScope.categoryNames[categoryId-1].name}"/></i>
             </c:if>
-        </strong></h4>
+        </div>
 
         <%--    Selector of sorting    --%>
 
         <c:if test="${dishesNames != null}">
-            <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-small w3-light-grey">
-                <button class="w3-button " title="More"><fmt:message key="main.sort"/> <i
-                        class="material-icons w3-small">&#xe5c5;</i>
+            <div class="w3-cell w3-cell-middle w3-dropdown-hover w3-right w3-medium w3-light-grey  w3-cursive">
+                <button class="w3-button w3-cursive" title="More">
+                    <i><fmt:message key="main.sort"/>&nbsp;</i>
+                    <i class="material-icons w3-small">arrow_drop_down</i>
                 </button>
                 <div class="w3-dropdown-content w3-bar-block ">
                     <a href="ServletController?action=sortDishes&value=name" class="w3-bar-item w3-button">
-                        <fmt:message key="main.sort.name"/></a>
+                        <i><fmt:message key="main.sort.name"/></i>
+                    </a>
                     <a href="ServletController?action=sortDishes&value=cost" class="w3-bar-item w3-button">
-                        <fmt:message key="main.sort.cost"/></a>
+                        <i><fmt:message key="main.sort.cost"/></i>
+                    </a>
                     <a href="ServletController?action=sortDishes&value=category" class="w3-bar-item w3-button">
-                        <fmt:message key="main.sort.category"/></a>
+                        <i><fmt:message key="main.sort.category"/></i>
+                    </a>
                 </div>
             </div>
 
             <%--    End Selector of sorting    --%>
         </c:if>
-
-
     </div>
     <%-- main context--%>
-    <div class="w3-padding" style="margin-bottom: 65px">
+    <div class="w3-cursive" style="margin-bottom: 65px">
         <jsp:include page="/views/dishesList.jsp"/>
     </div>
 </div>
 
-<jsp:include page="views/footer.jsp"/>
+
 <!-- End page content -->
 
 <script>

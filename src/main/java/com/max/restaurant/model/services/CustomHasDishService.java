@@ -97,8 +97,8 @@ public class CustomHasDishService {
 
     public void update(CustomHasDish customHasDish) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "updateCustomHasDish", "true");
-        boolean bu = customHasDishIsValid(customHasDish);
-        if (!customHasDishIsValid(customHasDish) || !customHasDishDAO.updateObj(customHasDish, customHasDishDAO.getConnection())){
+        boolean isNotValid = !customHasDishIsValid(customHasDish);
+        if (isNotValid || !customHasDishDAO.updateObj(customHasDish, customHasDishDAO.getConnection())){
             LOGGER.info(METHOD_FAILED, "update" + customHasDish);
             throw new DAOServiceException(USER_EXC);
         }

@@ -32,11 +32,12 @@ public class CommandExecutor {
         allKnownCommands.put(SIGN_UP, new SignUpCommand());
         allKnownCommands.put(null, new NullCommand());
         allKnownCommands.put(CATEGORY, new CategoryCommand());
-        allKnownCommands.put(EDIT_ORDER, new OrderEditingCommand());
+        allKnownCommands.put(EDIT_ORDER, new OrderCommand());
         allKnownCommands.put(SORT_DISHES, new SortCommand());
         allKnownCommands.put(MANAGEMENT, new ManageOrdersCommand());
         allKnownCommands.put(MANAGER_EDIT_ORDER, new ManagerOrderEditingCommand());
         allKnownCommands.put(LANGUAGE, new ChangeLangCommand());
+        allKnownCommands.put(PDF, new CreatePDFCommand());
     }
 
     /**

@@ -53,6 +53,13 @@ public class UtilsSQLConstants {
 
 
     //"SELECT * FROM %s WHERE %s=?";
+    /**
+     *
+     * @param simpleClassName String that equals to the result of {@link Class#getSimpleName()} method
+     * @param paramName one of the constants of {@link UtilsEntityFields} class
+     * @return {@link String} that looks like: <i>SELECT * FROM <strong>simpleClassName</strong> WHERE <strong>paramName</strong>=?<i/>
+     * @throws DAOException
+     */
     public static String getSQLFindByParam(String simpleClassName, String paramName) throws DAOException {
         String ss = String.format(SQL_FIND_ENTITY_BY_PARAM, getTableNameByClass(simpleClassName), paramName);
         LOGGER.trace(SQL_EXPR_MSG, "FIND", simpleClassName, ss);

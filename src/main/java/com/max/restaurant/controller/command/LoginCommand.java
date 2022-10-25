@@ -1,8 +1,13 @@
 package com.max.restaurant.controller.command;
 
+import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
+import com.max.restaurant.model.OrderData;
+import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.model.services.UserService;
+import com.max.restaurant.utils.UtilsReCaptchaVerifier;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,12 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsEntityFields.USER_EMAIL;
 import static com.max.restaurant.utils.UtilsEntityFields.USER_PASSWORD;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
+import static com.max.restaurant.utils.UtilsReCaptchaVerifier.reCAPTURE_ATTR;
 
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginCommand.class);
@@ -44,12 +51,11 @@ public class LoginCommand implements Command {
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
-        boolean isValid = validateUser(request);
-        LOGGER.info(IS_VALID, isValid);
+        String notValid = preValidateUser(request);
+        LOGGER.info(IS_VALID, notValid == null);
         String forwardPage;
         HttpSession session = request.getSession();
-//        session.removeAttribute(LOGGED_USER_ATTR);
-        if (isValid) {
+        if (notValid == null) {
             String email = request.getParameter(USER_EMAIL).strip().toLowerCase();
             UserService userService = new UserService();
             User user = userService.findUserByEmail(email);
@@ -58,6 +64,8 @@ public class LoginCommand implements Command {
                 if (password.equals(user.getPassword())) {
                     session.removeAttribute(UNSUCCESS_ATTR);
                     session.setAttribute(LOGGED_USER_ATTR, user);
+                    List<OrderData> orders = setOrdersPending(user.getId());
+                    session.setAttribute(CUSTOM_LIST_ATTR, orders);
                     forwardPage = request.getServletContext().getContextPath() + HOME_PAGE;
                     LOGGER.debug(TWO_PARAMS_MSG, LOGGED_USER_ATTR, user);
                 } else {
@@ -72,16 +80,33 @@ public class LoginCommand implements Command {
                 LOGGER.debug(TWO_PARAMS_MSG, UNSUCCESS_ATTR, UNSUCCESS_MSG);
             }
         } else {
-            session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
-            forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
-            LOGGER.debug(TWO_PARAMS_MSG, UNSUCCESS_ATTR, UNSUCCESS_MSG);
+            if (notValid.equals(reCAPTURE_ATTR)) {
+                session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG4);
+                LOGGER.debug(TWO_PARAMS_MSG, UNSUCCESS_ATTR, UNSUCCESS_MSG4);
+                forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
+            } else {
+                LOGGER.error(METHOD_FAILED, "notValid" + notValid);
+                throw new CommandException();
+            }
         }
         LOGGER.debug(REDIRECT, forwardPage);
         response.sendRedirect(forwardPage);
     }
 
-    private static boolean validateUser(HttpServletRequest request) {
-        return !(request.getParameter(USER_EMAIL) == null || request.getParameter(USER_EMAIL).isBlank()
-                || request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank());
+    private static String preValidateUser(HttpServletRequest request) throws IOException {
+        if (request.getParameter(USER_EMAIL) == null || request.getParameter(USER_EMAIL).isBlank()) {
+            return USER_EMAIL;
+        } else if (request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank()) {
+            return USER_PASSWORD;
+        } else if (UtilsReCaptchaVerifier.verify(request)) {
+            return reCAPTURE_ATTR;
+        }
+        return null;
+    }
+
+    private List<OrderData> setOrdersPending(int userId) throws DAOException {
+        CustomService service = new CustomService();
+        List<Custom> customList = service.getUsersCustomsInProgress(userId);
+        return OrderData.getOrderDataList(customList);
     }
 }

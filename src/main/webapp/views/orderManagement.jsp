@@ -87,8 +87,11 @@
                                                           currencySymbol="${currSymb}"/>
                                     </td>
                                     <td class="w3-cell-middle w3-col s2 w3-center ">
-
-                                        <my:ModalDishInOrder orderData="${orderData}" divNum="${num.count}"/>
+                                        <div class="w3-button w3-hover-shadow w3-round-large">
+                                        <c:set var="orderDetailsText"><fmt:message key="order.details"/></c:set>
+                                        <my:ModalDishInOrder orderData="${orderData}" divNum="${num.count}"
+                                                             buttonText="${orderDetailsText}..."/>
+                                        </div>
                                     </td>
                                     <td class="w3-cell-bottom w3-col s2 w3-center">
                                         <c:if test="${inProgress != 'false' }">
@@ -106,13 +109,13 @@
                                             </select>
                                         </c:if>
                                         <c:if test="${inProgress == 'false' }">
-                                            ${orderData.status.name}
+                                            <fmt:message key="${orderData.status.name}"/>
                                         </c:if>
                                     </td>
                                     <c:if test="${inProgress != 'false' }">
                                         <td class="w3-cell-middle w3-col s1 w3-right-align">
                                             <a href="ServletController?action=orderEditManagement&value=${orderData.custom.id}">
-                                                <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe3c9;</i>
+                                                <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">edit</i>
                                             </a>
                                         </td>
                                         <td class="w3-cell-middle w3-col s1 w3-right">
@@ -122,7 +125,15 @@
                                     </c:if>
                                     <c:if test="${inProgress == 'false'}">
                                         <td class="w3-cell-middle w3-col s1 w3-right-align">
-                                            <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">&#xe415;</i>
+                                            <form name="PDFForm" id="PDFForm" method="post"
+                                                  action="ServletController?action=pdf&value=${orderData.custom.id}">
+                                                <button type="submit" name="pdfButton" form="PDFForm"
+                                                        class="w3-hover-none w3-border-0" style="background: transparent">
+                                                    <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow">
+                                                        picture_as_pdf
+                                                    </i>
+                                                </button>
+                                            </form>
                                         </td>
                                         <td class="w3-cell-middle w3-col s1 w3-right w3-hover-none">
                                         </td>
@@ -178,16 +189,3 @@
 
 <%--</script>--%>
 
-<%--                            <td class="w3-cell-bottom w3-col s2 w3-center">--%>
-<%--                                <img src="${pageContext.request.contextPath}${order.dish.imagePath}"--%>
-<%--                                     class="w3-circle" style="height:65px" alt="food picture">--%>
-<%--                            </td>--%>
-<%--                            <td class="w3-cell-bottom w3-col s1 w3-center">--%>
-<%--                                <input name="quantity" type="number" max="10" min="1" value="1"--%>
-<%--                                       class="w3-input w3-border-2"/>--%>
-<%--                            </td>--%>
-<%--                            <td class="w3-cell-bottom w3-col s2 w3-center">--%>
-<%--                                <a href="${pageContext.request.contextPath}/ServletController?action=orderEdit&deleteId=${dish.id}">--%>
-<%--                                    <i class="material-icons w3-xxxlarge w3-text-grey w3-circle">&#xe92b;</i>--%>
-<%--                                </a>--%>
-<%--                            </td>--%>

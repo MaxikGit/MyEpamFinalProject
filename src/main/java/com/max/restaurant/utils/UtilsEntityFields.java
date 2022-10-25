@@ -19,13 +19,11 @@ public class UtilsEntityFields {
 	public static final String USER_PASSWORD = "password";
 	public static final String USER_REPASSWORD = "re-password";
 	public static final String USER_DETAILS = "details";
-	public static final String USER_DETAILS_DEFAULT = "none";
 	public static final String USER_ROLE_ID = "role_id";
 
 	public static final String ROLE_ID = USER_ID;
 	public static final String ROLE_NAME = USER_NAME;
 	public static final int ROLE_CLIENT_ID = 2;
-	public static final int ROLE_MANAGER_ID = 1;
 
 	public static final String STATUS_ID = USER_ID;
 	public static final String STATUS_NAME = USER_NAME;

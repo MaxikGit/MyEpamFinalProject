@@ -77,16 +77,15 @@ public abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements
     @Override
     public List<T> findObjByParam(String paramName, String param, Connection conn) throws DAOException {
         LOGGER.info(genericName + FIND_BY_PARAM, paramName, param);
-//        Connection conn = null;
         PreparedStatement statement = null;
         ResultSet result = null;
         List<T> entities = new ArrayList<>();
         try {
-//            conn = getConnection();
             String sql = getSQLFindByParam(genericName, paramName);
             LOGGER.info(genericName + FIND_BY_PARAM, paramName, param);
             statement = conn.prepareStatement(sql);
             statement.setString(1, param);
+            LOGGER.info(SQL_EXPR_MSG, "find", genericName, statement);
             result = statement.executeQuery();
             while (result.next()) {
                 T entity = getAbstractObjFromResult(result);
@@ -198,8 +197,23 @@ public abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements
         return 0;
     }
 
+    /**
+     * Implement this method according to your entity class and get params from {@link ResultSet}
+     * according to fields of the entity class
+     * @param result - {@link ResultSet} object, containing fields of the entity
+     * @return object of {@link SimpleEntity} interface
+     * @throws SQLException
+     */
     protected abstract T getEntityFromResult(ResultSet result) throws SQLException;
 
+    /**
+     * Implement this method according to your entity class and set params of prepared statement
+     * according to fields of the entity class
+     * @param entity object of {@link SimpleEntity} interface
+     * @param statement prepared statement to set params
+     * @param update true only for update operation
+     * @throws SQLException
+     */
     protected abstract void setStatementParams(T entity, PreparedStatement statement, boolean update) throws SQLException;
 
     private T getAbstractObjFromResult(ResultSet result) throws SQLException {
