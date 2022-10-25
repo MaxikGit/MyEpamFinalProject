@@ -24,9 +24,9 @@ public class ManagersOnlyTag extends SimpleTagSupport {
 
     @Override
     public void doTag() throws IOException {
-        LOGGER.info(METHOD_STARTS_MSG, "doTag", true);
         PageContext pageContext = (PageContext) getJspContext();
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
+        LOGGER.info(METHOD_STARTS_MSG, "doTag", request.getRequestURI());
         HttpSession session = request.getSession(false);
         User user = (User)session.getAttribute(LOGGED_USER_ATTR);
         if (user == null || user.getRoleId() != managerId){

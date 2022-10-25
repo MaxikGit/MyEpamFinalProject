@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 
 <fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="messages"/>
@@ -9,38 +9,49 @@
 <head>
     <title>Users list</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+    <style>
+        a{
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>
-<%--<fmt:setLocale value="uk_UA"/>--%>
 <c:if test="${dishesNames != null}">
     <c:forEach var="dishEntry" items="${dishesNames}" varStatus="iterations">
         <c:if test="${iterations.count % 4 == 1}">
             <div class="w3-row-padding w3-padding-16 w3-center">
         </c:if>
         <div class="w3-quarter w3-padding w3-animate-opacity">
-            <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
-                 style="width:95%" alt="food picture" class="w3-round-large">
-            <h3 class="w3-left-align">${dishEntry.name}</h3>
+            <i>
+            <c:if test="${loggedUser!=null}">
+            <a href="ServletController?action=orderEdit&value=${dishEntry.id}">
+                </c:if>
 
-            <div >
-                <hr class="w3-border w3-border-black w3-center" style="margin: auto;">
-                <h5 class="w3-right-align w3-margin-right">
-                    <c:set var="currSymb"><fmt:message key="currency"/></c:set>
-                    <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="${currSymb}"/>
-                    <c:if test="${loggedUser!=null}">
+                <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
+                     style="width:95%" alt="food picture" class="w3-round-large">
+                <h3 class="w3-left-align">${dishEntry.name}</h3>
 
-                        <a href="ServletController?action=orderEdit&value=${dishEntry.id}"
-                           class=""><i class="material-icons w3-circle w3-hover-amber w3-animate-fading">&#xe561;</i>
-                        </a>
-                    </c:if>
-                </h5>
-            </div>
-            <p>${dishEntry.details}</p>
+                <div>
+                    <hr class="w3-border w3-border-black w3-center" style="margin: auto;">
+                    <h5 class="w3-right-align w3-margin-right">
+                        <c:set var="currSymb">
+                            <fmt:message key="currency"/>
+                        </c:set>
+                        <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="${currSymb}"/>
+                        <c:if test="${loggedUser!=null}">
+                            <%--                        <a href="ServletController?action=orderEdit&value=${dishEntry.id}">--%>
+                            <i class="material-icons w3-circle w3-hover-amber w3-animate-fading">&#xe561;</i>
+                            <%--            </a>--%>
+                        </c:if>
+                    </h5>
+                </div>
+                <p>${dishEntry.details}</p>
+                <c:if test="${loggedUser!=null}">
+            </a>
+            </c:if>
+            </i>
         </div>
         <c:if test="${iterations.count % 4 == 0}">
             </div>

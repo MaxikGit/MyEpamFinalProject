@@ -7,6 +7,4 @@ public class UtilsFileNames {
     public static final String ORDER_PAGE = "/views/orderInfo.jsp";
     public static final String ORDER_MANAGEMENT_PAGE = "/views/orderManagement.jsp";
     public static final String EDIT_ORDER_MANAGEMENT_PAGE = "/views/orderManagementInfo.jsp";
-    public static final String FIRST_START = "ServletController?action=category";
-    public static final String MANAGEMENT_COMM = "ServletController?action=management";
 }

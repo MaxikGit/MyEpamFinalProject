@@ -2,25 +2,23 @@ package com.max.restaurant.utils;
 
 public class UtilsLoggerMsgs {
     public static final String CONSTRUCTOR = "constructor started";
-    public static final String FAILED_CONSTRUCTOR = " constructor failed";
     public static final String STATIC_INI = " static initialization block";
+    public static final String METHOD_STARTS_MSG = "method {} has been started = {}";
+    public static final String METHOD_FAILED = " method failed {}";
 
-    public static final String ONE_PARAM = "set param is: {}";
     public static final String TWO_PARAMS_MSG = "set params are: {}, {}";
     public static final String IS_VALID = " data params are valid: {}";
+    public static final String FORWARD = "forwarding to {}";
+    public static final String REDIRECT = "redirecting to {}";
+    public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
+    public static final String ENCODE_MSG = "encoding {} was replaced with {}";
     public static final String TRANSACTION_ROLLBACK = " transaction rollback";
     public static final String TRANSACTION_ROLLBACK_FAILED = " transaction rollback was unsuccessful";
     public static final String TRANSACTION_MSG = "transaction done successfully {}";
 
-    public static final String METHOD_STARTS_MSG = "method {} has been started = {}";
-    public static final String METHOD_FAILED = " method failed {}";
     public static final String GET_FROM_RS = " receiving from the result ";
     public static final String SET_STATEMENT = "{} set statement params";
-    public static final String FORWARD = "forwarding to {}";
-    public static final String REDIRECT = "redirecting to {}";
     public static final String SQL_EXPR_MSG = "for {} operation, entity {}, expr = {}";
-    public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
-    public static final String ENCODE_MSG = "encoding {} was replaced with {}";
 
     public static final String FIND_BY_ID = "find by Id = {}";
     public static final String FAILED_FIND_BY_ID = "{} can't find By Id";

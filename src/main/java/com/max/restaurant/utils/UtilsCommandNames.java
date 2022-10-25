@@ -4,6 +4,7 @@ public class UtilsCommandNames {
 //    command names are the ones, followed after the "action" in GET or POST: action=command
 
     public static final String FIRST_START = "ServletController?action=category";
+    public static final String MANAGEMENT_COMM = "ServletController?action=management";
     public static final String ACTION = "action";
     public static final String LOGIN = "login";
     public static final String SIGN_UP = "sign_up";
@@ -11,6 +12,7 @@ public class UtilsCommandNames {
     public static final String ORDER = "order";
     public static final String MANAGEMENT = "management";
     public static final String LANGUAGE = "language";
+    public static final String PDF = "pdf";
 
     public static final String MANAGER_EDIT_ORDER = "orderEditManagement";
     public static final String EDIT_ORDER = "orderEdit";
@@ -23,6 +25,7 @@ public class UtilsCommandNames {
     public static final String UNSUCCESS_MSG = "login.sorry";
     public static final String UNSUCCESS_MSG2 = "login.sorry2";
     public static final String UNSUCCESS_MSG3 = "signup.sorry";
+    public static final String UNSUCCESS_MSG4 = "login.sorry3";
 
 //    container attr
     public static final String LOGGED_USER_ATTR = "loggedUser";
@@ -55,4 +58,5 @@ public class UtilsCommandNames {
 
     public static final String ENG_ATTR = "en";
     public static final String UKR_ATTR = "uk";
-}
+
+   }

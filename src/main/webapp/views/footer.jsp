@@ -6,28 +6,24 @@
   Time: 18:11
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Restaurant footer</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="styles/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap">
+    <style>
+        .font-login {
+            font-family: 'Caveat', cursive;
+            font-size: 30px;
+        }
+    </style>
 </head>
-<body>
 
-<!-- Footer -->
-<%--<c:if test="${pageContext.}"--%>
-<%--<div class="w3-container w3-grey w3-opacity w3-right-align w3-padding">--%>
-<%--    <button class="w3-btn w3-round-large" onclick="location.href='${pageContext.request.contextPath}/'">Back to main--%>
-<%--    </button>--%>
-<%--</div>--%>
+<div class="w3-container w3-bottom w3-topbar w3-light-grey w3-display-container font-login w3-center w3-xlarge w3-text-blue">
+    Powered by <a href="https://github.com/MaxikGit/Restaurant.git" target="_blank">Maxim Bezzubov </a>
+</div>
 
-
-<footer class="w3-container w3-bottom w3-topbar w3-center w3-light-grey w3-display-container">
-    <p>Powered by <a href="https://github.com/MaxikGit/Restaurant.git" target="_blank">Maxim Bezzubov </a></p>
-</footer>
-</body>
 
 </html>

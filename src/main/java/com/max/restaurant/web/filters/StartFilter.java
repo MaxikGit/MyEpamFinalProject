@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.max.restaurant.utils.UtilsCommandNames.CATEGORY_LIST_ATTR;
-import static com.max.restaurant.utils.UtilsFileNames.FIRST_START;
+import static com.max.restaurant.utils.UtilsCommandNames.FIRST_START;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 @WebFilter(urlPatterns = {"/index.jsp"})

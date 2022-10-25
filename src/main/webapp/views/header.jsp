@@ -12,22 +12,18 @@
             font-family: "Sofia", sans-serif;
             font-size: 25px;
         }
-
         body, h1, h5 {
             font-family: "Raleway", sans-serif
         }
-
         body, html {
             height: 100%
         }
-
         .bgimg {
             background-image: url('${pageContext.request.contextPath}/views/images/serverovka_stola.jpg');
             min-height: 100%;
             background-position: center;
             background-size: cover;
         }
-
         .font-login {
             font-family: 'Caveat', cursive;
             font-size: 30px;

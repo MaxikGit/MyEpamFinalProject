@@ -5,13 +5,13 @@ import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.Status;
 import com.max.restaurant.model.entity.User;
+import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.model.services.DishService;
 import com.max.restaurant.model.services.StatusService;
 import com.max.restaurant.model.services.UserService;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This is a data transfer class, used to transfer special kit of
@@ -36,6 +36,15 @@ public class OrderData implements Serializable {
         setStatus(statusService.findStatusById(custom.getStatusId()));
         setUser(userService.findUserById(custom.getUserId()));
         setDishes(dishService.getDishesInOrder(custom));
+    }
+
+    public static List<OrderData> getOrderDataList(List<Custom> customs) throws DAOException {
+        List<OrderData> ordersList = new ArrayList<>();
+        for (Custom custom : customs){
+            ordersList.add(new OrderData(custom));
+        }
+        Collections.sort(ordersList, Comparator.comparing(x -> x.getStatus().getId()));
+        return ordersList;
     }
 
     public Custom getCustom() {
