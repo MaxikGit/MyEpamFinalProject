@@ -36,17 +36,17 @@ public class AuthenticationFilter implements Filter {
         boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP);
 
         if (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage) {
-            LOGGER.debug(FORWARD, ((HttpServletRequest) request).getRequestURI());
             chain.doFilter(request, response);
         } else {
             boolean isManagersPage = uri.endsWith(EDIT_ORDER_MANAGEMENT_PAGE) || uri.endsWith(ORDER_MANAGEMENT_PAGE);
             String page = ((HttpServletRequest) request).getContextPath() + HOME_PAGE;
-            if ( (session == null || session.getAttribute(LOGGED_USER_ATTR) == null) )
-            {
+            if ((session == null || session.getAttribute(LOGGED_USER_ATTR) == null)) {
                 LOGGER.info(UNAUTH_MSG, session.getAttribute(LOGGED_USER_ATTR));
                 LOGGER.debug(REDIRECT, page);
                 resp.sendRedirect(page);
-            } else if (isManagersPage && (( (User)session.getAttribute(LOGGED_USER_ATTR) ).getRoleId() != managerId) ) {
+            } 
+            else if (isManagersPage && (((User) session.getAttribute(LOGGED_USER_ATTR)).getRoleId() != managerId)) {
+                LOGGER.debug(REDIRECT, ((HttpServletRequest) request).getRequestURI());
                 resp.sendRedirect(page);
             }
             else chain.doFilter(request, response);

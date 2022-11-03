@@ -20,6 +20,10 @@ import static com.max.restaurant.utils.UtilsExceptionMsgs.UNUSED_METHOD_WORKS;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_FAILED;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
+/**
+ * Command to compose order report in PDF. The result will be opened in browser<br>
+ * The params of request, to call this command: action=pdf
+ */
 public class CreatePDFCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(CreatePDFCommand.class);
 

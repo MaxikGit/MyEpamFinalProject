@@ -1,9 +1,11 @@
 package com.max.restaurant.controller.command;
 
+import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.exceptions.DAOServiceException;
 import com.max.restaurant.model.entity.User;
 import com.max.restaurant.model.services.UserService;
+import com.max.restaurant.utils.UtilsPasswordEncryption;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsEntityFields.*;
@@ -19,6 +23,10 @@ import static com.max.restaurant.utils.UtilsFileNames.LOGIN_PAGE;
 import static com.max.restaurant.utils.UtilsFileNames.SIGN_UP_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * Command to sign up new users.<br>
+ * The params of request, to call this command: action=signUp
+ */
 public class SignUpCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignUpCommand.class);
 
@@ -47,13 +55,20 @@ public class SignUpCommand implements Command {
                 user.setEmail(email);
                 user.setName(request.getParameter(USER_NAME));
                 user.setLastName(request.getParameter(USER_LASTNAME));
-                user.setPassword(request.getParameter(USER_PASSWORD));
+                try {
+                    String password = UtilsPasswordEncryption
+                            .getNewEncryptedPass(request.getParameter(USER_PASSWORD).toCharArray());
+                    user.setPassword(password);
+                } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+                    LOGGER.error(METHOD_FAILED, "getNewEncryptedPass", e);
+                    throw new CommandException(e);
+                }
                 user.setRoleId(ROLE_CLIENT_ID);
-                try{
-                userService.insertUser(user);
-                session.setAttribute(USER_EMAIL, email);
-                forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
-                }catch (DAOServiceException e){
+                try {
+                    userService.insertUser(user);
+                    session.setAttribute(USER_EMAIL, email);
+                    forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
+                } catch (DAOServiceException e) {
                     session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
                     forwardPage = request.getServletContext().getContextPath() + SIGN_UP_PAGE;
                 }

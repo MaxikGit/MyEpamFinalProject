@@ -1,8 +1,9 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="s" uri="http://restaurant.max.com" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
 
 <fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="messages"/>
@@ -10,11 +11,11 @@
 <html lang="${lang}">
 <head>
     <title>Manager Order editing list</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
 </head>
 
-<body class="w3-light-grey w3-opacity-min">
+<body class="w3-light-grey w3-opacity-min w3-cursive">
+
 <s:managersOnlyTag/>
 <jsp:include page="header.jsp"/>
 <div class="w3-display-container">
@@ -54,14 +55,14 @@
                                 <a href="ServletController?action=management&sort=customer"
                                    style="text-decoration: none">
                                     <fmt:message key="order.customer"/>
-                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle  w3-cell-middle">&#xe053;</i>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle  w3-cell-middle">sort_by_alpha</i>
                                 </a>
                             </th>
                             <th class="w3-cell-middle w3-col s2">
                                 <a href="ServletController?action=management&sort=price"
                                    style="text-decoration: none">
                                     <fmt:message key="order.price"/>
-                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">&#xe053;</i>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">sort_by_alpha</i>
                                 </a>
                             </th>
                             <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.dish.name"/></th>
@@ -69,7 +70,7 @@
                                 <a href="ServletController?action=management&sort=status"
                                    style="text-decoration: none">
                                     <fmt:message key="order.status"/>
-                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">&#xe053;</i>
+                                    <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">sort_by_alpha</i>
                                 </a>
                             </th>
                             <th class="w3-cell-middle w3-col s1 w3-right-align"></th>
@@ -150,12 +151,10 @@
                         </c:if>
                     </table>
                 </div>
-
                 <c:if test="${inProgress != 'false' }">
                     <my:ResetAccessButton lang="${lang}" totalCost="${totalOrdersCost}"/>
                 </c:if>
-                <my:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}"/>
-
+                <my:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}" pageNum="${pageNum}" pagesTotal="${pagesTotal}"/>
             </form>
         </c:if>
         <c:if test="${orderManagement == null}">
@@ -171,21 +170,6 @@
 </div>
 
 <jsp:include page="footer.jsp"/>
-
 </body>
 </html>
-<%--<script>--%>
-<%--    // Tabbed Menu--%>
-<%--    function openMenu(evt) {--%>
-<%--        var i, tablinks;--%>
-
-<%--        tablinks = document.getElementsByClassName("tablink");--%>
-<%--        for (i = 0; i < tablinks.length; i++) {--%>
-
-<%--            tablinks[i].className = tablinks[i].className.replace(" w3-light-blue", "");--%>
-<%--        }--%>
-<%--        evt.currentTarget.className += " w3-light-blue";--%>
-<%--    }--%>
-
-<%--</script>--%>
 

@@ -9,18 +9,16 @@ public class UtilsCommandNames {
     public static final String LOGIN = "login";
     public static final String SIGN_UP = "sign_up";
     public static final String CATEGORY = "category";
-    public static final String ORDER = "order";
     public static final String MANAGEMENT = "management";
+    public static final String MANAGER_EDIT_ORDER = "orderEditManagement";
     public static final String LANGUAGE = "language";
     public static final String PDF = "pdf";
-
-    public static final String MANAGER_EDIT_ORDER = "orderEditManagement";
     public static final String EDIT_ORDER = "orderEdit";
     public static final String SORT_DISHES = "sortDishes";
-    public static final String CATEGORY_ID = "categoryId";
+
 
 //    attrs are mapping variables JAVA.var = "JSP.attr": SUCCESS_ATTR = "success";
-    public static final String SUCCESS_ATTR = "success";
+    public static final String CATEGORY_ID = "categoryId";
     public static final String UNSUCCESS_ATTR = "unsuccess";
     public static final String UNSUCCESS_MSG = "login.sorry";
     public static final String UNSUCCESS_MSG2 = "login.sorry2";
@@ -53,6 +51,7 @@ public class UtilsCommandNames {
     public static final String PAGE_ATTR = "pageNum";
     public static final String PAGES_MAX_ATTR = "pagesMax";
     public static final String PAGES_MIN_ATTR = "pagesMin";
+    public static final String TOTAL_PAGES_ATTR = "pagesTotal";
     public static final String RECS_PER_PAGE_ATTR = "pagesRecs";
     public static final String LANG_ATTR = "lang";
 

@@ -23,6 +23,11 @@ import static com.max.restaurant.utils.UtilsFileNames.EDIT_ORDER_MANAGEMENT_PAGE
 import static com.max.restaurant.utils.UtilsFileNames.ORDER_MANAGEMENT_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * This command is used to edit single order, that is already accepted by customer.<br>
+ * It can be used only by registered managers<br>
+ * The params of request, to call this command: action=managementEdit
+ */
 public class ManagerOrderEditingCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagerOrderEditingCommand.class);
     private int recordsPerPage = 3;
@@ -31,23 +36,9 @@ public class ManagerOrderEditingCommand implements Command {
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
         String customId = request.getParameter(VALUE_ATTR);
-//        String dishIdToDel = request.getParameter(DEL_FROM_ORDER_ATTR);
         String page = request.getContextPath() + EDIT_ORDER_MANAGEMENT_PAGE;
         HttpSession session = request.getSession();
 
-//        if (dishIdToDel != null && customId == null) {
-//            OrderData orderData = (OrderData) session.getAttribute(MANAGEMENT_ORDERDATA_ATTR);
-//            CustomHasDishService hasDishService = new CustomHasDishService();
-//            CustomHasDish customHasDish = hasDishService.findByCustomIdDishId(
-//                    orderData.getCustom().getId(), Integer.parseInt(dishIdToDel));
-//            boolean deleted = hasDishService.deleteTransactional(customHasDish);
-//            if (!deleted) {
-//                LOGGER.info(REDIRECT, page);
-//                response.sendRedirect(page);
-//                return;
-//            }
-//            customId = String.valueOf(orderData.getCustom().getId());
-//        }
         CustomService customService = new CustomService();
         Custom custom = customService.findCustomById(Integer.parseInt(customId));
         OrderData orderData = new OrderData(custom);
@@ -75,7 +66,7 @@ public class ManagerOrderEditingCommand implements Command {
             if (newQuantity == null)
                 continue;
             int dishCount = Integer.parseInt(newQuantity);
-            updated = dishCount == entry.setValue(dishCount) || updated;
+            updated = dishCount != entry.setValue(dishCount) || updated;
         }
         //not accepted
         if (request.getParameter(ORDER_ACCEPT_ATTR) == null) {

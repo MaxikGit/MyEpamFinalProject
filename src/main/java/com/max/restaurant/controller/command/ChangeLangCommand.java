@@ -16,6 +16,10 @@ import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.FORWARD;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
+/**
+ * Command to change language of a page.<br>
+ * The params of request, to call this command: action=lang
+ */
 public class ChangeLangCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChangeLangCommand.class);
 

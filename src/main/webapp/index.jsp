@@ -1,29 +1,18 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
 
-<%--<c:set var="lang" value="uk"/>--%>
 <fmt:setLocale value="${lang}"/>
-
 <fmt:setBundle basename="messages"/>
 
+<!DOCTYPE html>
 <html lang="${lang}">
-
 <head>
     <meta charset="UTF-8">
     <title>Restaurant EPAM final project</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=fire">
-
-    <style>
-        .restik {
-            font-family: "Sofia", sans-serif;
-            font-size: 25px;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
 </head>
 
 <body class="w3-light-grey ">
@@ -34,8 +23,8 @@
         <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
 
         <c:if test="${loggedUser == null}">
-            <span class="w3-display-topmiddle w3-animate-fading w3-text-light-blue" style="margin-top: 18px;">
-            <i><fmt:message key="main.please.login"/></i>
+            <span class="w3-display-topmiddle w3-animate-fading w3-text-light-blue font-login w3-xlarge" style="margin-top: 18px;">
+            <fmt:message key="main.please.login"/>
             </span>
         </c:if>
         <%--    Hidden Menu Button--%>
@@ -69,7 +58,8 @@
         <c:if test="${not empty dishIds}">
             <div class="w3-bar-item w3-right w3-hover-amber" style="margin-top: 5px">
                 <a href="ServletController?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
-                    <i class="material-icons w3-border-white">&#xe8cc</i>${dishIds.size()}
+                    <i class="material-icons w3-border-white">shopping_cart</i>
+                    <i id="cartSize">${dishIds.size()}</i>
                 </a>
             </div>
         </c:if>
@@ -93,7 +83,8 @@
             </c:if>
         </div>
         <div class="w3-cell w3-col s8 w3-center font-login w3-xxlarge">
-            <fmt:message key="main.welcome"/>, <c:set var="userSet"><fmt:message key="main.user"/></c:set>
+            <fmt:message key="main.welcome"/>,<br>
+            <c:set var="userSet"><fmt:message key="main.user"/></c:set>
             <strong>${not empty loggedUser.name ? loggedUser.name : userSet}</strong>
         </div>
     </div>
@@ -127,7 +118,7 @@
         <br>
     </c:if>
 
-    <%--    Pending orders info. The end.    --%>
+    <%-- Pending orders info. The end.    --%>
 
     <div class="w3-container">
         <hr class="w3-border-gray" style="width: 95%; margin: auto">
@@ -137,6 +128,9 @@
 
     <div class="w3-container">
         <h4 class="font-login"><strong><fmt:message key="main.dish.category"/></strong></h4>
+    </div>
+    <div class="w3-container">
+        <hr class="w3-border-gray" style="width: 95%; margin: auto">
     </div>
     <div class="w3-bar-block">
         <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-blue w3-hover-amber"
@@ -159,11 +153,6 @@
 
     <!-- Header -->
     <div class="w3-container w3-margin-left w3-bar">
-        <div class="w3-bar-item w3-cell-middle w3-text-dark-gray w3-cursive w3-large">
-            <c:if test="${not empty sessionScope.categoryNames[categoryId-1].name}">
-                <i><fmt:message key="${sessionScope.categoryNames[categoryId-1].name}"/></i>
-            </c:if>
-        </div>
 
         <%--    Selector of sorting    --%>
 
@@ -194,7 +183,6 @@
         <jsp:include page="/views/dishesList.jsp"/>
     </div>
 </div>
-
 
 <!-- End page content -->
 

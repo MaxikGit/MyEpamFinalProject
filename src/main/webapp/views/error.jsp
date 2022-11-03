@@ -11,12 +11,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Exception page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
     <style>
         .excimg {
             background-image: url('${pageContext.request.contextPath}/views/images/for_exception_pic.webp');
             height: 100%;
-            background-position: center 20px;
+            background-position: center 50px;
             background-size: cover;
             background-repeat: no-repeat;
         }

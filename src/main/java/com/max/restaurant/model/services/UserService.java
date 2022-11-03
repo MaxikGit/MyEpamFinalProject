@@ -52,7 +52,8 @@ public class UserService {
 
     public void insertUser(User user) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "insertUser", "true");
-        if ( !(userIsValid(user) && userDAO.insertObj(user, userDAO.getConnection())) ){
+        boolean isValid = userIsValid(user);
+        if ( !(isValid && userDAO.insertObj(user, userDAO.getConnection())) ){
             LOGGER.info(FAILED_INSERT, user);
             throw new DAOServiceException(WRONG_INPUT_EXC);
         }
@@ -74,8 +75,8 @@ public class UserService {
     private boolean userIsValid(User user) {
         return ( (user.getName() != null && user.getName().length() >= minNameLength)
                 && (user.getLastName() != null && user.getLastName().length() >= minLastNameLength)
-                && (user.getPassword() != null && user.getPassword().length() >= minPassLength
-                && user.getPassword().length() <= maxPassLength)
+                && (user.getPassword() != null )
+//                && user.getPassword().length() >= minPassLength && user.getPassword().length() <= maxPassLength)
                 && (user.getEmail() != null && emailIsValid(user.getEmail()) )
                 && (user.getRoleId() > 0 && user.getRoleId() <= maxRoleId) );
     }

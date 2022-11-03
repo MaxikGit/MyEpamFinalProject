@@ -7,7 +7,7 @@
 <fmt:setBundle basename="messages"/>
 
 <c:set var="backHome"><fmt:message key="back.home"/></c:set>
-<div class="w3-container w3-bottom w3-grey w3-opacity w3-padding w3-round-medium w3-right-align" style="margin-bottom:70px">
+<div class="w3-container w3-bottom w3-grey w3-opacity w3-padding w3-round-medium w3-right-align" style="margin-bottom:55px">
     <button class="w3-btn w3-round-large"
             onclick="location.href='${pageContext.request.contextPath}<c:out value="${altPath}" default="/"/>'">
         <c:out value="${altName}" default="${backHome}"/>

@@ -16,9 +16,14 @@ import java.util.Optional;
 
 import static com.max.restaurant.utils.UtilsCommandNames.DISH_LIST_ATTR;
 import static com.max.restaurant.utils.UtilsCommandNames.VALUE_ATTR;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.UNUSED_METHOD_WORKS;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
+/**
+ * Command that sorts dishes only on the main page.<br>
+ * The params of request, to call this command: action=sortDishes
+ */
 public class SortCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
 
@@ -48,6 +53,6 @@ public class SortCommand implements Command {
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
-        throw new DAOException("You might not be here!");
+        throw new DAOException(UNUSED_METHOD_WORKS);
     }
 }

@@ -14,11 +14,9 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.SQL_EXPR_MSG;
 public class UtilsSQLConstants {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsSQLConstants.class);
 
-    public static final String SETTINGS_FILE = "app.properties";
     //UserDAO
     private static final String SQL_FIND_ENTITY_BY_PARAM = "SELECT * FROM %s WHERE %s=?";
     private static final String SQL_FIND_ALL_ENTITIES = "SELECT * FROM %s";
-//    private static final String SQL_FIND_ENTITIES_MAX_ID = "SELECT MAX(id) FROM %s";//delete then
     private static final String SQL_INSERT_ENTITY = "INSERT INTO %s VALUES (%s)";
     private static final String SQL_DELETE_ENTITY_BY_PARAM = "DELETE FROM %s WHERE %s=?";
 
@@ -31,7 +29,7 @@ public class UtilsSQLConstants {
     private static final String STATUS_PARAMS_LIST =    "DEFAULT, ?, DEFAULT";
 
     private static final String SQL_UPDATE_USER_BY_ID = String.format(
-            "UPDATE %%s SET %s=?, %s=?, %s=?, %s=? %s=? %s=? WHERE %s=?",
+            "UPDATE %%s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?",
             USER_EMAIL, USER_NAME, USER_LASTNAME, USER_PASSWORD, USER_DETAILS, USER_ROLE_ID, USER_ID);
     private static final String SQL_UPDATE_CATEGORY_BY_ID =String.format(
             "UPDATE %%s SET %s=? WHERE %s=?", CATEGORY_NAME, CATEGORY_ID);
@@ -58,7 +56,7 @@ public class UtilsSQLConstants {
      * @param simpleClassName String that equals to the result of {@link Class#getSimpleName()} method
      * @param paramName one of the constants of {@link UtilsEntityFields} class
      * @return {@link String} that looks like: <i>SELECT * FROM <strong>simpleClassName</strong> WHERE <strong>paramName</strong>=?<i/>
-     * @throws DAOException
+     * @throws DAOException throws {@link DAOException} if simpleClassName is unknown
      */
     public static String getSQLFindByParam(String simpleClassName, String paramName) throws DAOException {
         String ss = String.format(SQL_FIND_ENTITY_BY_PARAM, getTableNameByClass(simpleClassName), paramName);

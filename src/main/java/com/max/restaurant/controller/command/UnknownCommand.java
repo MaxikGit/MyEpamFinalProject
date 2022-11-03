@@ -13,8 +13,11 @@ import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.FORWARD;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
-public class NullCommand implements Command {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NullCommand.class);
+/**
+ * Command that is used to forward/redirect user to main page in cases of unusual commands  
+ */
+public class UnknownCommand implements Command {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnknownCommand.class);
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

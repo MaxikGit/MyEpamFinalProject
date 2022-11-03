@@ -22,6 +22,12 @@ import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * This command is used to view lists of orders and to change the order's status.<br>
+ * Orders can be deleted or sent to edit<br>
+ * It can be used only by registered managers<br>
+ * The params of request, to call this command: action=management
+ */
 public class ManageOrdersCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
     private int recordsPerPage = 4;
@@ -59,8 +65,8 @@ public class ManageOrdersCommand implements Command {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         String page;
         String[] statusesSelected = request.getParameterValues(STATUS_ATTR);
-
         boolean updated = (statusesSelected != null && statusesSelected.length > 0);
+
         if (updated) {
             CustomService customService = new CustomService();
             LOGGER.debug(TWO_PARAMS_MSG, "statusID & customID", statusesSelected);
@@ -80,8 +86,11 @@ public class ManageOrdersCommand implements Command {
                 if (updated) {
                     page = MANAGEMENT_COMM;
                 } else {
-                    executeGet(request, response);
-                    return;
+                    List<Custom> customList = getCustomsByLabel(request);
+                    UtilsPaginationHelper.paginationCounter(request, customList.size(), recordsPerPage);
+                    int currPageNum = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGE_ATTR)).orElse("1"));
+//                    return;
+                    page = MANAGEMENT_COMM + "&" + PAGE_ATTR  + "=" + currPageNum;
                 }
             }
         }
@@ -111,7 +120,6 @@ public class ManageOrdersCommand implements Command {
             customService.update(custom);
         }
     }
-
 
     private static String getSortingParam(HttpServletRequest request) {
         String result = request.getParameter(SORT_ATTR);

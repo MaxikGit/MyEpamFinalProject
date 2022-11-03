@@ -52,7 +52,7 @@ class UtilsSQLConstantsTest {
     public static Stream<Arguments> updateCases() {
         return Stream.of(
                 Arguments.of(String.format(
-                        "UPDATE %s SET %s=?, %s=?, %s=?, %s=? %s=? %s=? WHERE %s=?", USER_TABLE,
+                        "UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?", USER_TABLE,
                         USER_EMAIL, USER_NAME, USER_LASTNAME, USER_PASSWORD, USER_DETAILS, USER_ROLE_ID, USER_ID),
                         User.class.getSimpleName()),
                 Arguments.of(String.format(

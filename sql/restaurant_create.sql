@@ -71,8 +71,8 @@ DROP TABLE IF EXISTS `restaurantDB`.`custom`;
 
 CREATE TABLE IF NOT EXISTS `restaurantDB`.`custom`
 (
-    `id`          INT AUTO_INCREMENT,
-    `cost`        DECIMAL(15, 2) UNSIGNED DEFAULT 0,
+    `id`          INT NOT NULL AUTO_INCREMENT,
+    `cost`        DECIMAL(15, 2) UNSIGNED DEFAULT '0.00',
     `create_time` TIMESTAMP              DEFAULT CURRENT_TIMESTAMP,
     `user_id`     INT NOT NULL,
     `status_id`   INT NOT NULL,
@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS `restaurantDB`.`custom`
     CONSTRAINT `fk_custom_user1`
         FOREIGN KEY (`user_id`)
             REFERENCES `restaurantDB`.`user` (`id`)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
+            ON DELETE RESTRICT
+            ON UPDATE CASCADE,
     CONSTRAINT `fk_custom_status1`
         FOREIGN KEY (`status_id`)
             REFERENCES `restaurantDB`.`status` (`id`)
@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS `restaurantDB`.`category`;
 
 CREATE TABLE IF NOT EXISTS `restaurantDB`.`category`
 (
-    `id`   INT AUTO_INCREMENT,
+    `id`   int NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) UNIQUE NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `category_name_idx` (`name` ASC) VISIBLE,
@@ -122,9 +122,9 @@ CREATE TABLE IF NOT EXISTS `restaurantDB`.`dish`
     `image_path`  VARCHAR(255),
     PRIMARY KEY (`id`),
     INDEX `fk_dish_category_idx` (`category_id` ASC) INVISIBLE,
-    FULLTEXT INDEX `dish_name_idx` (`name`) VISIBLE,
     INDEX `dish_price_idx` (`price` ASC) VISIBLE,
     UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
+    FULLTEXT INDEX `dish_name_idx` (`name`) VISIBLE,
     CONSTRAINT `fk_dish_category1`
         FOREIGN KEY (`category_id`)
             REFERENCES `restaurantDB`.`category` (`id`)

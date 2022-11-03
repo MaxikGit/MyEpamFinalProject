@@ -35,8 +35,8 @@ public class OrderCommand implements Command {
     /**
      * Method forms user cart: collects ids of dishes from request parameter
      * {@link com.max.restaurant.utils.UtilsCommandNames#VALUE_ATTR}, then passes it to order page
-     * @param request
-     * @param response
+     * @param request {@link HttpServletRequest} object
+     * @param response {@link HttpServletResponse} object
      * @throws ServletException
      * @throws IOException
      * @throws DAOException
@@ -54,7 +54,7 @@ public class OrderCommand implements Command {
             Map<Dish, Integer> orderedDishes = dishService.findDishesById(dishIds);
             session.setAttribute(ORDER_MAP_ATTR, orderedDishes);
 
-            UtilsPaginationHelper.paginationCounter(request, orderedDishes.size(), recordsPerPage);
+            UtilsPaginationHelper.paginationCounter(request, orderedDishes.size());
 
             double totalCost = orderedDishes.entrySet().stream()
                     .mapToDouble(x-> (x.getKey().getPrice() * x.getValue()) ).sum();
@@ -80,10 +80,9 @@ public class OrderCommand implements Command {
     }
 
     /**
-     *
      * Method processes changes made by user in his cart. If order is accepted, then register it in database
-     * @param request
-     * @param response
+     * @param request {@link HttpServletRequest} object
+     * @param response {@link HttpServletResponse} object
      * @throws ServletException
      * @throws IOException
      * @throws DAOException
@@ -122,7 +121,7 @@ public class OrderCommand implements Command {
                 page = request.getContextPath() + HOME_PAGE;
                 removeAttributes(session);
             } else {
-                UtilsPaginationHelper.paginationCounter(request, orderedDishes.size(), recordsPerPage);
+                UtilsPaginationHelper.paginationCounter(request, orderedDishes.size());
                 page = request.getContextPath() + ORDER_PAGE;
 
                 double totalCost = orderedDishes.entrySet().stream()
@@ -162,6 +161,6 @@ public class OrderCommand implements Command {
         session.removeAttribute(PAGES_MIN_ATTR);
         session.removeAttribute(PAGES_MAX_ATTR);
         session.removeAttribute(PAGE_ATTR);
-        session.removeAttribute(RECS_PER_PAGE_ATTR);
+        session.removeAttribute(TOTAL_PAGES_ATTR);
     }
 }

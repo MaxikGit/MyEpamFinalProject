@@ -9,11 +9,10 @@
 <html lang="${lang}">
 <head>
     <title>Order list</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
 </head>
 
-<body class="w3-light-grey bgimg">
+<body class="w3-light-grey bgimg w3-cursive">
 <jsp:include page="header.jsp"/>
 
 <div class="w3-container w3-center w3-margin-bottom w3-opacity-min">
@@ -60,7 +59,7 @@
 
             <mytag:ResetAccessButton lang="${lang}" totalCost="${totalCost}"/>
 
-            <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}"/>
+            <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}" pageNum="${pageNum}" pagesTotal="${pagesTotal}"/>
 
         </form>
     </c:if>

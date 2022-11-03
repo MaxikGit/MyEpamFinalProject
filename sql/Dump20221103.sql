@@ -78,7 +78,6 @@ CREATE TABLE `custom`
             ON DELETE RESTRICT
             ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 48
   DEFAULT CHARSET = utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -95,7 +94,7 @@ VALUES (20, 831.10, '2022-09-19 17:16:54', 3, 4),
        (22, 352.50, '2022-09-19 17:22:14', 1, 4),
        (23, 411.90, '2022-09-21 14:12:47', 11, 4),
        (25, 657.30, '2022-09-26 16:15:19', 1, 4),
-       (26, 1262.50, '2022-09-26 16:53:56', 4, 2),
+       (26, 1262.50, '2022-09-26 16:53:56', 4, 4),
        (27, 191.60, '2022-09-26 18:13:52', 1, 4),
        (28, 2057.85, '2022-09-30 16:38:53', 1, 4),
        (29, 1431.70, '2022-10-03 08:29:48', 8, 3),
@@ -107,12 +106,14 @@ VALUES (20, 831.10, '2022-09-19 17:16:54', 3, 4),
        (39, 161.40, '2022-10-08 15:02:05', 2, 2),
        (40, 1179.45, '2022-10-10 13:06:47', 1, 3),
        (41, 346.30, '2022-10-15 10:19:22', 3, 3),
-       (42, 151.20, '2022-10-16 15:37:33', 4, 2),
+       (42, 528.45, '2022-10-16 15:37:33', 4, 2),
        (43, 287.50, '2022-10-18 08:34:22', 1, 2),
        (44, 811.65, '2022-10-18 09:34:20', 14, 2),
        (45, 290.70, '2022-10-23 13:39:08', 1, 4),
        (46, 702.10, '2022-10-24 09:40:08', 11, 4),
-       (47, 651.20, '2022-10-24 16:14:04', 11, 1);
+       (47, 671.70, '2022-10-24 16:14:04', 11, 1),
+       (49, 740.60, '2022-10-28 15:28:48', 1, 1),
+       (50, 744.30, '2022-10-31 11:34:49', 15, 4);
 /*!40000 ALTER TABLE `custom`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -277,9 +278,17 @@ VALUES (20, 5, 1, 50.50),
        (46, 8, 1, 130.20),
        (46, 9, 2, 225.50),
        (47, 2, 1, 50.20),
-       (47, 3, 1, 20.50),
+       (47, 3, 2, 20.50),
        (47, 8, 2, 130.20),
-       (47, 10, 1, 320.10);
+       (47, 10, 1, 320.10),
+       (49, 2, 2, 50.20),
+       (49, 10, 2, 320.10),
+       (50, 2, 1, 50.20),
+       (50, 3, 3, 20.50),
+       (50, 4, 1, 170.50),
+       (50, 6, 1, 220.10),
+       (50, 12, 2, 10.00),
+       (50, 16, 4, 55.50);
 /*!40000 ALTER TABLE `custom_has_dish`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -311,7 +320,6 @@ CREATE TABLE `dish`
             ON DELETE RESTRICT
             ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -339,7 +347,7 @@ VALUES (1, 'Шуба', 070.30, 'none', 1, 'salad_fur_coat.webp'),
        (13, 'Vodka Khortytsa', 055.50, 'none', 4, 'khortitsa.webp'),
        (14, 'Coca-Cola', 020.10, 'none', 4, 'bottle_of_coca_cola.webp'),
        (15, 'Whisky Jameson', 070.25, 'none', 4, 'jameson.webp'),
-       (16, 'Best-ever Brussels sprouts', 55.50, 'none', 1, 'brussels_sprouts.webp');
+       (16, 'Best-ever Brussels sprouts', 055.50, 'none', 1, 'brussels_sprouts.webp');
 /*!40000 ALTER TABLE `dish`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -358,7 +366,6 @@ CREATE TABLE `role`
     PRIMARY KEY (`id`),
     UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -392,7 +399,6 @@ CREATE TABLE `status`
     UNIQUE KEY `id_UNIQUE` (`id`),
     UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -438,7 +444,6 @@ CREATE TABLE `user`
             ON DELETE RESTRICT
             ON UPDATE CASCADE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -450,20 +455,21 @@ LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user`
     DISABLE KEYS */;
 INSERT INTO `user`
-VALUES (1, 'klimenko@gmail.com', 'Demon', 'Klimenko', 'Klimenko', 'none', 1),
-       (2, 'kulpaka@gmail.com', 'Major', 'Kulpaka', 'Kulpaka', 'none', 2),
-       (3, 'ivanov@gmail.com', 'Ivan', 'Ivanko', 'Ivanko', 'none', 2),
-       (4, 'petrenko@gmail.com', 'Petro', 'Petrenko', 'Petrenko', 'none', 2),
-       (5, 'kozulko@gmail.com', 'Козел', 'Козюлько', 'Козюлько', 'none', 2),
-       (6, 'bozulko@gmail.com', 'Бозел', 'Бозюлько', 'Бозюлько', 'none', 2),
-       (7, 'zhozulko@gmail.com', 'Жозел', 'Жозюлько', 'Жозюлько', 'none', 2),
-       (8, 'gozulko@gmail.com', 'Гозел', 'Гозюлько', 'Гозюлько', 'none', 2),
-       (9, 'vasylko@gmail.com', 'Vasya', 'Vasylko', 'Vasylko', 'none', 2),
-       (10, 'murzilko@gmail.com', 'Murza', 'Murzilko', 'Murzilko', 'none', 2),
-       (11, 'mohito@gmail.com', 'Оля', 'Мохіто', 'mohito', 'none', 2),
-       (12, 'gggyyy@gmail.com', 'Саша', 'fddsd', '1234', 'none', 2),
-       (13, 'gghh@gmail.com', 'какашка', 'какашка', '5566', 'none', 2),
-       (14, 'ho@ukr.net', 'Хо', 'А', 'hohoho', 'none', 2);
+VALUES (1, 'klimenko@gmail.com', 'Demon', 'Klimenko', 'ÚØÁººÈödoY÷¯Àç/-4`Ö', 'none', 1),
+       (2, 'kulpaka@gmail.com', 'Major', 'Kulpaka', '\"CÎ#x;xÌçTDc­Æås]KÿöÊEvó', 'none', 2),
+       (3, 'ivanov@gmail.com', 'Ivan', 'Ivanko', 'ÇÒÄÒ¡ÆcÌeËlXÜÿl*SÄ§\nDö¤', 'none', 2),
+       (4, 'petrenko@gmail.com', 'Petro', 'Petrenko', 'éò©ó!1&³î{ÄæéÜx´»16Í³úøð', 'none', 2),
+       (5, 'kozulko@gmail.com', 'Козел', 'Козюлько', 'ñDPfµ2ÊIOÀÍS³çÆgH\'¯-XH', 'none', 2),
+       (6, 'bozulko@gmail.com', 'Бозел', 'Бозюлько', 'ò¹{	äïþoIð¯\n\Z÷,ØÞ}À', 'none', 2),
+       (7, 'zhozulko@gmail.com', 'Жозел', 'Жозюлько', 'þE·ObYÐ>9pf\"zªÌ\'sL´7©¦Ø', 'none', 2),
+       (8, 'gozulko@gmail.com', 'Гозел', 'Гозюлько', 'C2nrÐ×P9<äÕÔÖ!áR³`Ûß&xôûÚ&', 'none', 2),
+       (9, 'vasylko@gmail.com', 'Vasya', 'Vasylko', 'ô|¿ÖøÄïs¡Èþ¯/UYm^w-]þýpÉ', 'none', 2),
+       (10, 'murzilko@gmail.com', 'Murza', 'Murzilko', 'ÿî8yùkÕ i96µ\rA6Üv[Uzÿ[', 'none', 2),
+       (11, 'mohito@gmail.com', 'Оля', 'Мохіто', 'g¹¦TûQöô_ª!®ÿëØZ<)î¾<', 'none', 2),
+       (12, 'gggyyy@gmail.com', 'Саша', 'fddsd', '~­QqðatdÓ¬ï&ÿC4$gÃÿ×rÈgÚ', 'none', 2),
+       (13, 'gghh@gmail.com', 'кака', 'какадзе', '(n®t¼õÃßFd ±h\\<ÒM³¢«', 'none', 2),
+       (14, 'ho@ukr.net', 'Хо', 'А', 'n$`N\"ØP£ßbÍuiRËç8<èm¡6w{z½', 'none', 2),
+       (15, 'alexeenko@ukr.net', 'Alex', 'Alexeenko', '¨GI^\Z_	®M]MÂ\'ÂUNþ¼ê{ÕùËv', 'none', 2);
 /*!40000 ALTER TABLE `user`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -477,4 +483,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-25 19:45:00
+-- Dump completed on 2022-11-03 13:28:08

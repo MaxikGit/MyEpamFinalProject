@@ -12,63 +12,71 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 
 /**
  * Helper class, calculates the number of pages to display. Results are set in {@code HttpSession} object as attributes.
- * Attribute names are:
- * {@link UtilsCommandNames#PAGES_MIN_ATTR},
- * {@link UtilsCommandNames#PAGES_MAX_ATTR},
- * {@link UtilsCommandNames#PAGE_ATTR},
- * {@link UtilsCommandNames#RECS_PER_PAGE_ATTR};
+ * Attribute names are:<br>
+ * {@link UtilsCommandNames#PAGES_MIN_ATTR},<br>
+ * {@link UtilsCommandNames#PAGES_MAX_ATTR},<br>
+ * {@link UtilsCommandNames#PAGE_ATTR},<br>
+ * {@link UtilsCommandNames#TOTAL_PAGES_ATTR};
  */
-
 public class UtilsPaginationHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsPaginationHelper.class);
-    private static int NUM_OF_RECS = 3;
-    private static int PAGINATION_SIZE = 3;
+    private static int numOfPageRecords;
+    private static int totalOfPages;
+    private static final int NUM_OF_PAGE_RECORDS = 3;
+    private static final int NUM_OF_PAGE_BUTTONS = 3;
 
-    public static void paginationCounter(HttpServletRequest request, int containerSize) {
+    /**
+     * Calculates minimal and maximal number of pages, than writes them as attributes to session object.<br>
+     * Number of pagination buttons {@link #NUM_OF_PAGE_BUTTONS} have default value, while number of records per page
+     * {@link #numOfPageRecords} can be pointed as <strong>recsPerPage</strong> parameter     *
+     * @param request HttpServletRequest object
+     * @param containerSize the size of the whole collection to be displayed on a page
+     */
+    public static synchronized void paginationCounter(HttpServletRequest request, int containerSize) {
+        numOfPageRecords = NUM_OF_PAGE_RECORDS;
+        paginationCounter(request, containerSize, numOfPageRecords);
+    }
+
+    /**
+     * Is the copy of {@link #paginationCounter(HttpServletRequest, int)} with the only difference, that
+     * the number of pagination buttons {@link #NUM_OF_PAGE_BUTTONS} is user-defined
+     * @param request HttpServletRequest object
+     * @param containerSize the size of the whole collection to be displayed on a page
+     * @param recsPerPage user defined value of {@link #numOfPageRecords}
+     */
+    public static void paginationCounter(HttpServletRequest request, int containerSize,
+                                         int recsPerPage) {
         LOGGER.info(METHOD_STARTS_MSG, "paginationCounter", "true");
-        int totalOfpages = (int) Math.ceil(containerSize * 1.0 / NUM_OF_RECS);
-        HttpSession session  = request.getSession(false);
-        int currPageNum = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGE_ATTR)).orElse("1"));
-        int pageNumMin = Optional.ofNullable((Integer) session.getAttribute(PAGES_MIN_ATTR)).orElse(1);
+        UtilsPaginationHelper.numOfPageRecords = recsPerPage;
+        UtilsPaginationHelper.totalOfPages = (int) Math.ceil(containerSize * 1.0 / numOfPageRecords);
+        HttpSession session = request.getSession(false);
+        int currPage = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGE_ATTR)).orElse("1"));
+        int pageNumMin;
         int pageNumMax;
-        int currNumOfPages = Math.min(totalOfpages, PAGINATION_SIZE);
 
-        if (totalOfpages == 1) {
+        if (totalOfPages == 1) {
             pageNumMax = 1;
-        } else
-        {
-            pageNumMax = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGES_MAX_ATTR))
-                    .orElse("" + (Math.min(totalOfpages, currNumOfPages))));
-            if (currPageNum < pageNumMin) {
-                if (pageNumMin - currNumOfPages > 1) {
-                    pageNumMin = pageNumMin - currNumOfPages;
-                    pageNumMax = pageNumMin + currNumOfPages;
-                } else {
-                    pageNumMin = 1;
-                    pageNumMax = currNumOfPages;
-                    currPageNum = 1;
-                }
-            } else if (currPageNum > pageNumMax) {
-                if (pageNumMax + currNumOfPages <= totalOfpages) {
-                    pageNumMax = pageNumMax + currNumOfPages;
-                    pageNumMin = pageNumMax - currNumOfPages + 1;
-                    currPageNum =pageNumMin;
-                } else {
-                    pageNumMax = totalOfpages;
-                    pageNumMin = pageNumMax - currNumOfPages + 1;
-                    currPageNum = pageNumMax;
-                }
-            }
+            pageNumMin = 1;
+        } else {
+            pageNumMin = getMinPageNum(currPage);
+            pageNumMax = getMaxPageNum(pageNumMin);
         }
         session.setAttribute(PAGES_MIN_ATTR, pageNumMin);
         session.setAttribute(PAGES_MAX_ATTR, pageNumMax);
-        session.setAttribute(PAGE_ATTR, currPageNum);
-        session.setAttribute(RECS_PER_PAGE_ATTR, NUM_OF_RECS);
+        session.setAttribute(PAGE_ATTR, currPage);
+        session.setAttribute(TOTAL_PAGES_ATTR, totalOfPages);
+        session.setAttribute(RECS_PER_PAGE_ATTR, numOfPageRecords);
     }
-    public static void paginationCounter(HttpServletRequest request, int containerSize,
-                                         int recsPerPage) {
-        NUM_OF_RECS = recsPerPage;
-        paginationCounter(request, containerSize);
+
+    private static int getMinPageNum(int currPageNum) {
+        int tempMin = Math.max((currPageNum - (NUM_OF_PAGE_BUTTONS / 2)), 1);
+        if (tempMin <= (totalOfPages - NUM_OF_PAGE_BUTTONS))
+            return tempMin;
+        return Math.max(totalOfPages - NUM_OF_PAGE_BUTTONS + 1, 1);
+    }
+
+    private static int getMaxPageNum(int pageNumMin) {
+        return Math.min((pageNumMin + (NUM_OF_PAGE_BUTTONS - 1)), totalOfPages);
     }
 
 }

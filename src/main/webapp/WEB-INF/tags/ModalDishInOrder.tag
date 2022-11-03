@@ -28,7 +28,7 @@
 
             <div class="w3-container w3-margin ">
                 <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom ">
-                    <tr class="w3-cell-row w3-hover-none w3-light-blue">
+                    <tr class="w3-cell-row w3-hover-none w3-light-blue w3-cursive">
                         <%--                        column 1 /8.33% --%>
                         <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.num"/></th>
                         <%--                        column 2 /41.66% --%>

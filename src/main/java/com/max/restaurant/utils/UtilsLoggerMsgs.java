@@ -5,6 +5,7 @@ public class UtilsLoggerMsgs {
     public static final String STATIC_INI = " static initialization block";
     public static final String METHOD_STARTS_MSG = "method {} has been started = {}";
     public static final String METHOD_FAILED = " method failed {}";
+    public static final String ENCRYPTION_MSG = "encryption time is {}ms";
 
     public static final String TWO_PARAMS_MSG = "set params are: {}, {}";
     public static final String IS_VALID = " data params are valid: {}";

@@ -1,24 +1,24 @@
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="myTag" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
-
 
 <fmt:setLocale value="${lang}"/>
-
 <fmt:setBundle basename="messages"/>
+
 <html lang="${lang}">
 
 <head>
     <title>Registration form</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
 </head>
 
 <body class="w3-light-grey bgimg">
 <jsp:include page="header.jsp"/>
 
 <div class="w3-center w3-third w3-display-topmiddle w3-card-2 w3-round-large w3-border-black w3-light-grey w3-animate-opacity"
-     style="margin-top: 105px">
+     style="margin-top: 80px">
     <form action="${pageContext.request.contextPath}/ServletController" method="post" name="register">
         <div class="w3-container w3-black w3-bottombar w3-padding w3-round-large-up">
             <span class="w3-margin font-login"><fmt:message key="signup.page"/></span>

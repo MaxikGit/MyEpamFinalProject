@@ -30,7 +30,7 @@ public class CommandExecutor {
         LOGGER.info(STATIC_INI);
         allKnownCommands.put(LOGIN, new LoginCommand());
         allKnownCommands.put(SIGN_UP, new SignUpCommand());
-        allKnownCommands.put(null, new NullCommand());
+        allKnownCommands.put(null, new UnknownCommand());
         allKnownCommands.put(CATEGORY, new CategoryCommand());
         allKnownCommands.put(EDIT_ORDER, new OrderCommand());
         allKnownCommands.put(SORT_DISHES, new SortCommand());

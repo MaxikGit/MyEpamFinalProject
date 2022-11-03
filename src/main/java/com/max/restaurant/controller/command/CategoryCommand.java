@@ -19,9 +19,15 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.UNUSED_METHOD_WORKS;
 import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
+/**
+ * Command that is used as a start command. It loads information on all available dishes to the main page, <br>
+ * according to chosen categories of dishes <br>
+ * The params of request, to call this command: action=category
+ */
 public class CategoryCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryCommand.class);
 
@@ -55,6 +61,6 @@ public class CategoryCommand implements Command {
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
-        throw new CommandException("You might not be here!");
+        throw new CommandException(UNUSED_METHOD_WORKS);
     }
 }

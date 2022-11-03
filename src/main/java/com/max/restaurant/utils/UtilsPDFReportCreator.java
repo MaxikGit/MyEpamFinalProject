@@ -24,7 +24,9 @@ import static com.max.restaurant.utils.UtilsCommandNames.LANG_ATTR;
 import static com.max.restaurant.utils.UtilsCommandNames.LOGGED_USER_ATTR;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-
+/**
+ * This class fills the PDF {@link Document} object with current order information
+ */
 public class UtilsPDFReportCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsPDFReportCreator.class);
     private static final String FONT_I_PTH = "/pdffonts/pt_sans_italic.ttf";

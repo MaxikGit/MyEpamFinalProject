@@ -11,8 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/font-awesome.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
     <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <body class="w3-light-grey bgimg">
@@ -29,13 +28,13 @@
                   method="post">
                 <c:set var="emailPlace"><fmt:message key="login.email"/></c:set>
                 <c:set var="passPlace"><fmt:message key="login.pass"/></c:set>
-                <label class="w3-left w3-margin-top">${emailPlace}</label>
-                <input class="w3-input w3-border w3-hover-border-light-gray " type="email" name="email"
+                <label for="email" class="w3-left w3-margin-top">${emailPlace}</label>
+                <input class="w3-input w3-border w3-hover-border-light-gray " type="email" id="email" name="email"
                        value="<c:out value="${sessionScope.email}" default="klimenko@gmail.com"/>"
                        placeholder="${emailPlace}" required>
-                <label class="w3-left w3-margin-top">${passPlace}</label>
+                <label for="password" class="w3-left w3-margin-top">${passPlace}</label>
                 <input class="w3-input w3-border w3-hover-border-light-gray w3-round-medium" type="password"
-                       name="password" value="Klimenko" placeholder="${passPlace}" required>
+                       id="password" name="password" value="Klimenko" placeholder="${passPlace}" required>
                 <div class="w3-margin-top">
                     <button class="w3-btn w3-block w3-margin-top w3-margin-bottom w3-round-large w3-gray w3-opacity-min"
                             type="submit" name="action" value="login">
@@ -47,7 +46,7 @@
                     <div class="w3-margin-top w3-margin-bottom">
                         <fmt:message key="login.haveacc"/>?
                         <a href="${pageContext.request.contextPath}/ServletController?action=sign_up">
-                            <fmt:message key="signup.enter"/>
+                            <u><fmt:message key="signup.enter"/></u>
                         </a>
                     </div>
                 </div>
