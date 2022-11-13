@@ -11,7 +11,10 @@
 
 <head>
     <title>Registration form</title>
+    <meta charset="utf-8">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/SignInValidation.js" charset="UTF-8"></script>
 </head>
 
 <body class="w3-light-grey bgimg">
@@ -19,10 +22,9 @@
 
 <div class="w3-center w3-third w3-display-topmiddle w3-card-2 w3-round-large w3-border-black w3-light-grey w3-animate-opacity"
      style="margin-top: 80px">
-    <form action="${pageContext.request.contextPath}/ServletController" method="post" name="register">
+        <form id="reg_form" action="${pageContext.request.contextPath}/ServletController" method="post" name="register">
         <div class="w3-container w3-black w3-bottombar w3-padding w3-round-large-up">
             <span class="w3-margin font-login"><fmt:message key="signup.page"/></span>
-            <%--                <p>Please fill in this form to create an account</p>--%>
         </div>
         <div class="w3-container w3-border-0">
             <c:set var="namePlace"><fmt:message key="signup.name.place"/></c:set>
@@ -34,13 +36,13 @@
                 <b><fmt:message key="signup.name"/></b>
             </label>
             <input type="text" placeholder="${namePlace}" name="name" id="name" required
-                   minlength="2" class="w3-input w3-border w3-hover-border-light-gray">
+                   minlength="2" maxlength="30" class="w3-input w3-border w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="last_name">
                 <b><fmt:message key="signup.lastname"/></b>
             </label>
             <input type="text" placeholder="${lastNamePlace}" name="last_name" id="last_name"
-                   minlength="1" required class="w3-input w3-hover-border-light-gray">
+                   minlength="1" maxlength="30" required class="w3-input w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="email">
                 <b><fmt:message key="signup.email"/></b>
@@ -63,7 +65,6 @@
                    required class="w3-input w3-hover-border-light-gray">
         </div>
         <%--                    <span id="message2" style="color:red"> </span>--%>
-
         <div class="w3-container">
             <%--                By creating an account you agree to our <a href="#">Terms & Privacy</a>--%>
             <button type="submit"
@@ -82,14 +83,27 @@
 </div>
 <div class="w3-margin">
     <c:if test="${!empty sessionScope.unsuccess}">
-        <div class="w3-round-large w3-center w3-padding-large w3-pale-yellow w3-button w3-hover-none">
-                <fmt:message key="${sessionScope.unsuccess}"/></div>
+        <div class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+            <fmt:message key="${sessionScope.unsuccess}"/></div>
     </c:if>
-    <myTag:BackHomeButton/>
+    <div id="errorname" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.name"/>
+        </div>
+    <div id="errorlastname" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.last_name"/>
+    </div>
+    <div id="erroremail" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.email"/>
+    </div>
+    <div id="errorpass" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.pass"/>
+    </div>
+    <div id="errorconpass" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.repass"/>
+    </div>
 
+    <myTag:BackHomeButton/>
 </div>
 <jsp:include page="footer.jsp"/>
-
 </body>
-
 </html>

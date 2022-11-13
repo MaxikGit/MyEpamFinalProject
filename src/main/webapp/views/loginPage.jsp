@@ -13,6 +13,8 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
     <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/LoginValidation.js" charset="UTF-8"></script>
 </head>
 <body class="w3-light-grey bgimg">
 <jsp:include page="header.jsp"/>
@@ -24,7 +26,7 @@
                 <h2 class="font-login"><fmt:message key="login.page"/></h2>
             </div>
             <%--        input form--%>
-            <form class="w3-container w3-margin" action="${pageContext.request.contextPath}/ServletController"
+            <form id="reg_form"  class="w3-container w3-margin" action="${pageContext.request.contextPath}/ServletController"
                   method="post">
                 <c:set var="emailPlace"><fmt:message key="login.email"/></c:set>
                 <c:set var="passPlace"><fmt:message key="login.pass"/></c:set>
@@ -37,7 +39,7 @@
                        id="password" name="password" value="Klimenko" placeholder="${passPlace}" required>
                 <div class="w3-margin-top">
                     <button class="w3-btn w3-block w3-margin-top w3-margin-bottom w3-round-large w3-gray w3-opacity-min"
-                            type="submit" name="action" value="login">
+                            id="submit" type="submit" name="action" value="login">
                         <fmt:message key="login.enter"/>
                     </button>
                     <div class="w3-center g-recaptcha" style="display: table"
@@ -58,10 +60,16 @@
 <%--Wrong input line--%>
 <div class="w3-margin">
     <c:if test="${!empty sessionScope.unsuccess}">
-        <div class="w3-round-large w3-padding-large w3-pale-yellow w3-button w3-hover-none">
+        <div class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
             <fmt:message key="${sessionScope.unsuccess}"/>
         </div>
     </c:if>
+    <div id="erroremail" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.email"/>
+    </div>
+    <div id="errorpass" class="w3-round-large w3-display-topmiddle w3-padding-large w3-pale-yellow w3-card-4">
+        <fmt:message key="signup.err.pass"/>
+    </div>
     <myTag:BackHomeButton/>
 </div>
 <jsp:include page="footer.jsp"/>

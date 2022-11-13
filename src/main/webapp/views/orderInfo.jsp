@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="mytag" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 
 <fmt:setLocale value="${lang}"/>
 <fmt:setBundle basename="messages"/>
@@ -56,11 +56,9 @@
                     </c:forEach>
                 </table>
             </div>
-
             <mytag:ResetAccessButton lang="${lang}" totalCost="${totalCost}"/>
-
-            <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}" pageNum="${pageNum}" pagesTotal="${pagesTotal}"/>
-
+            <mytag:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}" pageNum="${pageNum}"
+                                     pagesTotal="${pagesTotal}"/>
         </form>
     </c:if>
 
@@ -74,7 +72,6 @@
     </c:if>
 </div>
 <mytag:BackHomeButton/>
-
 
 <jsp:include page="footer.jsp"/>
 </body>

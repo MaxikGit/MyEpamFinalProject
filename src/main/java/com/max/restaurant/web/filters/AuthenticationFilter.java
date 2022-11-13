@@ -16,7 +16,7 @@ import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-@WebFilter(urlPatterns = {"/views/*"})
+@WebFilter(urlPatterns = {"/views/*", "/ServletController"})
 public class AuthenticationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
     private int managerId = 1;
@@ -34,8 +34,9 @@ public class AuthenticationFilter implements Filter {
         boolean isHome = uri.equals(((HttpServletRequest) request).getContextPath() + HOME_PAGE);
         boolean isLoginPage = uri.endsWith(LOGIN_PAGE) || actionParam.equals(LOGIN);
         boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP);
+        boolean isJavaScript = 0 < uri.lastIndexOf("js");
 
-        if (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage) {
+        if (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage || isJavaScript) {
             chain.doFilter(request, response);
         } else {
             boolean isManagersPage = uri.endsWith(EDIT_ORDER_MANAGEMENT_PAGE) || uri.endsWith(ORDER_MANAGEMENT_PAGE);

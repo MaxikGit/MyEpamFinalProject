@@ -13,6 +13,26 @@
     <meta charset="UTF-8">
     <title>Restaurant EPAM final project</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/HideShoppingCart.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/SidebarHideOnSmall.js"></script>
+    <c:if test="${loggedUser != null}">
+    <script>
+        $(document).ready(function () {
+            let cartNum = $("#cartSize").text();
+
+            $(".dish").click(function (e) {
+                e.preventDefault();
+                if ($("#shoppingCart").is(":hidden")) {
+                    // $("#cartSize").text(cartNum++);
+                    $("#shoppingCart").show();
+                }
+                $("#cartSize").text(++cartNum);
+            });
+        });
+
+    </script>
+    </c:if>
 </head>
 
 <body class="w3-light-grey ">
@@ -23,7 +43,8 @@
         <div class="w3-bar-item font-effect-fire restik w3-center"><u>Restaurant</u></div>
 
         <c:if test="${loggedUser == null}">
-            <span class="w3-display-topmiddle w3-animate-fading w3-text-light-blue font-login w3-xlarge" style="margin-top: 18px;">
+            <span class="w3-display-topmiddle w3-animate-fading w3-text-light-blue font-login w3-xlarge w3-third"
+                  style="margin-top: 18px;">
             <fmt:message key="main.please.login"/>
             </span>
         </c:if>
@@ -38,7 +59,7 @@
 
         <%--    login and signIn buttons--%>
 
-        <span class="w3-bar-item w3-cell-middle w3-right">
+        <span class="w3-bar-item w3-cell-middle w3-right w3-quarter">
             <a href="ServletController?action=login" class="w3-bar-item w3-hover-none w3-hover-text-amber"
                style="text-decoration: none">
                 <c:if test="${empty loggedUser}"><i><fmt:message key="main.login"/></i></c:if>
@@ -55,14 +76,14 @@
 
         <%--    shopping cart--%>
 
-        <c:if test="${not empty dishIds}">
-            <div class="w3-bar-item w3-right w3-hover-amber" style="margin-top: 5px">
-                <a href="ServletController?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
-                    <i class="material-icons w3-border-white">shopping_cart</i>
-                    <i id="cartSize">${dishIds.size()}</i>
-                </a>
-            </div>
-        </c:if>
+        <%--        <c:if test="${not empty dishIds}">--%>
+        <div id="shoppingCart" class="w3-bar-item w3-right w3-hover-amber" style="margin-top: 5px">
+            <a href="ServletController?action=orderEdit" style="margin-bottom: 35px; text-decoration: none">
+                <i class="material-icons w3-border-white">shopping_cart</i>
+                <i id="cartSize">${dishIds.size()}</i>
+            </a>
+        </div>
+        <%--        </c:if>--%>
 
         <%--shopping cart ends--%>
     </div>
@@ -174,7 +195,6 @@
                     </a>
                 </div>
             </div>
-
             <%--    End Selector of sorting    --%>
         </c:if>
     </div>
@@ -183,32 +203,6 @@
         <jsp:include page="/views/dishesList.jsp"/>
     </div>
 </div>
-
 <!-- End page content -->
-
-<script>
-    // Get the Sidebar
-    var mySidebar = document.getElementById("mySidebar");
-
-    // Get the DIV with overlay effect
-    var overlayBg = document.getElementById("myOverlay");
-
-    // Toggle between showing and hiding the sidebar, and add overlay effect
-    function w3_open() {
-        if (mySidebar.style.display === 'block') {
-            mySidebar.style.display = 'none';
-            overlayBg.style.display = "none";
-        } else {
-            mySidebar.style.display = 'block';
-            overlayBg.style.display = "block";
-        }
-    }
-
-    // Close the sidebar with the close button
-    function w3_close() {
-        mySidebar.style.display = "none";
-        overlayBg.style.display = "none";
-    }
-</script>
 </body>
 </html>

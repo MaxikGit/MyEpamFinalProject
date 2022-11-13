@@ -40,6 +40,7 @@ public class UtilsPasswordEncryption {
         byte[] encryptedBytes = encryptPass.getBytes(StandardCharsets.ISO_8859_1);
         byte[] salt = Arrays.copyOfRange(encryptedBytes, (encryptedBytes.length - saltLength), encryptedBytes.length);
         byte[] encryptedNew = getEncryptedPass(pass, salt);
+        LOGGER.debug(TWO_PARAMS_MSG, "authenticate", Arrays.equals(encryptedNew, encryptedBytes));
         return Arrays.equals(encryptedNew, encryptedBytes);
     }
 

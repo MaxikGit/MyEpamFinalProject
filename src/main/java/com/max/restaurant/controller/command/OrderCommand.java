@@ -75,7 +75,9 @@ public class OrderCommand implements Command {
             LOGGER.debug(TWO_PARAMS_MSG, DISH_IDS_LIST_ATTR, dishIds);
             page = request.getContextPath() + HOME_PAGE;
             LOGGER.info(REDIRECT, page);
-            response.sendRedirect(page);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//            request.getRequestDispatcher(page).forward(request, response);
+//            response.sendRedirect(page);
         }
     }
 
@@ -83,9 +85,9 @@ public class OrderCommand implements Command {
      * Method processes changes made by user in his cart. If order is accepted, then register it in database
      * @param request {@link HttpServletRequest} object
      * @param response {@link HttpServletResponse} object
-     * @throws ServletException
-     * @throws IOException
-     * @throws DAOException
+     * @throws ServletException ServletException object
+     * @throws IOException IOException object
+     * @throws DAOException DAOException object
      */
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws

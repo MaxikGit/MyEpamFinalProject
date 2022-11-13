@@ -7,7 +7,7 @@
 
 <head>
     <title>Dishes list</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
+    <script src="views/js/SendURLbyGet.js"></script>
 </head>
 
 <body>
@@ -16,31 +16,34 @@
         <c:if test="${iterations.count % 4 == 1}">
             <div class="w3-row-padding w3-padding-16 w3-center">
         </c:if>
-        <div class="w3-quarter w3-padding w3-animate-opacity" id="dish#${dishEntry.id}">
+        <div class="dish w3-quarter w3-padding w3-animate-opacity" id="dish#${dishEntry.id}"
+             onclick="sendURLbyGet('ServletController?action=orderEdit&value=${dishEntry.id}')">
             <i>
                 <c:if test="${loggedUser!=null}">
-                <a href="ServletController?action=orderEdit&value=${dishEntry.id}">
-                    </c:if>
+                    <i class="is-user"></i>
+                    <%--                <a href="ServletController?action=orderEdit&value=${dishEntry.id}">--%>
+                    <%--                <a href="#" onclick="loadDoc('ServletController?action=orderEdit&value=${dishEntry.id}')">--%>
+                </c:if>
 
-                    <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
-                         style="width:95%" alt="food picture" class="w3-round-large">
-                    <h3 class="w3-left-align" style="height: 65px">${dishEntry.name}</h3>
+                <img src="${pageContext.request.contextPath}${dishEntry.imagePath}"
+                     style="width:95%" alt="food picture" class="w3-round-large">
+                <h3 class="w3-left-align" style="height: 65px">${dishEntry.name}</h3>
 
-                    <div>
-                        <hr class="w3-border w3-border-gray w3-gray w3-center" style="margin: auto;">
-                        <h5 class="w3-right-align w3-margin-right">
-                            <c:set var="currSymb">
-                                <fmt:message key="currency"/>
-                            </c:set>
-                            <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="${currSymb}"/>
-                            <c:if test="${loggedUser!=null}">
-                                <i class="material-icons w3-circle w3-hover-amber w3-animate-fading">restaurant_menu</i>
-                            </c:if>
-                        </h5>
-                    </div>
-                    <p>${dishEntry.details}</p>
-                    <c:if test="${loggedUser!=null}">
-                </a>
+                <div>
+                    <hr class="w3-border w3-border-gray w3-gray w3-center" style="margin: auto;">
+                    <h5 class="w3-right-align w3-margin-right">
+                        <c:set var="currSymb">
+                            <fmt:message key="currency"/>
+                        </c:set>
+                        <fmt:formatNumber type="CURRENCY" value="${dishEntry.price}" currencySymbol="${currSymb}"/>
+                        <c:if test="${loggedUser!=null}">
+                            <i class="material-icons w3-circle w3-hover-amber w3-animate-fading">restaurant_menu</i>
+                        </c:if>
+                    </h5>
+                </div>
+                <p>${dishEntry.details}</p>
+                <c:if test="${loggedUser!=null}">
+                    <%--                </a>--%>
                 </c:if>
             </i>
         </div>
