@@ -19,7 +19,7 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 @WebFilter(urlPatterns = {"/views/*", "/ServletController"})
 public class AuthenticationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
-    private int managerId = 1;
+    private final int managerId = 1;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -27,16 +27,7 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(false);
         HttpServletResponse resp = (HttpServletResponse) response;
         String uri = ((HttpServletRequest) request).getRequestURI();
-        String actionParam = Optional.ofNullable(request.getParameter(ACTION)).orElse("");
-        boolean isImage = 0 < uri.lastIndexOf("images");
-        boolean isCSS = 0 < uri.lastIndexOf("styles");
-        boolean isIcon = 0 < uri.lastIndexOf("icons");
-        boolean isHome = uri.equals(((HttpServletRequest) request).getContextPath() + HOME_PAGE);
-        boolean isLoginPage = uri.endsWith(LOGIN_PAGE) || actionParam.equals(LOGIN);
-        boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP);
-        boolean isJavaScript = 0 < uri.lastIndexOf("js");
-
-        if (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage || isJavaScript) {
+        if (isNotRestricted((HttpServletRequest) request)) {
             chain.doFilter(request, response);
         } else {
             boolean isManagersPage = uri.endsWith(EDIT_ORDER_MANAGEMENT_PAGE) || uri.endsWith(ORDER_MANAGEMENT_PAGE);
@@ -52,5 +43,21 @@ public class AuthenticationFilter implements Filter {
             }
             else chain.doFilter(request, response);
         }
+    }
+    private boolean isNotRestricted(HttpServletRequest request){
+        String uri = request.getRequestURI();
+        String actionParam = Optional.ofNullable(request.getParameter(ACTION)).orElse("");
+        boolean isImage = 0 < uri.lastIndexOf("images");
+        boolean isCSS = 0 < uri.lastIndexOf("styles");
+        boolean isIcon = 0 < uri.lastIndexOf("icons");
+        boolean isHome = uri.equals(request.getContextPath() + HOME_PAGE);
+        boolean isLoginPage = uri.endsWith(LOGIN_PAGE) || actionParam.equals(LOGIN);
+        boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP);
+        boolean isJavaScript = 0 < uri.lastIndexOf("js");
+        boolean isLanguage = actionParam.equals(LANGUAGE);
+        boolean isCategorySelect = actionParam.equals(CATEGORY);
+        boolean isSortingSelect = actionParam.equals(SORT_DISHES);
+        return (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage || isJavaScript || isLanguage ||
+                isCategorySelect || isSortingSelect);
     }
 }

@@ -33,9 +33,8 @@ public class UtilsPasswordEncryption {
      * @return true if pass param is hashed into encryptPass, false otherwise
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
-     * @throws IOException
      */
-    public static boolean authenticate(char[] pass, String encryptPass) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+    public static boolean authenticate(char[] pass, String encryptPass) throws InvalidKeySpecException, NoSuchAlgorithmException {
         LOGGER.info(METHOD_STARTS_MSG, "authenticate", "true");
         byte[] encryptedBytes = encryptPass.getBytes(StandardCharsets.ISO_8859_1);
         byte[] salt = Arrays.copyOfRange(encryptedBytes, (encryptedBytes.length - saltLength), encryptedBytes.length);
@@ -51,7 +50,6 @@ public class UtilsPasswordEncryption {
      * @return string of encrypted password in ISO-8859-1 encoding
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
-     * @throws IOException
      */
     public static String getNewEncryptedPass(char[] pass) throws InvalidKeySpecException, NoSuchAlgorithmException {
         LOGGER.info(METHOD_STARTS_MSG, "getNewEncryptedPass", "true");
@@ -69,7 +67,7 @@ public class UtilsPasswordEncryption {
         int iterations = 20_000;
         KeySpec spec = new PBEKeySpec(pass, salt, iterations, derivedKeyLength);
         SecretKeyFactory factory = SecretKeyFactory.getInstance(algorithmName);
-        try (ByteArrayOutputStream bao = new ByteArrayOutputStream();) {
+        try (ByteArrayOutputStream bao = new ByteArrayOutputStream()) {
             bao.write(factory.generateSecret(spec).getEncoded());
             bao.write(salt);
             long end = System.currentTimeMillis();
@@ -84,7 +82,7 @@ public class UtilsPasswordEncryption {
     private static byte[] generateSalt() throws NoSuchAlgorithmException {
         String randomAlgo = "SHA1PRNG";//https://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#SecureRandom
         SecureRandom random = SecureRandom.getInstance(randomAlgo);
-        // Generate a 8 byte (64 bit) salt as recommended by RSA PKCS5
+        // Generate an 8 byte (64 bit) salt as recommended by RSA PKCS5
         byte[] salt = new byte[saltLength];
         random.nextBytes(salt);
         return salt;

@@ -15,7 +15,7 @@ public class UtilsLoggerMsgs {
     public static final String ENCODE_MSG = "encoding {} was replaced with {}";
     public static final String TRANSACTION_ROLLBACK = " transaction rollback";
     public static final String TRANSACTION_ROLLBACK_FAILED = " transaction rollback was unsuccessful";
-    public static final String TRANSACTION_MSG = "transaction done successfully {}";
+    public static final String TRANSACTION_MSG = "transaction done successfully";
 
     public static final String GET_FROM_RS = " receiving from the result ";
     public static final String SET_STATEMENT = "{} set statement params";
