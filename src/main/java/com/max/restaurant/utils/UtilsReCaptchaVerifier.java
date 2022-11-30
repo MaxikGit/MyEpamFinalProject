@@ -14,24 +14,33 @@ import java.net.URL;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.METHOD_STARTS_MSG;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.TWO_PARAMS_MSG;
 
+/**
+ * reCaptcha-2 utility checking class. If there is no internet connection, will return true. To change this,
+ * delete try section, line 41
+ */
 public class UtilsReCaptchaVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsReCaptchaVerifier.class);
     private static final String SECRET_KEY = "6LfF4qsiAAAAAMaqhgk6c7_iSAGKfyyfQdaNnyBb";
     public static final String SITE_KEY = "6LfF4qsiAAAAAI4HwgDTEbMbrGGimJXsgaLY7Y6Z";
     public static final String GOOGLE_URL = "https://www.google.com/recaptcha/api/siteverify";
-    public static final String reCAPTURE_ATTR = "g-recaptcha-response";
+    public static final String reCAPTCHA_ATTR = "g-recaptcha-response";
 
     private UtilsReCaptchaVerifier() {
     }
 
     public static boolean verify(HttpServletRequest request) throws IOException {
         LOGGER.info(METHOD_STARTS_MSG, "verify", "true");
-        String gRecaptchaResponse = request.getParameter(reCAPTURE_ATTR);
+        String gRecaptchaResponse = request.getParameter(reCAPTCHA_ATTR);
         if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
             return false;
         }
         URL connURL = new URL(GOOGLE_URL);
-        HttpsURLConnection con = (HttpsURLConnection) connURL.openConnection();
+        HttpsURLConnection con;
+        try {
+            con = (HttpsURLConnection) connURL.openConnection();
+        } catch (IOException e) {
+            return true;
+        }
         // add request header
         String userAgent = request.getHeader("User-Agent");
         String acceptLang = request.getHeader("Accept-Language");
@@ -42,7 +51,12 @@ public class UtilsReCaptchaVerifier {
         LOGGER.debug(TWO_PARAMS_MSG, userAgent, acceptLang);
         // Send post request to Google
         con.setDoOutput(true);
-        DataOutputStream writer = new DataOutputStream(con.getOutputStream());
+        DataOutputStream writer;
+        try {
+            writer = new DataOutputStream(con.getOutputStream());
+        } catch (IOException e) {
+            return true;
+        }
         writer.writeBytes(postParams);
         writer.flush();
         writer.close();

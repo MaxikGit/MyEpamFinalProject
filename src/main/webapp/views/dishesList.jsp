@@ -7,7 +7,7 @@
 
 <head>
     <title>Dishes list</title>
-    <script src="views/js/SendURLbyGet.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/sendURLbyGet.js"></script>
 </head>
 
 <body>

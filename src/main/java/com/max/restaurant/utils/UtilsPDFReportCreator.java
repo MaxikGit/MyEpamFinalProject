@@ -4,6 +4,7 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.max.restaurant.model.OrderData;
 import com.max.restaurant.model.entity.Dish;
 import com.max.restaurant.model.entity.User;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -25,7 +27,8 @@ import static com.max.restaurant.utils.UtilsCommandNames.LOGGED_USER_ATTR;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 /**
- * This class fills the PDF {@link Document} object with current order information
+ * This class fills the PDF {@link Document} object with current order information. It needs an object of
+ * {@link HttpServletRequest} interface to get different data from it (locale, app name, manager`s name, etc.)
  */
 public class UtilsPDFReportCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(UtilsPDFReportCreator.class);
@@ -44,9 +47,10 @@ public class UtilsPDFReportCreator {
     private final String imageHeaderSourcePath = "/views/images/report_header.jpg";
     private final Document document;
 
-    public UtilsPDFReportCreator(Document document, OrderData orderData, HttpServletRequest request) {
+
+    public UtilsPDFReportCreator(OrderData orderData, HttpServletRequest request) {
         LOGGER.info(CONSTRUCTOR);
-        this.document = document;
+        document = new Document();
         this.orderData = orderData;
         this.request = request;
         Locale locale = new Locale(Optional
@@ -55,16 +59,6 @@ public class UtilsPDFReportCreator {
         this.locale = locale;
         bundle = ResourceBundle.getBundle(bundleFileName, locale);
         initTableHeaderNames();
-    }
-
-    private static void initTableHeaderNames() {
-        LOGGER.info(METHOD_STARTS_MSG, "initTableHeaderNames", "true");
-        headers = new ArrayList<>();
-        headers.add(bundle.getString("order.num"));
-        headers.add(bundle.getString("order.dish.name"));
-        headers.add(bundle.getString("order.price"));
-        headers.add(bundle.getString("order.quantity"));
-        LOGGER.info(METHOD_STARTS_MSG, "initTableHeaderNames", headers);
     }
 
     public void fillPDFReportDocument() {
@@ -84,6 +78,15 @@ public class UtilsPDFReportCreator {
         }
     }
 
+    public ByteArrayOutputStream getPDFStream() throws DocumentException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PdfWriter.getInstance(document, outputStream);
+        document.open();
+        fillPDFReportDocument();
+        document.close();
+        return outputStream;
+    }
+
     private void setPDFAttributes(Document document) {
         LOGGER.info(METHOD_STARTS_MSG, "setPDFAttributes", "true");
         document.addAuthor(getManager());
@@ -92,6 +95,16 @@ public class UtilsPDFReportCreator {
         document.addCreator(appName);
         document.addTitle("Order #" + orderData.getCustom().getId());
         document.addSubject("Order report");
+    }
+
+    private static void initTableHeaderNames() {
+        LOGGER.info(METHOD_STARTS_MSG, "initTableHeaderNames", "true");
+        headers = new ArrayList<>();
+        headers.add(bundle.getString("order.num"));
+        headers.add(bundle.getString("order.dish.name"));
+        headers.add(bundle.getString("order.price"));
+        headers.add(bundle.getString("order.quantity"));
+        LOGGER.info(METHOD_STARTS_MSG, "initTableHeaderNames", headers);
     }
 
     private void setPageHeader(Document document) throws DocumentException, IOException {

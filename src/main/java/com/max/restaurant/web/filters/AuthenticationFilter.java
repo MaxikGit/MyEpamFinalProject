@@ -33,7 +33,8 @@ public class AuthenticationFilter implements Filter {
             boolean isManagersPage = uri.endsWith(EDIT_ORDER_MANAGEMENT_PAGE) || uri.endsWith(ORDER_MANAGEMENT_PAGE);
             String page = ((HttpServletRequest) request).getContextPath() + HOME_PAGE;
             if ((session == null || session.getAttribute(LOGGED_USER_ATTR) == null)) {
-                LOGGER.info(UNAUTH_MSG, session.getAttribute(LOGGED_USER_ATTR));
+                LOGGER.info(UNAUTH_MSG,
+                        session == null ? null : session.getAttribute(LOGGED_USER_ATTR));
                 LOGGER.debug(REDIRECT, page);
                 resp.sendRedirect(page);
             } 
@@ -52,7 +53,7 @@ public class AuthenticationFilter implements Filter {
         boolean isIcon = 0 < uri.lastIndexOf("icons");
         boolean isHome = uri.equals(request.getContextPath() + HOME_PAGE);
         boolean isLoginPage = uri.endsWith(LOGIN_PAGE) || actionParam.equals(LOGIN);
-        boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP);
+        boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP) || actionParam.equals(PASS_RECOVERY);
         boolean isJavaScript = 0 < uri.lastIndexOf("js");
         boolean isLanguage = actionParam.equals(LANGUAGE);
         boolean isCategorySelect = actionParam.equals(CATEGORY);

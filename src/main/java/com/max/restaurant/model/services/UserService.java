@@ -59,6 +59,15 @@ public class UserService {
         }
     }
 
+    public void updateUser(User user) throws DAOException {
+        LOGGER.info(METHOD_STARTS_MSG, "updateUser", "true");
+        userDAO = new UserDAO();
+        if (!(userIsValid(user) && userDAO.updateObj(user, userDAO.getConnection())) ){
+            LOGGER.info(FAILED_UPDATE, user);
+            throw new DAOServiceException(USER_EXC);
+        }
+    }
+
     private Boolean emailIsValid(String email) {
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
         Pattern pattern = Pattern.compile(regex);
@@ -67,11 +76,6 @@ public class UserService {
         return matcher.matches();
     }
 
-    /**
-     * Checks the fields of <i>user</i> param for the restrictions
-     * @param user
-     * @return
-     */
     private boolean userIsValid(User user) {
         return ( (user.getName() != null && user.getName().length() >= minNameLength)
                 && (user.getLastName() != null && user.getLastName().length() >= minLastNameLength)
@@ -98,11 +102,3 @@ public class UserService {
 //        }
 //    }
 //
-//    public void updateUser(User user) throws DAOException {
-//        LOGGER.info(METHOD_STARTS_MSG, "updateUser", "true");
-//        userDAO = new UserDAO();
-//        if (!(userIsValid(user) && userDAO.updateObj(user, userDAO.getConnection())) ){
-//            LOGGER.info(FAILED_UPDATE, user);
-//            throw new DAOServiceException(USER_EXC);
-//        }
-//    }

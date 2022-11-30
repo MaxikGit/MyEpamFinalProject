@@ -21,7 +21,6 @@ public class ManagersOnlyTag extends SimpleTagSupport {
     private int managerId = 1;
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagersOnlyTag.class);
 
-
     @Override
     public void doTag() throws IOException {
         PageContext pageContext = (PageContext) getJspContext();

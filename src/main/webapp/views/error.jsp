@@ -69,8 +69,17 @@
                 </span>
         </div>
         <div class="w3-third w3-display-topright w3-animate-opacity w3-xlarge font-login">
-                <p class="w3-text-dark-gray "><fmt:message key="exception.smthwrong"/></p>
-                <p class="w3-text-dark-gray"><fmt:message key="exception.calm"/>!</p>
+            <c:choose>
+                <c:when test="${pageContext.errorData.statusCode == 404}">
+                    <p class="w3-text-dark-gray "><fmt:message key="exception.smthwrong404"/></p>
+                    <p class="w3-text-dark-gray"><fmt:message key="exception.calm404"/>!</p>
+                </c:when>
+                <c:otherwise>
+                    <p class="w3-text-dark-gray "><fmt:message key="exception.smthwrong"/></p>
+                    <p class="w3-text-dark-gray"><fmt:message key="exception.calm"/>!</p>
+                </c:otherwise>
+            </c:choose>
+
         </div>
     </div>
     </c:if>

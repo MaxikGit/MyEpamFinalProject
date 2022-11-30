@@ -1,5 +1,6 @@
 package com.max.restaurant.controller.command;
 
+import com.itextpdf.text.DocumentException;
 import com.max.restaurant.exceptions.CommandException;
 import com.max.restaurant.exceptions.DAOException;
 import com.max.restaurant.model.OrderData;
@@ -7,19 +8,27 @@ import com.max.restaurant.model.entity.Custom;
 import com.max.restaurant.model.entity.Status;
 import com.max.restaurant.model.services.CustomService;
 import com.max.restaurant.model.services.StatusService;
+import com.max.restaurant.utils.UtilsEmailNotificator;
+import com.max.restaurant.utils.UtilsPDFReportCreator;
 import com.max.restaurant.utils.UtilsPaginationHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.mail.EmailException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
-import static com.max.restaurant.utils.UtilsFileNames.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.EMAIL_EXC;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.PDF_EXC;
+import static com.max.restaurant.utils.UtilsFileNames.HOME_PAGE;
+import static com.max.restaurant.utils.UtilsFileNames.ORDER_MANAGEMENT_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
 /**
@@ -31,6 +40,7 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 public class ManageOrdersCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
     private int recordsPerPage = 4;
+    private final static String bundleFileName = "messages";
 
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
@@ -70,7 +80,7 @@ public class ManageOrdersCommand implements Command {
         if (updated) {
             CustomService customService = new CustomService();
             LOGGER.debug(TWO_PARAMS_MSG, "statusID & customID", statusesSelected);
-            updateOrderStatuses(customService, statusesSelected);
+            updateOrderStatuses(customService, statusesSelected, request);
         }
         //if orders not accepted
         if (request.getParameter(ORDER_ACCEPT_ATTR) == null) {
@@ -83,15 +93,15 @@ public class ManageOrdersCommand implements Command {
             }
             //page button pressed
             else {
-                if (updated) {
-                    page = MANAGEMENT_COMM;
-                } else {
+//                if (updated) {
+//                    page = MANAGEMENT_COMM;
+//                } else {
                     List<Custom> customList = getCustomsByLabel(request);
                     UtilsPaginationHelper.paginationCounter(request, customList.size(), recordsPerPage);
                     int currPageNum = Integer.parseInt(Optional.ofNullable(request.getParameter(PAGE_ATTR)).orElse("1"));
 //                    return;
-                    page = MANAGEMENT_COMM + "&" + PAGE_ATTR  + "=" + currPageNum;
-                }
+                    page = MANAGEMENT_COMM + "&" + PAGE_ATTR + "=" + currPageNum;
+//                }
             }
         }
         //if orders accepted
@@ -108,7 +118,9 @@ public class ManageOrdersCommand implements Command {
         response.sendRedirect(page);
     }
 
-    private static void updateOrderStatuses(CustomService customService, String[] statusesSelected) throws DAOException {
+    private static void updateOrderStatuses(CustomService customService, String[] statusesSelected,
+                                            HttpServletRequest request) throws DAOException {
+        int completedStatus = 4;
         for (String params : statusesSelected) {
             if (params == null)
                 continue;
@@ -118,6 +130,11 @@ public class ManageOrdersCommand implements Command {
             Custom custom = customService.findCustomById(customId);
             custom.setStatusId(statusId);
             customService.update(custom);
+
+            if (statusId == completedStatus) {
+                OrderData orderData = new OrderData(custom);
+                sendPDFReportToUser(orderData, request);
+            }
         }
     }
 
@@ -145,7 +162,7 @@ public class ManageOrdersCommand implements Command {
             default:
                 return;
         }
-        Collections.sort(orderDataList, comp);
+        orderDataList.sort(comp);
     }
 
     private static List<Custom> getCustomsByLabel(HttpServletRequest request) throws DAOException {
@@ -158,13 +175,40 @@ public class ManageOrdersCommand implements Command {
         }
         if (inProgress == null || inProgress.equals("true")) {
             customList = customService.getCustomsInProgress();
-            Collections.sort(customList, Comparator.comparingInt(Custom::getStatusId));
+            customList.sort(Comparator.comparingInt(Custom::getStatusId));
             session.setAttribute(INPROGRESS_ATTR, "true");
         } else if (inProgress.equals("false")) {
             customList = customService.getCustomsCompleted();
-            Collections.sort(customList, Comparator.comparing(Custom::getCreateTime));
+            customList.sort(Comparator.comparing(Custom::getCreateTime));
             session.setAttribute(INPROGRESS_ATTR, "false");
         } else throw new CommandException("Wrong inProgress attr");
         return customList;
+    }
+
+    private static void sendPDFReportToUser(OrderData orderData, HttpServletRequest request) throws CommandException {
+        Locale locale = new Locale(Optional
+                .ofNullable((String) request.getSession().getAttribute(LANG_ATTR))
+                .orElse((String) request.getServletContext().getAttribute(LANG_ATTR)));
+        String email = orderData.getUser().getEmail();
+        ResourceBundle bundle = ResourceBundle.getBundle(bundleFileName, locale);
+        String subject = bundle.getString("report.email.subject") + orderData.getCustom().getId();
+        String text = String.format("%s %s %s", bundle.getString("report.email.text"),
+                orderData.getUser().getName(), orderData.getUser().getLastName());
+        String fileName = "your_pdf_report.pdf";
+        String mimeType = UtilsEmailNotificator.mimeTypePdf;
+
+        UtilsPDFReportCreator reportCreator = new UtilsPDFReportCreator(orderData, request);
+        try {
+            ByteArrayOutputStream baos = reportCreator.getPDFStream();
+            UtilsEmailNotificator.send(List.of(email), subject, text,
+                    List.of(new ByteArrayInputStream(baos.toByteArray())),
+                    List.of(fileName), List.of(mimeType));
+        } catch (DocumentException e) {
+            LOGGER.error(METHOD_FAILED, e.getLocalizedMessage(), e);
+            throw new CommandException(PDF_EXC, e);
+        } catch (EmailException | IOException e) {
+            LOGGER.error(METHOD_FAILED, e.getLocalizedMessage(), e);
+            throw new CommandException(EMAIL_EXC, e);
+        }
     }
 }

@@ -4,8 +4,8 @@
     <file url="file://$PROJECT_DIR$/sql/Dump20221103.sql" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/js/SignInValidation.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/js/SignInValidation.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/js/ValidationFunctions.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/js/signInValidation.js" charset="UTF-8" />
     <file url="PROJECT" charset="windows-1251" />
   </component>
 </project>

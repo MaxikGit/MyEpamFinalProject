@@ -9,6 +9,9 @@ public class UtilsExceptionMsgs {
     public static final String CUSTOM_DAO_EXC = "there are doubled customs in DB";
     public static final String CUSTOM_VALID_EXC = "trying to operate with not valid custom";
     public static final String FRONT_VALIDATION_EXC = "trying to operate with not valid data";
+    public static final String ENCRYPTION_EXC = "Password encryption failed";
+    public static final String EMAIL_EXC = "Email sanding failed";
+    public static final String PDF_EXC = "PDF creation failed";
     public static final String UNUSED_METHOD_WORKS = "You might not be here!";
 
 }

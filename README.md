@@ -10,3 +10,6 @@ and filters the list of dishes by category. The customer, within one order, can 
 The manager manages the orders: after receiving a new order, sends it for cooking.
 After cooking, the Manager passes the order for delivery.
 After delivery and receiving payment, the Manager changes the status of the order to "completed".
+
+
+To run the project correctly - see "add Tomcat to libraries.jpg"

@@ -13,21 +13,24 @@
     <meta charset="UTF-8">
     <title>Restaurant EPAM final project</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="${pageContext.request.contextPath}/views/js/HideShoppingCart.js"></script>
-    <script src="${pageContext.request.contextPath}/views/js/SidebarHideOnSmall.js"></script>
+<%--    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/views/js/jquery-1.11.3.min.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/hideShoppingCart.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/sidebarHideOnSmall.js"></script>
     <c:if test="${loggedUser != null}">
     <script>
         $(document).ready(function () {
-            let cartNum = $("#cartSize").text();
+            let shoppingCart = $("#shoppingCart");
+            let cartSizeElement = $("#cartSize");
+            let cartNum = cartSizeElement.text();
 
             $(".dish").click(function (e) {
                 e.preventDefault();
-                if ($("#shoppingCart").is(":hidden")) {
+                if (shoppingCart.is(":hidden")) {
                     // $("#cartSize").text(cartNum++);
-                    $("#shoppingCart").show();
+                    shoppingCart.show();
                 }
-                $("#cartSize").text(++cartNum);
+                cartSizeElement.text(++cartNum);
             });
         });
 

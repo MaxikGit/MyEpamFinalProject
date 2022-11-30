@@ -8,7 +8,7 @@ function sendURLbyGet(url) {
 
 function initRequest() {
     if (window.XMLHttpRequest) {
-        if (navigator.userAgent.indexOf('MSIE') != -1) {
+        if (navigator.userAgent.indexOf('MSIE') !== -1) {
             isIE = true;
         }
         return new XMLHttpRequest();

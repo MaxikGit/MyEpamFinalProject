@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.Enumeration;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.FORWARD;
@@ -28,21 +27,10 @@ public class ChangeLangCommand implements Command {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
         HttpSession session = request.getSession();
         String param = request.getParameter(LANG_ATTR);
-
         String referer = request.getHeader("referer");
-        System.out.println(referer);
         String cont = request.getContextPath();
-        System.out.println(cont);
-        System.out.println(request.getHeaderNames());
-        String ss;
-        Enumeration<String> en = request.getHeaderNames();
-        while( en.hasMoreElements() ) {
-            ss = en.nextElement();
-            System.out.println(ss + "=" + request.getHeader(ss));
-        }
         String pageRedir = referer.substring(referer.lastIndexOf(cont));
         String page = referer.substring(referer.lastIndexOf(cont) + cont.length());
-        System.out.println(page);
         if (param != null){
             switch (param){
                 case UKR_ATTR: session.setAttribute(LANG_ATTR, ENG_ATTR);

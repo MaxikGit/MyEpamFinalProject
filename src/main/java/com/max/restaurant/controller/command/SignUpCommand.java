@@ -19,6 +19,7 @@ import java.security.spec.InvalidKeySpecException;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsEntityFields.*;
+import static com.max.restaurant.utils.UtilsExceptionMsgs.ENCRYPTION_EXC;
 import static com.max.restaurant.utils.UtilsFileNames.LOGIN_PAGE;
 import static com.max.restaurant.utils.UtilsFileNames.SIGN_UP_PAGE;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
@@ -61,7 +62,7 @@ public class SignUpCommand implements Command {
                     user.setPassword(password);
                 } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
                     LOGGER.error(METHOD_FAILED, "getNewEncryptedPass", e);
-                    throw new CommandException(e);
+                    throw new CommandException(ENCRYPTION_EXC, e);
                 }
                 user.setRoleId(ROLE_CLIENT_ID);
                 try {

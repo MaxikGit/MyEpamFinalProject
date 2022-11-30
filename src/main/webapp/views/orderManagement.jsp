@@ -32,17 +32,17 @@
                 <c:set var="Completed" value=""/>
                 <c:set var="InProgress" value="w3-light-blue"/>
             </c:if>
-            <form method="post" action="ServletController?action=management">
+            <form method="post" action="${pageContext.request.contextPath}/ServletController?action=management">
                 <div class="w3-container w3-margin">
 
                     <table class="w3-table-all w3-hoverable w3-center w3-light-blue w3-margin-bottom"
                            style="margin-bottom: 200px">
                         <div class="w3-row w3-card w3-border-light-blue w3-large ">
-                            <a id="progress" href="ServletController?action=management&inProgress=true"
+                            <a id="progress" href="${pageContext.request.contextPath}/ServletController?action=management&inProgress=true"
                                class="w3-col s6 w3-button ${InProgress} tablink w3-hover-light-blue">
                                 <strong class="font-login"><i><fmt:message key="order.inprogress"/></i></strong>
                             </a>
-                            <a id="finished" href="ServletController?action=management&inProgress=false"
+                            <a id="finished" href="${pageContext.request.contextPath}/ServletController?action=management&inProgress=false"
                                class="w3-col s6 w3-button tablink w3-hover-light-blue ${Completed} ">
                                 <strong class="font-login"><i><fmt:message key="order.finished"/></i></strong>
                             </a>
@@ -52,14 +52,14 @@
                                 <fmt:message key="order.num"/>
                             </th>
                             <th class="w3-cell-middle w3-col s3">
-                                <a href="ServletController?action=management&sort=customer"
+                                <a href="${pageContext.request.contextPath}/ServletController?action=management&sort=customer"
                                    style="text-decoration: none">
                                     <fmt:message key="order.customer"/>
                                     <i class="material-icons w3-xlarge w3-text-grey w3-circle  w3-cell-middle">sort_by_alpha</i>
                                 </a>
                             </th>
                             <th class="w3-cell-middle w3-col s2">
-                                <a href="ServletController?action=management&sort=price"
+                                <a href="${pageContext.request.contextPath}/ServletController?action=management&sort=price"
                                    style="text-decoration: none">
                                     <fmt:message key="order.price"/>
                                     <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">sort_by_alpha</i>
@@ -67,7 +67,7 @@
                             </th>
                             <th class="w3-cell-middle w3-col s2 w3-center"><fmt:message key="order.dish.name"/></th>
                             <th class="w3-cell-middle w3-col s2 w3-center">
-                                <a href="ServletController?action=management&sort=status"
+                                <a href="${pageContext.request.contextPath}/ServletController?action=management&sort=status"
                                    style="text-decoration: none">
                                     <fmt:message key="order.status"/>
                                     <i class="material-icons w3-xlarge w3-text-grey w3-circle w3-cell-middle">sort_by_alpha</i>
@@ -115,7 +115,7 @@
                                     </td>
                                     <c:if test="${inProgress != 'false' }">
                                         <td class="w3-cell-middle w3-col s1 w3-right-align">
-                                            <a href="ServletController?action=orderEditManagement&value=${orderData.custom.id}">
+                                            <a href="${pageContext.request.contextPath}/ServletController?action=orderEditManagement&value=${orderData.custom.id}">
                                                 <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow w3-circle">edit</i>
                                             </a>
                                         </td>
@@ -127,7 +127,7 @@
                                     <c:if test="${inProgress == 'false'}">
                                         <td class="w3-cell-middle w3-col s1 w3-right-align">
                                             <form name="PDFForm" id="PDFForm" method="post"
-                                                  action="ServletController?action=pdf&value=${orderData.custom.id}">
+                                                  action="${pageContext.request.contextPath}/ServletController?action=pdf&value=${orderData.custom.id}">
                                                 <button type="submit" name="pdfButton" form="PDFForm"
                                                         class="w3-hover-none w3-border-0" style="background: transparent">
                                                     <i class="material-icons w3-xxlarge w3-text-grey w3-hover-shadow">
@@ -151,7 +151,7 @@
                         </c:if>
                     </table>
                 </div>
-                <c:if test="${inProgress != 'false' }">
+                <c:if test="${inProgress != 'false'}">
                     <my:ResetAccessButton lang="${lang}" totalCost="${totalOrdersCost}"/>
                 </c:if>
                 <my:PaginationButtTag pagesMax="${pagesMax}" pagesMin="${pagesMin}" pageNum="${pageNum}" pagesTotal="${pagesTotal}"/>

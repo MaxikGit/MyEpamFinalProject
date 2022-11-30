@@ -47,7 +47,7 @@ public class OrderCommand implements Command {
         String value = request.getParameter(VALUE_ATTR);
         LOGGER.debug(TWO_PARAMS_MSG, VALUE_ATTR, value);
         String page;
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         Map<Integer, Integer> dishIds = ((Map<Integer, Integer>) session.getAttribute(DISH_IDS_LIST_ATTR));
         if (value == null) {
             DishService dishService = new DishService();
@@ -76,8 +76,6 @@ public class OrderCommand implements Command {
             page = request.getContextPath() + HOME_PAGE;
             LOGGER.info(REDIRECT, page);
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-//            request.getRequestDispatcher(page).forward(request, response);
-//            response.sendRedirect(page);
         }
     }
 

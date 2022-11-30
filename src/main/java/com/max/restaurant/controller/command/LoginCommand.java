@@ -27,7 +27,7 @@ import static com.max.restaurant.utils.UtilsEntityFields.USER_PASSWORD;
 import static com.max.restaurant.utils.UtilsExceptionMsgs.FRONT_VALIDATION_EXC;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
-import static com.max.restaurant.utils.UtilsReCaptchaVerifier.reCAPTURE_ATTR;
+import static com.max.restaurant.utils.UtilsReCaptchaVerifier.reCAPTCHA_ATTR;
 
 /**
  * Command used to log in/out User and to display brief information about his orders<br>
@@ -94,7 +94,7 @@ public class LoginCommand implements Command {
                 LOGGER.debug(TWO_PARAMS_MSG, UNSUCCESS_ATTR, UNSUCCESS_MSG);
             }
         } else {
-            if (notValid.equals(reCAPTURE_ATTR)) {
+            if (notValid.equals(reCAPTCHA_ATTR)) {
                 session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG4);
                 LOGGER.debug(TWO_PARAMS_MSG, UNSUCCESS_ATTR, UNSUCCESS_MSG4);
                 forwardPage = request.getServletContext().getContextPath() + LOGIN_PAGE;
@@ -113,7 +113,7 @@ public class LoginCommand implements Command {
         } else if (request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank()) {
             return USER_PASSWORD;
         } else if (!UtilsReCaptchaVerifier.verify(request)) {
-            return reCAPTURE_ATTR;
+            return reCAPTCHA_ATTR;
         }
         return null;
     }
