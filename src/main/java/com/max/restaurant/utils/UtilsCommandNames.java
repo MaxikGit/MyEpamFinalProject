@@ -16,6 +16,7 @@ public class UtilsCommandNames {
     public static final String EDIT_ORDER = "orderEdit";
     public static final String SORT_DISHES = "sortDishes";
     public static final String PASS_RECOVERY = "pass_recovery";
+    public static final String EMAIL_CODE_ATTR = "email_code";
 
 //    attrs are mapping variables JAVA.var = "JSP.attr": SUCCESS_ATTR = "success";
     public static final String CATEGORY_ID = "categoryId";
@@ -27,6 +28,8 @@ public class UtilsCommandNames {
 
 //    container attr
     public static final String LOGGED_USER_ATTR = "loggedUser";
+    public static final String LOGGED_USERS_ATTR = "loggedUsers"; //for app Listener
+
     public static final String CATEGORY_LIST_ATTR = "categoryNames";
     public static final String DISH_IDS_LIST_ATTR = "dishIds";
     public static final String DISH_LIST_ATTR = "dishesNames";
@@ -57,7 +60,4 @@ public class UtilsCommandNames {
 
     public static final String ENG_ATTR = "en";
     public static final String UKR_ATTR = "uk";
-
-    public static final String NEW_PASS_ATTR = "new_password";
-    public static final String EMAIL_CODE_ATTR = "email_code";
    }

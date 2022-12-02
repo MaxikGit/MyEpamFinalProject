@@ -33,8 +33,8 @@ public class OrderCommand implements Command {
     private int recordsPerPage = 3;
 
     /**
-     * Method forms user cart: collects ids of dishes from request parameter
-     * {@link com.max.restaurant.utils.UtilsCommandNames#VALUE_ATTR}, then passes it to order page
+     * Method forms user cart: collects ids of dishes from request parameter (value)
+     * {@link com.max.restaurant.utils.UtilsCommandNames#VALUE_ATTR}, then passes it to order page (if value == null)
      * @param request {@link HttpServletRequest} object
      * @param response {@link HttpServletResponse} object
      * @throws ServletException
@@ -48,17 +48,18 @@ public class OrderCommand implements Command {
         LOGGER.debug(TWO_PARAMS_MSG, VALUE_ATTR, value);
         String page;
         HttpSession session = request.getSession(false);
+        @SuppressWarnings("unchecked")
         Map<Integer, Integer> dishIds = ((Map<Integer, Integer>) session.getAttribute(DISH_IDS_LIST_ATTR));
         if (value == null) {
             DishService dishService = new DishService();
             Map<Dish, Integer> orderedDishes = dishService.findDishesById(dishIds);
-            session.setAttribute(ORDER_MAP_ATTR, orderedDishes);
 
-            UtilsPaginationHelper.paginationCounter(request, orderedDishes.size());
+            UtilsPaginationHelper.paginationCounter(request, orderedDishes.size(), recordsPerPage);
 
             double totalCost = orderedDishes.entrySet().stream()
                     .mapToDouble(x-> (x.getKey().getPrice() * x.getValue()) ).sum();
 
+            session.setAttribute(ORDER_MAP_ATTR, orderedDishes);
             session.setAttribute(ORDER_TOTAL_COST_ATTR, totalCost);
             page = ORDER_PAGE;
             LOGGER.info(FORWARD, page);
@@ -94,7 +95,9 @@ public class OrderCommand implements Command {
         String page;
         HttpSession session = request.getSession();
 
+        @SuppressWarnings("unchecked")
         Map<Integer, Integer> dishIds = (Map<Integer, Integer>) session.getAttribute(DISH_IDS_LIST_ATTR);
+        @SuppressWarnings("unchecked")
         Map<Dish, Integer> orderedDishes = (Map<Dish, Integer>) session.getAttribute(ORDER_MAP_ATTR);
 
         for (Map.Entry<Dish, Integer> entry : orderedDishes.entrySet()) {
@@ -121,7 +124,7 @@ public class OrderCommand implements Command {
                 page = request.getContextPath() + HOME_PAGE;
                 removeAttributes(session);
             } else {
-                UtilsPaginationHelper.paginationCounter(request, orderedDishes.size());
+                UtilsPaginationHelper.paginationCounter(request, orderedDishes.size(), recordsPerPage);
                 page = request.getContextPath() + ORDER_PAGE;
 
                 double totalCost = orderedDishes.entrySet().stream()

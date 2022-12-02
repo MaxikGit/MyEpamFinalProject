@@ -21,9 +21,9 @@ $(function () {
     passField.focusout(function () {
         isPassWrong(passField, passErrorNote);
     });
-    $('#rc-anchor-container').focusout(function () {
-        captchaNotChecked(captchaErrorNote);
-    });
+    // $('#rc-anchor-container').focusout(function () {
+    //     captchaNotChecked(captchaErrorNote);
+    // });
 
     // form submit
     $('#reg_form').submit(function () {

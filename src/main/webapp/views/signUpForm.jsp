@@ -13,9 +13,10 @@
     <title>Registration form</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/views/styles/w3my.css">
-<%--    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>--%>
+<%--    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>--%>
     <script src="${pageContext.request.contextPath}/views/js/jquery-1.11.3.min.js"></script>
     <script src="${pageContext.request.contextPath}/views/js/signInValidation.js"></script>
+    <script src="${pageContext.request.contextPath}/views/js/validationFunctions.js"></script>
     <script src="${pageContext.request.contextPath}/views/js/hideShowPass.js"></script>
 </head>
 
@@ -37,40 +38,39 @@
             <label class="w3-left w3-margin-top" for="name">
                 <b><fmt:message key="signup.name"/></b>
             </label>
-            <input type="text" placeholder="${namePlace}" name="name" id="name" required
+            <input id="name" type="text" placeholder="${namePlace}" name="name" required
                    minlength="2" maxlength="30" class="w3-input w3-border w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="last_name">
                 <b><fmt:message key="signup.lastname"/></b>
             </label>
-            <input type="text" placeholder="${lastNamePlace}" name="last_name" id="last_name"
+            <input id="last_name" type="text" placeholder="${lastNamePlace}" name="last_name"
                    minlength="1" maxlength="30" required class="w3-input w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="email">
                 <b><fmt:message key="signup.email"/></b>
             </label>
-            <input type="email"
+            <input id="email" type="email" name="email" required
                    placeholder="<c:out value="${sessionScope.email}" default="${emailPlace}"/>"
-                   name="email" id="email" required
                    class="w3-input w3-hover-border-light-gray">
 
             <label class="w3-left w3-margin-top" for="password">
                 <b><fmt:message key="signup.pass"/></b>
                 <i class="toggle-password w3-button material-icons w3-medium">visibility_off</i>
             </label>
-            <input type="password" placeholder="${passPlace}" name="password" id="password"
+            <input id="password" type="password" placeholder="${passPlace}" name="password"
                    maxlength="12" minlength="4" required
                    class="w3-input w3-hover-border-light-gray">
             <label class="w3-left w3-margin-top" for="re-password"><b>${passRepeat}</b>
                 <button type="button" class="toggle-password w3-button material-icons w3-medium">visibility_off</button>
             </label>
-            <input type="password" placeholder="${passRepeat}" id="re-password"
+            <input id="re-password" type="password" placeholder="${passRepeat}" name="re-password"
                    required class="w3-input w3-hover-border-light-gray ">
         </div>
         <%--                    <span id="message2" style="color:red"> </span>--%>
         <div class="w3-container">
             <%--                By creating an account you agree to our <a href="#">Terms & Privacy</a>--%>
-            <button type="submit"
+            <button type="submit" form="reg_form"
                     class="w3-btn w3-block w3-margin-top w3-margin-bottom w3-round-large w3-gray w3-opacity-min"
                     name="action" value="sign_up"><fmt:message key="signup.enter"/>
             </button>
@@ -108,18 +108,6 @@
     <myTag:BackHomeButton/>
 </div>
 <jsp:include page="footer.jsp"/>
-<%--<script>--%>
-<%--    //you need to add class = "toggle-password class" to the element, to make it works--%>
-<%--    $(document).ready(function () {--%>
-<%--        $('.toggle-password').click(function () {--%>
-<%--            if ($(this).text() == 'visibility_off')--%>
-<%--                $(this).text('visibility');--%>
-<%--            else $(this).text('visibility_off');--%>
-<%--    //tag with 'eye' element should be inside another tag, input tag had to be next then--%>
-<%--            let input = $(this).parent().next();--%>
-<%--            input.attr('type', input.attr('type') === 'password' ? 'text' : 'password');--%>
-<%--        })--%>
-<%--    });--%>
-<%--</script>--%>
+
 </body>
 </html>

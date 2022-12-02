@@ -11,6 +11,33 @@ function isEmailWrong(emailField, emailErrorNote) {
     }
 }
 
+// check name
+function isNameWrong(nameField, errorNameNote){
+    let name = nameField.val();
+    let pattern = new RegExp(/^[\u0453-\u0457\u0403-\u0407\u0410-\u044Fa-zA-Z]{2,30}$/);
+    if (!pattern.test(name)) {
+        errorNameNote.show(300);
+        return true;
+    }
+    else {
+        errorNameNote.hide(400);
+        return false;
+    }
+}
+// check username
+function isLastNameWrong(lastNameField, errorLNameNote){
+    let name = lastNameField.val();
+    let pattern = new RegExp(/^[\u0453-\u0457\u0403-\u0407\u0410-\u044Fa-zA-Z]{2,30}$/);
+    if (!pattern.test(name)) {
+        errorLNameNote.show(300);
+        return  true;
+    }
+    else {
+        errorLNameNote.hide(400);
+        return false;
+    }
+}
+
 // check password
 function isPassWrong(passField, passErrorNote) {
     let password = passField.val();
@@ -21,6 +48,20 @@ function isPassWrong(passField, passErrorNote) {
         return true;
     } else {
         passErrorNote.hide(400);
+        return false;
+    }
+}
+
+// check confirm password
+function passNotConfirmed(passField, conPassField, errorConPassNote){
+    let password = passField.val();
+    let con_pass = conPassField.val();
+    if (password !== con_pass) {
+        errorConPassNote.show(300);
+        return true;
+    }
+    else {
+        errorConPassNote.hide(400);
         return false;
     }
 }
