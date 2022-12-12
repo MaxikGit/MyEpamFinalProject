@@ -51,14 +51,15 @@ public class AuthenticationFilter implements Filter {
         boolean isImage = 0 < uri.lastIndexOf("images");
         boolean isCSS = 0 < uri.lastIndexOf("styles");
         boolean isIcon = 0 < uri.lastIndexOf("icons");
-        boolean isHome = uri.equals(request.getContextPath() + HOME_PAGE);
+        boolean isHome = uri.equals(request.getContextPath() + HOME_PAGE) || uri.equals(request.getContextPath());
         boolean isLoginPage = uri.endsWith(LOGIN_PAGE) || actionParam.equals(LOGIN);
         boolean isSignUpPage = uri.endsWith(SIGN_UP_PAGE) || actionParam.equals(SIGN_UP) || actionParam.equals(PASS_RECOVERY);
         boolean isJavaScript = 0 < uri.lastIndexOf("js");
         boolean isLanguage = actionParam.equals(LANGUAGE);
         boolean isCategorySelect = actionParam.equals(CATEGORY);
         boolean isSortingSelect = actionParam.equals(SORT_DISHES);
+        boolean isNotification = actionParam.equals(NOTIFY_ATTR);
         return (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage || isJavaScript || isLanguage ||
-                isCategorySelect || isSortingSelect);
+                isCategorySelect || isSortingSelect || isNotification);
     }
 }

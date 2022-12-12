@@ -39,6 +39,7 @@ public class ServletController extends HttpServlet {
         allKnownCommands.put(LANGUAGE, new ChangeLangCommand());
         allKnownCommands.put(PDF, new CreatePDFCommand());
         allKnownCommands.put(PASS_RECOVERY, new ForgotPassCommand());
+        allKnownCommands.put(NOTIFY_ATTR, new NewOrderNotifyCommand());
         LOGGER.info(METHOD_STARTS_MSG, "init", "size " +  allKnownCommands.size());
     }
 

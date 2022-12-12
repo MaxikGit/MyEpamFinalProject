@@ -120,6 +120,7 @@ public class ManageOrdersCommand implements Command {
 
     private static void updateOrderStatuses(CustomService customService, String[] statusesSelected,
                                             HttpServletRequest request) throws DAOException {
+        int newStatus = 1;
         int completedStatus = 4;
         for (String params : statusesSelected) {
             if (params == null)
@@ -128,12 +129,18 @@ public class ManageOrdersCommand implements Command {
             int statusId = Integer.parseInt(statusCustomParams[0]);
             int customId = Integer.parseInt(statusCustomParams[1]);
             Custom custom = customService.findCustomById(customId);
+            int oldStatus = custom.getStatusId();
             custom.setStatusId(statusId);
             customService.update(custom);
 
             if (statusId == completedStatus) {
                 OrderData orderData = new OrderData(custom);
                 sendPDFReportToUser(orderData, request);
+            }
+            else if (oldStatus == newStatus){
+                @SuppressWarnings("unchecked")
+                Map<Integer, Object> newOrdersMap = (Map<Integer, Object>) request.getServletContext().getAttribute(NEW_ORDERS_ATTR);
+                newOrdersMap.remove(custom.getId());
             }
         }
     }

@@ -78,6 +78,7 @@ public class LoginCommand implements Command {
                         session.setAttribute(CUSTOM_LIST_ATTR, orders);
                         forwardPage = request.getServletContext().getContextPath() + HOME_PAGE;
                         LOGGER.debug(TWO_PARAMS_MSG, LOGGED_USER_ATTR, user);
+                        session.setMaxInactiveInterval(10);
                     } else {
                         session.setAttribute(USER_EMAIL, email);
                         session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
@@ -113,7 +114,7 @@ public class LoginCommand implements Command {
         } else if (request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank()) {
             return USER_PASSWORD;
         } else if (!UtilsReCaptchaVerifier.verify(request)) {
-            return reCAPTCHA_ATTR;
+//            return reCAPTCHA_ATTR;
         }
         return null;
     }

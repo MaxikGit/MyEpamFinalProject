@@ -58,6 +58,7 @@ public class ForgotPassCommand implements Command {
                 try {
                     char[] newPass = request.getParameter(PASS_RECOVERY).toCharArray();
                     updatePassword(newPass, email);
+                    session.setAttribute(UNSUCCESS_ATTR, SUCCESS_MSG);
                 } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
                     LOGGER.error(METHOD_FAILED, "getNewEncryptedPass", e);
                     throw new CommandException(ENCRYPTION_EXC, e);

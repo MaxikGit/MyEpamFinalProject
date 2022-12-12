@@ -81,7 +81,7 @@ public class OrderCommand implements Command {
     }
 
     /**
-     * Method processes changes made by user in his cart. If order is accepted, then register it in database
+     * Method processes changes made by user in his cart. If order is accepted, then register it in database and in servlet context
      * @param request {@link HttpServletRequest} object
      * @param response {@link HttpServletResponse} object
      * @throws ServletException ServletException object
@@ -140,8 +140,7 @@ public class OrderCommand implements Command {
         } else {
             page = request.getContextPath() + HOME_PAGE;
             User currentUser = (User) session.getAttribute(LOGGED_USER_ATTR);
-            CustomService customService = new CustomService();
-            customService.getNewCustom(currentUser.getId(), orderedDishes);
+            placeNewOrder(currentUser.getId(), orderedDishes, request);
             List<OrderData> orders = getOrdersPending(currentUser.getId());
             session.setAttribute(CUSTOM_LIST_ATTR, orders);
             removeAttributes(session);
@@ -149,6 +148,15 @@ public class OrderCommand implements Command {
         LOGGER.debug(REDIRECT, page);
         response.sendRedirect(page);
     }
+
+    private void placeNewOrder(int userId, Map<Dish, Integer> orderedDishes, HttpServletRequest request) throws DAOException {
+        CustomService customService = new CustomService();
+        Custom newCustom = customService.getNewCustom(userId, orderedDishes);
+        @SuppressWarnings("unchecked")
+        Map<Integer, Object> map = (Map<Integer, Object>) request.getServletContext().getAttribute(NEW_ORDERS_ATTR);
+        map.put(newCustom.getId(), "null");
+    }
+
     private List<OrderData> getOrdersPending(int userId) throws DAOException {
         CustomService service = new CustomService();
         List<Custom> customList = service.getUsersCustomsInProgress(userId);

@@ -17,3 +17,4 @@ function initRequest() {
         return new ActiveXObject("Microsoft.XMLHTTP");
     }
 }
+

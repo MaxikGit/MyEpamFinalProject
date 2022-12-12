@@ -104,7 +104,8 @@
                                                 <c:forEach var="status" varStatus="statNum" items="${statusNames}">
                                                     <c:if test="${status.id != orderData.status.id}">
                                                         <option value="${status.id} ${orderData.custom.id}">
-                                                            <fmt:message key="${status.name}"/></option>
+                                                            <fmt:message key="${status.name}"/>
+                                                        </option>
                                                     </c:if>
                                                 </c:forEach>
                                             </select>
@@ -170,6 +171,7 @@
 </div>
 
 <jsp:include page="footer.jsp"/>
+
 </body>
 </html>
 
