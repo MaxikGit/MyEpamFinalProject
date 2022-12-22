@@ -16,7 +16,7 @@ import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsFileNames.*;
 import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 
-@WebFilter(urlPatterns = {"/views/*", "/ServletController"})
+@WebFilter(urlPatterns = {"/views/*", "/ServletController"}, asyncSupported = true)
 public class AuthenticationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationFilter.class);
     private final int managerId = 1;
@@ -58,7 +58,7 @@ public class AuthenticationFilter implements Filter {
         boolean isLanguage = actionParam.equals(LANGUAGE);
         boolean isCategorySelect = actionParam.equals(CATEGORY);
         boolean isSortingSelect = actionParam.equals(SORT_DISHES);
-        boolean isNotification = actionParam.equals(NOTIFY_ATTR);
+        boolean isNotification = actionParam.equals(NOTIFY);
         return (isHome || isImage || isCSS || isIcon || isLoginPage || isSignUpPage || isJavaScript || isLanguage ||
                 isCategorySelect || isSortingSelect || isNotification);
     }

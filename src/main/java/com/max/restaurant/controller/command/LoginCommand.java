@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Map;
 
 import static com.max.restaurant.utils.UtilsCommandNames.*;
 import static com.max.restaurant.utils.UtilsEntityFields.USER_EMAIL;
@@ -36,6 +37,14 @@ import static com.max.restaurant.utils.UtilsReCaptchaVerifier.reCAPTCHA_ATTR;
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginCommand.class);
 
+    /**
+     * method is used to send user to the login page or log out user. If there is already a user in session,
+     * then log him out, otherwise - open login page
+     * @param request {@link HttpServletRequest} object
+     * @param response {@link HttpServletResponse} object
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     public void executeGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info(METHOD_STARTS_MSG, "executeGet", "true");
@@ -56,6 +65,16 @@ public class LoginCommand implements Command {
         request.getRequestDispatcher(page).forward(request, response);
     }
 
+    /**
+     * This method for processing incoming user`s information. If information is not correct (no such user, wrong password, etc.)
+     * it will redirect him to login or signup page and show warning message. If all is correct, redirect to main page and
+     * registers user in session and servlet context
+     * @param request {@link HttpServletRequest} object
+     * @param response {@link HttpServletResponse} object
+     * @throws ServletException
+     * @throws IOException
+     * @throws DAOException
+     */
     @Override
     public void executePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, DAOException {
         LOGGER.info(METHOD_STARTS_MSG, "executePost", "true");
@@ -68,17 +87,15 @@ public class LoginCommand implements Command {
             UserService userService = new UserService();
             User user = userService.findUserByEmail(email);
             if (user != null) {
-                String password = request.getParameter(USER_PASSWORD);
+                char[] password = request.getParameter(USER_PASSWORD).toCharArray();
                 try {
-                    if(UtilsPasswordEncryption.authenticate(password.toCharArray(), user.getPassword()) ){
-    //                if (password.equals(user.getPassword())) {
+                    if(UtilsPasswordEncryption.authenticate(password, user.getPassword()) ){
                         session.removeAttribute(UNSUCCESS_ATTR);
-                        session.setAttribute(LOGGED_USER_ATTR, user);
                         List<OrderData> orders = setOrdersPending(user.getId());
                         session.setAttribute(CUSTOM_LIST_ATTR, orders);
                         forwardPage = request.getServletContext().getContextPath() + HOME_PAGE;
+                        session.setAttribute(LOGGED_USER_ATTR, user);
                         LOGGER.debug(TWO_PARAMS_MSG, LOGGED_USER_ATTR, user);
-                        session.setMaxInactiveInterval(10);
                     } else {
                         session.setAttribute(USER_EMAIL, email);
                         session.setAttribute(UNSUCCESS_ATTR, UNSUCCESS_MSG2);
@@ -124,4 +141,5 @@ public class LoginCommand implements Command {
         List<Custom> customList = service.getUsersCustomsInProgress(userId);
         return OrderData.getOrderDataList(customList);
     }
+
 }

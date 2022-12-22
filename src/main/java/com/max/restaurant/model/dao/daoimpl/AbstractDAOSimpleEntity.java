@@ -217,22 +217,22 @@ public abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements
     protected abstract void setStatementParams(T entity, PreparedStatement statement, boolean update) throws SQLException;
 
     private T getAbstractObjFromResult(ResultSet result) throws SQLException {
-        LOGGER.info(genericName + GET_FROM_RS);
+        LOGGER.trace(genericName + GET_FROM_RS);
         T entity = getEntityFromResult(result);
-        LOGGER.debug(genericName + GET_FROM_RS + entity.toString());
+        LOGGER.trace(genericName + GET_FROM_RS + entity.toString());
         return entity;
     }
 
     private void setAbstractStatementParams(T entity, PreparedStatement statement, boolean update) throws SQLException {
-        LOGGER.info(SET_STATEMENT, genericName);
+        LOGGER.trace(SET_STATEMENT, genericName);
         //implement this
         setStatementParams(entity, statement, update);
-        LOGGER.debug(entity.toString());
+        LOGGER.trace(entity.toString());
     }
 
     protected void closeAll(Connection conn, Statement statement) throws DAOException {
         try {
-            LOGGER.info(CLOSE_CONN_ST, genericName, conn != null, statement != null);
+            LOGGER.trace(CLOSE_CONN_ST, genericName, conn != null, statement != null);
             if (statement != null)
                 statement.close();
             if (conn != null && conn.getAutoCommit()) {
@@ -246,7 +246,7 @@ public abstract class AbstractDAOSimpleEntity<T extends SimpleEntity> implements
 
     private void closeAll(Connection conn, Statement statement, ResultSet rs) throws DAOException {
         try {
-            LOGGER.info(genericName + CLOSE_RESULT_SET, rs != null);
+            LOGGER.trace(genericName + CLOSE_RESULT_SET, rs != null);
             if (rs != null)
                 rs.close();
             closeAll(conn, statement);

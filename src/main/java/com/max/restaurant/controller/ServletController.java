@@ -18,10 +18,12 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
  * Main enter point, which controls the processing of all requests.
  * It holds all known commands of {@link Command} interface.
  */
-@WebServlet(name = "ServletController", value = "/ServletController")
+@WebServlet(name = "ServletController", value = "/ServletController", asyncSupported = true)
 public class ServletController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServletController.class);
     private static final Map<String, Command> allKnownCommands = new HashMap<>();
+    private static final String GET = "get";
+    private static final String POST = "post";
 
     /**
      * All commands initialization
@@ -39,62 +41,55 @@ public class ServletController extends HttpServlet {
         allKnownCommands.put(LANGUAGE, new ChangeLangCommand());
         allKnownCommands.put(PDF, new CreatePDFCommand());
         allKnownCommands.put(PASS_RECOVERY, new ForgotPassCommand());
-        allKnownCommands.put(NOTIFY_ATTR, new NewOrderNotifyCommand());
-        LOGGER.info(METHOD_STARTS_MSG, "init", "size " +  allKnownCommands.size());
+        allKnownCommands.put(NOTIFY, new NewOrderNotifyCommand());
+        LOGGER.info(METHOD_STARTS_MSG, "init", "size " + allKnownCommands.size());
     }
 
     /**
      * Method which calls an appropriate GET methods of {@link Command} interface object, depending on "action" <br>
      * parameters of request.
      *
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
-     *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("doGet");
-        String commandName = request.getParameter(ACTION);
-        String method = request.getMethod();
-        LOGGER.debug(TWO_PARAMS_MSG, method, commandName);
-        try {
-            Command command = allKnownCommands.get(commandName);
-            if (command == null)
-                command = allKnownCommands.get(null);
-            command.executeGet(request, response);
-        } catch (Throwable e) {
-            LOGGER.error(METHOD_FAILED, e.getMessage(), e);
-            throw new IllegalStateException(e);
-        }
+        chooseCommand(GET, request, response);
     }
 
     /**
      * Method which calls an appropriate POST methods of {@link Command} interface object, depending on "action" <br>
      * parameters of request.
-     * @param request   an {@link HttpServletRequest} object that
-     *                  contains the request the client has made
-     *                  of the servlet
      *
-     * @param response  an {@link HttpServletResponse} object that
-     *                  contains the response the servlet sends
-     *                  to the client
-     *
+     * @param request  an {@link HttpServletRequest} object that
+     *                 contains the request the client has made
+     *                 of the servlet
+     * @param response an {@link HttpServletResponse} object that
+     *                 contains the response the servlet sends
+     *                 to the client
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("doPost");
+        chooseCommand(POST, request, response);
+    }
+
+    private static void chooseCommand(String method, HttpServletRequest request, HttpServletResponse response) {
         String commandName = request.getParameter(ACTION);
-        String method = request.getMethod();
         LOGGER.debug(TWO_PARAMS_MSG, method, commandName);
         try {
             Command command = allKnownCommands.get(commandName);
             if (command == null)
                 command = allKnownCommands.get(null);
-            command.executePost(request, response);
+            if (method.equals(POST))
+                command.executePost(request, response);
+            else
+                command.executeGet(request, response);
         } catch (Throwable e) {
             LOGGER.error(METHOD_FAILED, e.getMessage(), e);
             throw new IllegalStateException(e);

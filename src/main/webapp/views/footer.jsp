@@ -21,10 +21,24 @@
     <div class="w3-display-middle w3-cell-middle">
         Powered by <a href="https://github.com/MaxikGit/Restaurant.git" target="_blank"><u>Maxim Bezzubov</u></a>
     </div>
+
+
     <c:if test="${loggedUser!= null && loggedUser.roleId == 1}">
-        <div id="manager_notification" class="w3-display-right w3-hide">
-            <a href="ServletController?action=management">
-            <i class="material-icons w3-shake-it w3-hover-text-amber">notifications_active</i>
+        <c:choose>
+            <c:when test="${notifyOrders != null && notifyOrders > 0}">
+                <c:set var="hideBell" value=""/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="hideBell" value="w3-hide"/>
+            </c:otherwise>
+        </c:choose>
+        <script>
+            let notification_url = "${pageContext.request.contextPath}/ServletController?action=notify"
+        </script>
+        <div id="manager_notification" class="w3-display-right w3-container ${hideBell}">
+            <a href="${pageContext.request.contextPath}/ServletController?action=management">
+                <i class="material-icons w3-shake-it w3-hover-text-amber">notifications_active</i>
+                <span id="manager_notification_count">${notifyOrders}</span>
             </a>
         </div>
     </c:if>

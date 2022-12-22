@@ -40,6 +40,7 @@ import static com.max.restaurant.utils.UtilsLoggerMsgs.*;
 public class ManageOrdersCommand implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(SortCommand.class);
     private int recordsPerPage = 4;
+    private final static int newStatus = 1;
     private final static String bundleFileName = "messages";
 
     @Override
@@ -88,7 +89,10 @@ public class ManageOrdersCommand implements Command {
             //del button pressed
             if (value != null) {
                 CustomService customService = new CustomService();
-                customService.deleteCustom(Integer.parseInt(value));
+                Custom custom = customService.findCustomById(Integer.parseInt(value));
+                if (custom.getStatusId() == newStatus)
+                    removeNewOrderFromContext(request, custom.getId());
+                customService.deleteCustom(custom.getId());
                 page = MANAGEMENT_COMM;
             }
             //page button pressed
@@ -120,7 +124,6 @@ public class ManageOrdersCommand implements Command {
 
     private static void updateOrderStatuses(CustomService customService, String[] statusesSelected,
                                             HttpServletRequest request) throws DAOException {
-        int newStatus = 1;
         int completedStatus = 4;
         for (String params : statusesSelected) {
             if (params == null)
@@ -138,11 +141,15 @@ public class ManageOrdersCommand implements Command {
                 sendPDFReportToUser(orderData, request);
             }
             else if (oldStatus == newStatus){
-                @SuppressWarnings("unchecked")
-                Map<Integer, Object> newOrdersMap = (Map<Integer, Object>) request.getServletContext().getAttribute(NEW_ORDERS_ATTR);
-                newOrdersMap.remove(custom.getId());
+                removeNewOrderFromContext(request, custom.getId());
             }
         }
+    }
+
+    private static void removeNewOrderFromContext(HttpServletRequest request, int customId) {
+        @SuppressWarnings("unchecked")
+        Map<Integer, Object> newOrdersMap = (Map<Integer, Object>) request.getServletContext().getAttribute(NEW_ORDERS_ATTR);
+        newOrdersMap.remove(customId);
     }
 
     private static String getSortingParam(HttpServletRequest request) {

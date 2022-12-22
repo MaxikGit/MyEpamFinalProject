@@ -81,7 +81,8 @@ public class OrderCommand implements Command {
     }
 
     /**
-     * Method processes changes made by user in his cart. If order is accepted, then register it in database and in servlet context
+     * Method processes changes made by user in his cart. If order is accepted, then register it in
+     * database and in servlet context
      * @param request {@link HttpServletRequest} object
      * @param response {@link HttpServletResponse} object
      * @throws ServletException ServletException object

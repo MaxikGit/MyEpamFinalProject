@@ -1,5 +1,7 @@
-package com.max.restaurant.web.context.listeners;
+package com.max.restaurant.web.listeners;
 
+import com.max.restaurant.model.entity.User;
+import com.max.restaurant.utils.LongPollingUtil;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -25,7 +27,13 @@ public class DefaultValuesSetter implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         sce.getServletContext().setAttribute(LANG_ATTR, UKR_ATTR);
-        sce.getServletContext().setAttribute(LOGGED_USERS_ATTR, new ConcurrentHashMap<Integer, HttpSession>());
+        sce.getServletContext().setAttribute(LOGGED_USERS_ATTR, new ConcurrentHashMap<User, HttpSession>());
         sce.getServletContext().setAttribute(NEW_ORDERS_ATTR, new ConcurrentHashMap<Integer, Object>());
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        LongPollingUtil longPolling = LongPollingUtil.getInstance();
+        longPolling.endPoll();
     }
 }

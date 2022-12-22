@@ -13,6 +13,8 @@ public class UtilsLoggerMsgs {
     public static final String REDIRECT = "redirecting to {}";
     public static final String UNAUTH_MSG = "Unauthorized access request, user={}";
     public static final String ENCODE_MSG = "encoding {} was replaced with {}";
+    public static final String USER_LOGOUT_MSG = "user {} was logged out, session {}";
+
     public static final String TRANSACTION_ROLLBACK = " transaction rollback";
     public static final String TRANSACTION_ROLLBACK_FAILED = " transaction rollback was unsuccessful";
     public static final String TRANSACTION_MSG = "transaction done successfully";

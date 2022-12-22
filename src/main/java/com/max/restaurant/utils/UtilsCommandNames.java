@@ -17,9 +17,9 @@ public class UtilsCommandNames {
     public static final String SORT_DISHES = "sortDishes";
     public static final String PASS_RECOVERY = "pass_recovery";
     public static final String EMAIL_CODE_ATTR = "email_code";
-    public static final String NOTIFY_ATTR = "notify";
+    public static final String NOTIFY = "notify";
 
-//    attrs are mapping variables JAVA.var = "JSP.attr": SUCCESS_ATTR = "success";
+//    attrs are mapping variables: SUCCESS_ATTR = "success";
     public static final String CATEGORY_ID = "categoryId";
     public static final String UNSUCCESS_ATTR = "unsuccess";
     public static final String UNSUCCESS_MSG = "login.sorry";
@@ -63,4 +63,6 @@ public class UtilsCommandNames {
 
     public static final String ENG_ATTR = "en";
     public static final String UKR_ATTR = "uk";
+
+    public static final String NOTIFY_ORDERS_ATTR = "notifyOrders";
    }
