@@ -131,7 +131,7 @@ public class LoginCommand implements Command {
         } else if (request.getParameter(USER_PASSWORD) == null || request.getParameter(USER_PASSWORD).isBlank()) {
             return USER_PASSWORD;
         } else if (!UtilsReCaptchaVerifier.verify(request)) {
-//            return reCAPTCHA_ATTR;
+            return reCAPTCHA_ATTR;
         }
         return null;
     }
